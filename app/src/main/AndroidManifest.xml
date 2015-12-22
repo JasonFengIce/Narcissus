@@ -21,25 +21,24 @@
         <!-- begin: baidu speech sdk-->
         <meta-data
             android:name="com.baidu.speech.APP_ID"
-            android:value="999999"/>
+            android:value="7528682"/>
         <meta-data
             android:name="com.baidu.speech.API_KEY"
-            android:value="8MAxI5o7VjKSZOKeBzS4XtxO"/>
+            android:value="YuKSME6OUvZwv016LktWKkjY"/>
         <meta-data
             android:name="com.baidu.speech.SECRET_KEY"
-            android:value="Ge5GXVdGQpaxOmLzc8fOM8309ATCz9Ha"
-
+            android:value="5fead3154852939e74bcaa1248cf33c6"
             />
 
         <service
             android:name="com.baidu.speech.VoiceRecognitionService"
             android:exported="false"
             />
+
         <activity
             android:name="com.baidu.voicerecognition.android.ui.BaiduASRDigitalDialog"
             android:configChanges="orientation|keyboardHidden|screenLayout"
             android:exported="false"
-            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Dialog">
             <intent-filter>
                 <action android:name="com.baidu.action.RECOGNIZE_SPEECH"/>
@@ -48,13 +47,21 @@
         </activity>
         <!-- end : baidu speech sdk-->
 
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-    </application>
 
+        <activity
+            android:name=".ui.activity.SettingActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            />
+    </application>
 </manifest>
