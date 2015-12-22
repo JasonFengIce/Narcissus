@@ -9,6 +9,7 @@ import android.speech.RecognitionListener;
 import android.speech.SpeechRecognizer;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
         settingBtn = (Button) findViewById(R.id.test);
         settingBtn.setOnClickListener(this);
 
-        speechTips = View.inflate(this, R.layout.bd_asr_popup_speech, null);
+        speechTips = LayoutInflater.from(this).inflate(R.layout.bd_asr_popup_speech, null);
         speechWave = speechTips.findViewById(R.id.wave);
         speechTips.setVisibility(View.GONE);
         addContentView(speechTips, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -292,6 +293,4 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
 //        sv.smoothScrollTo(0, 1000000);
         Log.d(TAG, "----" + msg);
     }
-
-
 }
