@@ -3,6 +3,7 @@ package cn.ismartv.voice;
 public class Constant {
     public static final String EXTRA_KEY = "key";
     public static final String EXTRA_SECRET = "secret";
+    public static final String EXTRA_TIPS_SOUND = "tips_sound";
     public static final String EXTRA_SAMPLE = "sample";
     public static final String EXTRA_SOUND_START = "sound_start";
     public static final String EXTRA_SOUND_END = "sound_end";

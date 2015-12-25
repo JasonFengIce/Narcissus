@@ -1,5 +1,6 @@
 package cn.ismartv.voice;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,7 +8,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.speech.RecognitionListener;
 import android.speech.SpeechRecognizer;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -23,16 +23,20 @@ import android.widget.TextView;
 import com.baidu.speech.VoiceRecognitionService;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import cn.ismartv.voice.core.AppManager;
 import cn.ismartv.voice.ui.activity.SettingActivity;
 
-public class MainActivity extends AppCompatActivity implements RecognitionListener, OnTouchListener, OnClickListener {
+
+public class MainActivity extends Activity implements RecognitionListener, OnTouchListener, OnClickListener {
     private static final String TAG = "MainActivity";
     private static final int EVENT_ERROR = 11;
+
 
     private Button testBtn;
     private long speechEndTime = -1;
@@ -43,10 +47,14 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
 
     private SpeechRecognizer speechRecognizer;
 
+    private AppManager appManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        appManager = AppManager.getInstance(this);
+
         testBtn = (Button) findViewById(R.id.button);
         testBtn.setOnTouchListener(this);
         settingBtn = (Button) findViewById(R.id.test);
@@ -57,8 +65,9 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
         speechTips.setVisibility(View.GONE);
         addContentView(speechTips, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-
         txtResult = (TextView) findViewById(R.id.result);
+
+
 
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this, new ComponentName(this, VoiceRecognitionService.class));
         speechRecognizer.setRecognitionListener(this);
@@ -79,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
                 Intent intent = new Intent();
                 bindParams(intent);
                 intent.putExtra("vad", "touch");
-//                txtResult.setText("");
+                txtResult.setText("");
 //                txtLog.setText("");
                 speechRecognizer.startListening(intent);
                 return true;
@@ -171,6 +180,7 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
         }
         sb.append(":" + error);
         print("识别失败：" + sb.toString());
+        txtResult.setText("识别失败：" + sb.toString());
     }
 
     @Override
@@ -189,7 +199,8 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
         if (end2finish < 60 * 1000) {
             strEnd2Finish = "(waited " + end2finish + "ms)";
         }
-        txtResult.setText(nbest.get(0) + strEnd2Finish);
+//        txtResult.setText(nbest.get(0) + strEnd2Finish);
+        txtResult.setText(json_res + "\n" + "识别成功：\n" + Arrays.toString(nbest.toArray(new String[nbest.size()])));
     }
 
     @Override
@@ -208,26 +219,35 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
                 String reason = params.get("reason") + "";
                 print("EVENT_ERROR, " + reason);
                 break;
+            case VoiceRecognitionService.EVENT_ENGINE_SWITCH:
+                int engineType = params.getInt("engine_type");
+                Log.i(TAG, "engine type :  " + engineType);
+                break;
         }
     }
 
 
     public void bindParams(Intent intent) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        if (sp.getBoolean("tips_sound", true)) {
+        if (sp.getBoolean(Constant.EXTRA_TIPS_SOUND, true)) {
             intent.putExtra(Constant.EXTRA_SOUND_START, R.raw.bdspeech_recognition_start);
             intent.putExtra(Constant.EXTRA_SOUND_END, R.raw.bdspeech_speech_end);
             intent.putExtra(Constant.EXTRA_SOUND_SUCCESS, R.raw.bdspeech_recognition_success);
             intent.putExtra(Constant.EXTRA_SOUND_ERROR, R.raw.bdspeech_recognition_error);
             intent.putExtra(Constant.EXTRA_SOUND_CANCEL, R.raw.bdspeech_recognition_cancel);
         }
-        if (sp.contains(Constant.EXTRA_INFILE)) {
-            String tmp = sp.getString(Constant.EXTRA_INFILE, "").replaceAll(",.*", "").trim();
-            intent.putExtra(Constant.EXTRA_INFILE, tmp);
-        }
+
+//        if (sp.contains(Constant.EXTRA_INFILE)) {
+//            String tmp = sp.getString(Constant.EXTRA_INFILE, "").replaceAll(",.*", "").trim();
+//            intent.putExtra(Constant.EXTRA_INFILE, tmp);
+//        }
+
+        intent.putExtra(Constant.EXTRA_INFILE, "sdcard/test/outfile.pcm");
+
         if (sp.getBoolean(Constant.EXTRA_OUTFILE, false)) {
             intent.putExtra(Constant.EXTRA_OUTFILE, "sdcard/outfile.pcm");
         }
+
         if (sp.contains(Constant.EXTRA_SAMPLE)) {
             String tmp = sp.getString(Constant.EXTRA_SAMPLE, "").replaceAll(",.*", "").trim();
             if (null != tmp && !"".equals(tmp)) {
@@ -261,10 +281,11 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
                 prop = tmp;
             }
         }
+
         // offline asr
         {
             intent.putExtra(Constant.EXTRA_OFFLINE_ASR_BASE_FILE_PATH, "/sdcard/easr/s_1");
-            intent.putExtra(Constant.EXTRA_LICENSE_FILE_PATH, "/sdcard/easr/license-tmp-20150530.txt");
+//            intent.putExtra(Constant.EXTRA_LICENSE_FILE_PATH, "/sdcard/easr/license-tmp-20150530.txt");
             if (null != prop) {
                 int propInt = Integer.parseInt(prop);
                 if (propInt == 10060) {
@@ -282,8 +303,13 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
         JSONArray name = new JSONArray().put("李涌泉").put("郭下纶");
         JSONArray song = new JSONArray().put("七里香").put("发如雪");
         JSONArray artist = new JSONArray().put("周杰伦").put("李世龙");
-        JSONArray app = new JSONArray().put("手机百度").put("百度地图");
+        JSONArray app = new JSONArray().put("百度地图");
         JSONArray usercommand = new JSONArray().put("关灯").put("开门");
+        try {
+            slotData.put(Constant.EXTRA_OFFLINE_SLOT_APP, app);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return slotData.toString();
     }
 
