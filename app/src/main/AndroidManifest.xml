@@ -30,26 +30,10 @@
             android:value="5fead3154852939e74bcaa1248cf33c6"
             />
 
-        <service
-            android:name="com.baidu.speech.VoiceRecognitionService"
-            android:exported="false"
-            />
-
-        <activity
-            android:name="com.baidu.voicerecognition.android.ui.BaiduASRDigitalDialog"
-            android:configChanges="orientation|keyboardHidden|screenLayout"
-            android:exported="false"
-            android:theme="@android:style/Theme.Dialog">
-            <intent-filter>
-                <action android:name="com.baidu.action.RECOGNIZE_SPEECH"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
-        <!-- end : baidu speech sdk-->
 
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="landscape"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
