@@ -5,10 +5,20 @@
 
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <!-- 蓝牙录音 -->
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <!-- 某些手机启动SCO音频连接需要此权限 -->
+    <uses-permission android:name="android.permission.BROADCAST_STICKY"/>
+    <!-- 蓝牙录音检测耳机状态 -->
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
 
 
     <application
@@ -19,16 +29,16 @@
         android:theme="@style/AppTheme">
 
         <!-- begin: baidu speech sdk-->
-        <meta-data
-            android:name="com.baidu.speech.APP_ID"
-            android:value="7528682"/>
-        <meta-data
+        <!--<meta-data-->
+            <!--android:name="com.baidu.speech.APP_ID"-->
+            <!--android:value="7528682"/>-->
+        <!--<meta-data-->
             android:name="com.baidu.speech.API_KEY"
             android:value="YuKSME6OUvZwv016LktWKkjY"/>
-        <meta-data
-            android:name="com.baidu.speech.SECRET_KEY"
-            android:value="5fead3154852939e74bcaa1248cf33c6"
-            />
+        <!--<meta-data-->
+            <!--android:name="com.baidu.speech.SECRET_KEY"-->
+            <!--android:value="5fead3154852939e74bcaa1248cf33c6"-->
+            <!--/>-->
 
 
         <activity
