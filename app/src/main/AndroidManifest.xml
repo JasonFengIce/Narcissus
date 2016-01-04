@@ -30,20 +30,20 @@
 
         <!-- begin: baidu speech sdk-->
         <!--<meta-data-->
-            <!--android:name="com.baidu.speech.APP_ID"-->
-            <!--android:value="7528682"/>-->
+        <!--android:name="com.baidu.speech.APP_ID"-->
+        <!--android:value="7528682"/>-->
         <!--<meta-data-->
-            android:name="com.baidu.speech.API_KEY"
-            android:value="YuKSME6OUvZwv016LktWKkjY"/>
+        android:name="com.baidu.speech.API_KEY"
+        android:value="YuKSME6OUvZwv016LktWKkjY"/>
         <!--<meta-data-->
-            <!--android:name="com.baidu.speech.SECRET_KEY"-->
-            <!--android:value="5fead3154852939e74bcaa1248cf33c6"-->
-            <!--/>-->
+        <!--android:name="com.baidu.speech.SECRET_KEY"-->
+        <!--android:value="5fead3154852939e74bcaa1248cf33c6"-->
+        <!--/>-->
 
 
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
