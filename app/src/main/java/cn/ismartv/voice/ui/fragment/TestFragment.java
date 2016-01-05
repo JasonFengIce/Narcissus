@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import cn.ismartv.voice.data.table.AppTable;
 import com.baidu.voicerecognition.android.VoiceRecognitionClient;
 import com.baidu.voicerecognition.android.VoiceRecognitionConfig;
 import com.baidu.voicerecognition.android.ui.BaiduASRDigitalDialog;
@@ -21,6 +22,7 @@ import java.io.InputStream;
 
 import cn.ismartv.voice.R;
 import cn.ismartv.voice.core.Config;
+import cn.ismartv.voice.core.initialization.AppTableInit;
 
 import static com.baidu.voicerecognition.android.VoiceRecognitionClient.*;
 
@@ -28,6 +30,7 @@ import static com.baidu.voicerecognition.android.VoiceRecognitionClient.*;
  * Created by huaijie on 12/31/15.
  */
 public class TestFragment extends Fragment implements OnClickListener, VoiceClientStatusChangeListener {
+    private static final String TAG = "TestFragment";
     private static final String API_KEY = "YuKSME6OUvZwv016LktWKkjY";
     private static final String SECRET_KEY = "5fead3154852939e74bcaa1248cf33c6";
 
@@ -42,6 +45,7 @@ public class TestFragment extends Fragment implements OnClickListener, VoiceClie
         super.onCreate(savedInstanceState);
         voiceRecognitionClient = getInstance(getContext());
         voiceRecognitionClient.setTokenApis(API_KEY, SECRET_KEY);
+        AppTableInit.getInstance().getLocalAppList(getContext());
 
 
     }
@@ -76,6 +80,8 @@ public class TestFragment extends Fragment implements OnClickListener, VoiceClie
         voiceRecognitionConfig.enableBeginSoundEffect(R.raw.bdspeech_recognition_start);
         voiceRecognitionConfig.enableEndSoundEffect(R.raw.bdspeech_speech_end);
         voiceRecognitionConfig.enableNLU();
+        voiceRecognitionConfig.setSampleRate(VoiceRecognitionConfig.SAMPLE_RATE_8K);
+//        voiceRecognitionConfig.setUseDefaultAudioSource(false);
         voiceRecognitionClient.startVoiceRecognition(this, voiceRecognitionConfig);
 //        new AudioFileThread().start();
 
@@ -119,6 +125,7 @@ public class TestFragment extends Fragment implements OnClickListener, VoiceClie
             // 语音识别完成，显示obj中的结果
             case VoiceRecognitionClient.CLIENT_STATUS_FINISH:
                 resultText.setText(o.toString());
+                Log.i(TAG, o.toString());
                 break;
             // 处理连续上屏
             case VoiceRecognitionClient.CLIENT_STATUS_UPDATE_RESULTS:

@@ -1,0 +1,12 @@
+[
+  {
+    "json_res": "{\"parsed_text\":\"百度 地图\",\"raw_text\":\"百度地图\",\"results\":[{\"demand\":0,\"domain\":\"app\",\"intent\":\"open\",\"object\":{\"appname\":\"百度地图\"},\"score\":1,\"update\":1},{\"demand\":0,\"domain\":\"website\",\"intent\":\"open\",\"object\":{\"sitename\":\"百度地图\",\"url\":\"map.baidu.com\"},\"score\":1,\"update\":1}]}\n",
+    "item": [
+      "百度地图",
+      "百度的图",
+      "baidu地图",
+      "baidu的图",
+      "百度替图"
+    ]
+  }
+]
