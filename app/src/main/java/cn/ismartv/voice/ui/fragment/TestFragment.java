@@ -1,17 +1,25 @@
 package cn.ismartv.voice.ui.fragment;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import cn.ismartv.voice.core.handler.JsonResultHandler;
 import cn.ismartv.voice.data.table.AppTable;
+
 import com.baidu.voicerecognition.android.VoiceRecognitionClient;
 import com.baidu.voicerecognition.android.VoiceRecognitionConfig;
 import com.baidu.voicerecognition.android.ui.BaiduASRDigitalDialog;
@@ -23,18 +31,20 @@ import java.io.InputStream;
 import cn.ismartv.voice.R;
 import cn.ismartv.voice.core.Config;
 import cn.ismartv.voice.core.initialization.AppTableInit;
+import cn.ismartv.voice.ui.activity.SettingActivity;
 
 import static com.baidu.voicerecognition.android.VoiceRecognitionClient.*;
 
 /**
  * Created by huaijie on 12/31/15.
  */
-public class TestFragment extends Fragment implements OnClickListener, VoiceClientStatusChangeListener {
+public class TestFragment extends Fragment implements OnTouchListener, VoiceClientStatusChangeListener, OnClickListener {
     private static final String TAG = "TestFragment";
     private static final String API_KEY = "YuKSME6OUvZwv016LktWKkjY";
     private static final String SECRET_KEY = "5fead3154852939e74bcaa1248cf33c6";
 
     private Button button;
+    private Button settingBtn;
     private TextView resultText;
 
     private BaiduASRDigitalDialog mDialog;
@@ -61,18 +71,39 @@ public class TestFragment extends Fragment implements OnClickListener, VoiceClie
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         button = (Button) view.findViewById(R.id.btn_test);
+        settingBtn = (Button) view.findViewById(R.id.setting);
         resultText = (TextView) view.findViewById(R.id.result);
-        button.setOnClickListener(this);
+
+        button.setOnTouchListener(this);
+        settingBtn.setOnClickListener(this);
 
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_test:
-                startTest2();
-                break;
+
+    private void bindParams(VoiceRecognitionConfig config) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+        //语义解析
+        if (preferences.getBoolean(getString(R.string.nlu), true)) {
+            config.enableNLU();
         }
+
+        //采样率
+        config.setSampleRate(Integer.parseInt(preferences.getString(getString(R.string.audio_sample), "")));
+
+        //语言
+        config.setLanguage(preferences.getString(getString(R.string.language), ""));
+
+        //是否开启音效
+        if (preferences.getBoolean(getString(R.string.sound_effect), true)) {
+            config.enableBeginSoundEffect(R.raw.bdspeech_recognition_start);
+            config.enableEndSoundEffect(R.raw.bdspeech_speech_end);
+        } else {
+            config.disableBeginSoundEffect();
+            config.disableEndSoundEffect();
+        }
+        //是否开启蓝牙
+        config.setUseBlueTooth(preferences.getBoolean(getString(R.string.bluetooth), false));
     }
 
     private void startTest2() {
@@ -83,7 +114,6 @@ public class TestFragment extends Fragment implements OnClickListener, VoiceClie
         voiceRecognitionConfig.setSampleRate(VoiceRecognitionConfig.SAMPLE_RATE_8K);
 //        voiceRecognitionConfig.setUseDefaultAudioSource(false);
         voiceRecognitionClient.startVoiceRecognition(this, voiceRecognitionConfig);
-//        new AudioFileThread().start();
 
     }
 
@@ -125,6 +155,7 @@ public class TestFragment extends Fragment implements OnClickListener, VoiceClie
             // 语音识别完成，显示obj中的结果
             case VoiceRecognitionClient.CLIENT_STATUS_FINISH:
                 resultText.setText(o.toString());
+                new JsonResultHandler(o.toString());
                 Log.i(TAG, o.toString());
                 break;
             // 处理连续上屏
@@ -148,54 +179,31 @@ public class TestFragment extends Fragment implements OnClickListener, VoiceClie
 
     }
 
-    class AudioFileThread extends Thread {
-        private final static String TAG = "AudioFileThread";
-
-        private String mFilePath = "8_8.10.39.54.pcm";
-
-        private volatile boolean mStop = false;
-
-        public void exit() {
-            mStop = true;
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        switch (v.getId()) {
+            case R.id.btn_test:
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        startTest2();
+                        return true;
+                    case MotionEvent.ACTION_UP:
+                        voiceRecognitionClient.speakFinish();
+                        return true;
+                }
+                break;
         }
+        return false;
+    }
 
-        @Override
-        public void run() {
-            Log.d(TAG, " audio thread start mFilePath " + mFilePath);
-            InputStream in;
-            try {
-                in = getContext().getAssets().open(mFilePath);
-            } catch (IOException e) {
-                Log.e(TAG, " e is " + e);
-                return;
-            }
-            int length = 1024;
-            byte[] buffer = new byte[length];
-            while (!mStop) {
-                try {
-                    int byteread = in.read(buffer);
-                    Log.d(TAG, " byteread: " + byteread);
-                    if (byteread != -1) {
-                        voiceRecognitionClient.feedAudioBuffer(buffer, 0, byteread);
-                    } else {
-                        for (int i = 0; i < length; i++) {
-                            buffer[i] = 0;
-                        }
-                        voiceRecognitionClient.feedAudioBuffer(buffer, 0, length);
-                    }
-                } catch (IOException e) {
-                    Log.e(TAG, " e is " + e);
-                }
-            }
-
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    Log.e(TAG, " e is " + e);
-                }
-            }
-            Log.d(TAG, " audio thread exit");
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.setting:
+                Intent intent = new Intent();
+                intent.setClass(getContext(), SettingActivity.class);
+                startActivity(intent);
+                break;
         }
     }
 }

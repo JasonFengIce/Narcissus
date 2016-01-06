@@ -3,4 +3,14 @@
 
 
     <string name="btn_test">测试</string>
+    <string name="setting">设置</string>
+    <string name="nlu">语义解析</string>
+    <string name="nlu_summary">是否开启语义解析</string>
+
+    <string name="audio_sample">采样率</string>
+    <string name="language">语言</string>
+    <string name="sound_effect">开启音效</string>
+    <string name="bluetooth">开启蓝牙</string>
+
+
 </resources>

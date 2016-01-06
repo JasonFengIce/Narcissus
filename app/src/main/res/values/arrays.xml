@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="audio_sample">
+        <item>8000</item>
+        <item>16000</item>
+    </string-array>
+
+    <string-array name="language_entries">
+        <item>中文普通话</item>
+        <item>中文粤语</item>
+        <item>中文四川话</item>
+        <item>英文</item>
+    </string-array>
+
+    <string-array name="language_entry_value">
+        <item>cmn-Hans-CN</item>
+        <item>yue-Hans-CN</item>
+        <item>sichuan-Hans-CN</item>
+        <item>en-GB</item>
+    </string-array>
+</resources>
