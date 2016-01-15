@@ -35,7 +35,14 @@ public class JsonResultHandler {
                     case "app":
                         new AppHandler(o);
                         break;
+                    case "video":
+                        new VideoHandler(o);
+                        break;
+                    case "weather":
+                        new WeatherHandler(o);
+                        break;
                     default:
+                        new DefaultHandler(o);
                         break;
                 }
             }

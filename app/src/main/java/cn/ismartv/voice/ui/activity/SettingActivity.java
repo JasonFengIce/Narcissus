@@ -22,5 +22,7 @@ public class SettingActivity extends Activity {
         } else {
             getFragmentManager().beginTransaction().add(R.id.content, new SettingFragment()).commit();
         }
+
     }
+
 }

@@ -3,7 +3,6 @@ package cn.ismartv.voice.ui.fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,23 +16,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import cn.ismartv.voice.core.handler.JsonResultHandler;
-import cn.ismartv.voice.data.table.AppTable;
-
 import com.baidu.voicerecognition.android.VoiceRecognitionClient;
 import com.baidu.voicerecognition.android.VoiceRecognitionConfig;
 import com.baidu.voicerecognition.android.ui.BaiduASRDigitalDialog;
 import com.baidu.voicerecognition.android.ui.DialogRecognitionListener;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import cn.ismartv.voice.R;
 import cn.ismartv.voice.core.Config;
+import cn.ismartv.voice.core.handler.JsonResultHandler;
 import cn.ismartv.voice.core.initialization.AppTableInit;
 import cn.ismartv.voice.ui.activity.SettingActivity;
 
-import static com.baidu.voicerecognition.android.VoiceRecognitionClient.*;
+import static com.baidu.voicerecognition.android.VoiceRecognitionClient.VoiceClientStatusChangeListener;
+import static com.baidu.voicerecognition.android.VoiceRecognitionClient.getInstance;
 
 /**
  * Created by huaijie on 12/31/15.
@@ -108,10 +103,7 @@ public class TestFragment extends Fragment implements OnTouchListener, VoiceClie
 
     private void startTest2() {
         VoiceRecognitionConfig voiceRecognitionConfig = new VoiceRecognitionConfig();
-        voiceRecognitionConfig.enableBeginSoundEffect(R.raw.bdspeech_recognition_start);
-        voiceRecognitionConfig.enableEndSoundEffect(R.raw.bdspeech_speech_end);
-        voiceRecognitionConfig.enableNLU();
-        voiceRecognitionConfig.setSampleRate(VoiceRecognitionConfig.SAMPLE_RATE_8K);
+        bindParams(voiceRecognitionConfig);
 //        voiceRecognitionConfig.setUseDefaultAudioSource(false);
         voiceRecognitionClient.startVoiceRecognition(this, voiceRecognitionConfig);
 
