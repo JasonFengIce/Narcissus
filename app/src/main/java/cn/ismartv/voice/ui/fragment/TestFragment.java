@@ -84,7 +84,7 @@ public class TestFragment extends Fragment implements OnTouchListener, VoiceClie
         }
 
         //采样率
-        config.setSampleRate(Integer.parseInt(preferences.getString(getString(R.string.audio_sample), "")));
+        config.setSampleRate(Integer.parseInt(preferences.getString(getString(R.string.audio_sample), "16000")));
 
         //语言
         config.setLanguage(preferences.getString(getString(R.string.language), ""));
