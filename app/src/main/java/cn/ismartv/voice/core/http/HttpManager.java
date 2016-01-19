@@ -1,8 +1,11 @@
 package cn.ismartv.voice.core.http;
 
+import android.net.Uri;
+
 import java.util.concurrent.TimeUnit;
 
 import cn.ismartv.log.interceptor.HttpLoggingInterceptor;
+import cn.ismartv.voice.MainApplication;
 import okhttp3.OkHttpClient;
 import retrofit2.GsonConverterFactory;
 import retrofit2.Retrofit;
@@ -48,10 +51,18 @@ public class HttpManager {
 
         resetAdapter_APP_UPDATE = new Retrofit.Builder()
                 .client(client)
-                .baseUrl("http://oak.t.tvxio.com")
+                .baseUrl(appendProtocol(MainApplication.getAppUpdateDomain()))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
 
 
+    private String appendProtocol(String host) {
+        Uri uri = Uri.parse(host);
+        String url = uri.toString();
+        if (!uri.toString().startsWith("http://") && !uri.toString().startsWith("https://")) {
+            url = "http://" + host;
+        }
+        return url;
+    }
 }

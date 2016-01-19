@@ -18,6 +18,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import cn.ismartv.voice.AppConstant;
+import cn.ismartv.voice.MainApplication;
 import cn.ismartv.voice.core.http.HttpAPI;
 import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.util.DeviceUtil;
@@ -54,8 +55,8 @@ public class AppUpdateUtilsV2 extends Handler {
         //当前apk版本号
         int currentApkVersionCode = fetchVersionCode();
         //地理位置信息
-        String location = "SH";
-        String sn = "go_grf7qt3h";
+        String location = MainApplication.getLocationPY();
+        String sn = MainApplication.getSnToken();
         String app = "voice";
         String ver = String.valueOf(currentApkVersionCode);
         String manu = "sharp";
