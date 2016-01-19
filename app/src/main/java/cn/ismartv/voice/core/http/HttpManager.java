@@ -22,6 +22,7 @@ public class HttpManager {
 
     public Retrofit restAdapter_TSN_BAIDU_HOST;
     public Retrofit restAdapter_OPENAPI_BAIDU;
+    public Retrofit resetAdapter_APP_UPDATE;
 
     public static HttpManager getInstance() {
         return ourInstance;
@@ -45,6 +46,11 @@ public class HttpManager {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
+        resetAdapter_APP_UPDATE = new Retrofit.Builder()
+                .client(client)
+                .baseUrl("http://oak.t.tvxio.com")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
     }
 
 
