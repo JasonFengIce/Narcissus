@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 
 import cn.ismartv.injectdb.library.app.Application;
+import cn.ismartv.voice.core.initialize.InitializeProcess;
 
 /**
  * Created by huaijie on 1/4/16.
@@ -25,6 +26,7 @@ public class MainApplication extends Application {
         super.onCreate();
         mContext = getApplicationContext();
         initializeInfo();
+        new Thread(new InitializeProcess(this));
     }
 
     public static Context getContext() {
