@@ -11,11 +11,12 @@
         android:src="@mipmap/ic_launcher"
         />
 
-    <ImageView
+    <ImageButton
+        android:id="@+id/voice_btn"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:src="@mipmap/ic_launcher"
+        android:background="@mipmap/ic_launcher"
         />
 
 </LinearLayout>

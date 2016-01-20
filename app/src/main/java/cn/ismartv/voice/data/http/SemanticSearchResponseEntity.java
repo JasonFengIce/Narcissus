@@ -16,7 +16,7 @@ public class SemanticSearchResponseEntity {
         this.facet = facet;
     }
 
-    class Facet {
+    public class Facet {
         private int count;
         private int total_count;
         private List<SemantichObjectEntity> objects;
