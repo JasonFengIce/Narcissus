@@ -17,6 +17,7 @@ public class MainApplication extends Application {
     private static String locationPY;
     private static String snToken;
     private static String appUpdateDomain;
+    private static String apiDomain;
 
 
     @Override
@@ -37,6 +38,7 @@ public class MainApplication extends Application {
             appUpdateDomain = sharedPreferences.getString("app_update_domain", "");
             locationPY = sharedPreferences.getString("province_py", "");
             snToken = sharedPreferences.getString("sn_token", "");
+            apiDomain = sharedPreferences.getString("api_domain", "");
 
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
@@ -55,5 +57,9 @@ public class MainApplication extends Application {
 
     public static String getAppUpdateDomain() {
         return appUpdateDomain;
+    }
+
+    public static String getApiDomain() {
+        return apiDomain;
     }
 }

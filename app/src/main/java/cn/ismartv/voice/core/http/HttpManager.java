@@ -19,6 +19,7 @@ public class HttpManager {
     private static HttpManager ourInstance = new HttpManager();
     private static final String TSN_BAIDU_HOST = "http://tsn.baidu.com";
     private static final String OPENAPI_BAIDU_HOST = "https://openapi.baidu.com";
+    private static final String MEDIA_LILY_HOST = "http://media.lily.tvxio.com";
 
 
     public OkHttpClient client;
@@ -26,6 +27,8 @@ public class HttpManager {
     public Retrofit restAdapter_TSN_BAIDU_HOST;
     public Retrofit restAdapter_OPENAPI_BAIDU;
     public Retrofit resetAdapter_APP_UPDATE;
+    public Retrofit resetAdapter_SKY;
+    public Retrofit resetAdapter_MEDIA_LILY;
 
     public static HttpManager getInstance() {
         return ourInstance;
@@ -53,6 +56,17 @@ public class HttpManager {
                 .client(client)
                 .baseUrl(appendProtocol(MainApplication.getAppUpdateDomain()))
                 .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        resetAdapter_SKY = new Retrofit.Builder()
+                .client(client)
+                .baseUrl("http://skytest.tvxio.com:6677")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        resetAdapter_MEDIA_LILY = new Retrofit.Builder()
+                .client(client)
+                .baseUrl(MEDIA_LILY_HOST)
                 .build();
     }
 
