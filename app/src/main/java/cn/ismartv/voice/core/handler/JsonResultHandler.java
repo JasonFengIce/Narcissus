@@ -24,6 +24,7 @@ public class JsonResultHandler {
         for (VoiceResultEntity entity : voiceResultEntity) {
             JsonElement jsonElement = new JsonParser().parse(entity.getJson_res());
             JsonRes jsonRes = new Gson().fromJson(jsonElement, JsonRes.class);
+            String rawText = jsonRes.getRaw_text();
             Object resultObject = jsonRes.getResults();
 
             JsonParser jsonParser = new JsonParser();
