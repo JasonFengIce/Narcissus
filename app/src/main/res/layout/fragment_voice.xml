@@ -1,22 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="@dimen/voice_fragment_icon_bg_width"
+        android:layout_height="@dimen/voice_fragment_icon_bg_height"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/voice_fragment_icon_margin_top"
+        android:background="@drawable/voice_bg">
+
+        <ImageView
+            android:layout_width="@dimen/voice_fragment_icon_progress_width"
+            android:layout_height="@dimen/voice_fragment_icon_progress_height"
+            android:layout_gravity="center"
+            android:src="@drawable/voice_progress"/>
+
+        <ImageView
+            android:layout_width="@dimen/voice_fragment_icon_mic_width"
+            android:layout_height="@dimen/voice_fragment_icon_mic_height"
+            android:layout_gravity="center"
+            android:src="@drawable/voice_mic"/>
+    </FrameLayout>
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:src="@mipmap/ic_launcher"
-        />
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/voice_fragment_divider_line_margin"
+        android:layout_marginRight="@dimen/voice_fragment_divider_line_margin"
+        android:layout_marginTop="@dimen/voice_fragment_divider_line_margin_top"
+        android:src="@drawable/voice_fragment_divider_line"/>
 
     <ImageButton
         android:id="@+id/voice_btn"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@mipmap/ic_launcher"
-        />
-
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@mipmap/ic_launcher"/>
 </LinearLayout>

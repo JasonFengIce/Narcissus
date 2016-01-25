@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<dimen name="content_fragment_item_height">204.67dip</dimen>
+<dimen name="content_fragment_item_width">86.67dip</dimen>
+<dimen name="content_fragment_recycler_margin_lr">77.33dip</dimen>
+<dimen name="textSize_30sp">20.00sp</dimen>
+<dimen name="textSize_40sp">26.67sp</dimen>
+<dimen name="voice_fragment_divider_line_margin">15.33dip</dimen>
+<dimen name="voice_fragment_divider_line_margin_top">99.33dip</dimen>
+<dimen name="voice_fragment_icon_bg_height">210.67dip</dimen>
+<dimen name="voice_fragment_icon_bg_width">210.67dip</dimen>
+<dimen name="voice_fragment_icon_margin_top">61.33dip</dimen>
+<dimen name="voice_fragment_icon_mic_height">50.00dip</dimen>
+<dimen name="voice_fragment_icon_mic_width">51.33dip</dimen>
+<dimen name="voice_fragment_icon_progress_height">184.00dip</dimen>
+<dimen name="voice_fragment_icon_progress_width">184.00dip</dimen>
+<dimen name="voice_fragment_icon_vol_height">105.33dip</dimen>
+<dimen name="voice_fragment_icon_vol_width">44.67dip</dimen>
+<dimen name="voice_fragment_tip_margin">16.67dip</dimen>
+<dimen name="voice_fragment_tip_margin_top">36.00dip</dimen>
+<dimen name="voice_fragment_title_margin_top">79.33dip</dimen>
+<dimen name="voice_fragment_width">280.00dip</dimen>
+</resources>
