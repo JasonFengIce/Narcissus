@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<dimen name="content_fragment_item_height">204.67dip</dimen>
-<dimen name="content_fragment_item_width">86.67dip</dimen>
+<dimen name="content_fragment_item_height">237.33dip</dimen>
+<dimen name="content_fragment_item_width">170.67dip</dimen>
 <dimen name="content_fragment_recycler_margin_lr">77.33dip</dimen>
+<dimen name="content_fragment_title_height">68.00dp</dimen>
+
+<dimen name="content_fragment_item_vertical_space">76.67dp</dimen>
+<dimen name="content_fragment_item_horizontal_space">53.33dp</dimen>
+
 <dimen name="textSize_30sp">20.00sp</dimen>
 <dimen name="textSize_40sp">26.67sp</dimen>
+<dimen name="textSize_36sp">24.00sp</dimen>
 <dimen name="voice_fragment_divider_line_margin">15.33dip</dimen>
 <dimen name="voice_fragment_divider_line_margin_top">99.33dip</dimen>
 <dimen name="voice_fragment_icon_bg_height">210.67dip</dimen>
