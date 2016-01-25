@@ -23,11 +23,18 @@ public class ImageUtil {
         // 获得图片的长宽
         int width = originalImage.getWidth();
         int height = originalImage.getHeight();
+        int imageWidth = imageView.getLayoutParams().width;
+        int imageHeight = imageView.getLayoutParams().height;
 
+        float reflectRate = ((width * imageHeight / (float) imageWidth) - height) / height;
+
+    
         Matrix matrix = new Matrix();
-        matrix.preScale(1, -1); // 实现图片的反转
+        matrix.preScale(1, -1 * reflectRate); // 实现图片的反转
         Bitmap reflectionImage = Bitmap.createBitmap(originalImage, 0, 0, width, height, matrix, false); // 创建反转后的图片Bitmap对象，图片高是原图的一半
-        Bitmap bitmapWithReflection = Bitmap.createBitmap(width, (height + height), Bitmap.Config.ARGB_8888); // 创建标准的Bitmap对象，宽和原图一致，高是原图的1.5倍
+
+
+        Bitmap bitmapWithReflection = Bitmap.createBitmap(width, (height + reflectionImage.getHeight()), Bitmap.Config.ARGB_8888); // 创建标准的Bitmap对象，宽和原图一致，高是原图的1.5倍
 
 
         Canvas canvas = new Canvas(bitmapWithReflection);
@@ -44,15 +51,13 @@ public class ImageUtil {
                 originalImage.getHeight(),
                 0,
                 bitmapWithReflection.getHeight() + reflectionGap,
-                0x70ffffff, 0x00ffffff, Shader.TileMode.MIRROR);// 创建线性渐变LinearGradient对象
+                0x00000000, 0xff000000, Shader.TileMode.MIRROR);// 创建线性渐变LinearGradient对象
         paint.setShader(shader); // 绘制
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));//倒影遮罩效果
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));//倒影遮罩效果
         canvas.drawRect(0, height, width, bitmapWithReflection.getHeight() + reflectionGap, paint); // 画布画出反转图片大小区域，然后把渐变效果加到其中，就出现了图片的倒影效果
 
         imageView.setImageBitmap(bitmapWithReflection); // 设置带倒影的Bitmap
-        //设置ImageView的大小，可以根据图片大小设置
-        // imageView.setLayoutParams(newmyGallery.LayoutParams(width,height));
-//        imageView.setLayoutParams(new ViewGroup.LayoutParams(250, 500));//设置ImageView的大小，可根据需要设置固定宽高
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);//将图片按比例缩放
     }
+
 }
