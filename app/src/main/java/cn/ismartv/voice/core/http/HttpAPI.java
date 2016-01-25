@@ -55,4 +55,5 @@ public class HttpAPI {
                 @Path("geoId") String geoId
         );
     }
+
 }
