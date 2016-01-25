@@ -1,5 +1,7 @@
 package cn.ismartv.voice.core.http;
 
+import java.util.List;
+
 import cn.ismartv.voice.core.update.VersionInfoV2Entity;
 import cn.ismartv.voice.data.http.AppSearchResponseEntity;
 import cn.ismartv.voice.data.http.SemanticSearchRequestEntity;
@@ -56,4 +58,12 @@ public class HttpAPI {
         );
     }
 
+    public interface Words {
+        @GET("/{fragment1}/{fragment2}/{fragment3}/api/tv/words/")
+        Call<List<String>> doRequest(
+                @Path("fragment1") String fragment1,
+                @Path("fragment1") String fragment2,
+                @Path("fragment1") String fragment3
+        );
+    }
 }

@@ -6,6 +6,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.List;
 
 import cn.ismartv.voice.core.http.HttpAPI;
 import cn.ismartv.voice.core.http.HttpManager;
@@ -74,5 +75,15 @@ public class SkyApiTest extends AndroidTestCase {
         }
     }
 
+    public void testWords() {
+//        Retrofit retrofit = HttpManager.getInstance().resetAdapter_SKY;
+//        try {
+//            Response<List<String>> response = retrofit.create(HttpAPI.Words.class).doRequest().execute();
+//            String s = new Gson().toJson(response.body());
+//            Log.i(TAG, s);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+    }
 
 }

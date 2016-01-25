@@ -60,7 +60,7 @@ public class HttpManager {
 
         resetAdapter_SKY = new Retrofit.Builder()
                 .client(client)
-                .baseUrl("http://skytest.tvxio.com:6677")
+                .baseUrl(appendProtocol(MainApplication.getApiDomain()))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -75,8 +75,9 @@ public class HttpManager {
         Uri uri = Uri.parse(host);
         String url = uri.toString();
         if (!uri.toString().startsWith("http://") && !uri.toString().startsWith("https://")) {
-            url = "http://" + host;
+            url = "http://" + host.split("/");
         }
         return url;
     }
+
 }
