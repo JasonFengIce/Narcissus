@@ -6,7 +6,16 @@ package cn.ismartv.voice.data.http;
 public class SemantichObjectEntity {
     private String title;
     private String poster_url;
+    private String vertical_url;
     private String pk;
+
+    public String getVertical_url() {
+        return vertical_url;
+    }
+
+    public void setVertical_url(String vertical_url) {
+        this.vertical_url = vertical_url;
+    }
 
     public String getTitle() {
         return title;

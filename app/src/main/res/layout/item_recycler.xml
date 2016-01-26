@@ -7,7 +7,7 @@
                 android:minHeight="@dimen/content_fragment_item_height"
     >
 
-    <ImageView
+    <cn.ismartv.imagereflection.RelectionImageView
         android:id="@+id/image"
         android:layout_width="@dimen/content_fragment_item_width"
         android:layout_height="@dimen/content_fragment_item_img_height"

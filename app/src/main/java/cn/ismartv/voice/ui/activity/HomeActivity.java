@@ -139,7 +139,7 @@ public class HomeActivity extends FragmentActivity {
         entity.setPage_on(1);
         entity.setPage_count(30);
 
-        Retrofit retrofit = HttpManager.getInstance().resetAdapter_SKY;
+        Retrofit retrofit = HttpManager.getInstance().resetAdapter_QIANGUANGZHAO;
         retrofit.create(HttpAPI.SemanticSearch.class).doRequest(entity).enqueue(new Callback<SemanticSearchResponseEntity>() {
             @Override
             public void onResponse(Response<SemanticSearchResponseEntity> response) {

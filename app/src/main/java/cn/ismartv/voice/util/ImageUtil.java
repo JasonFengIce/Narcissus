@@ -19,9 +19,12 @@ public class ImageUtil {
 
     public static void createReflectedImages(ImageView imageView, int resId) {
 //        final int reflectionGap = 4;//原图与倒影之间的间隙
-        int index = 0;
         Bitmap originalImage = BitmapFactory.decodeResource(imageView.getContext().getResources(), resId); // 获得图片资源
-        // 获得图片的长宽
+        createReflectedImages(imageView, originalImage);
+    }
+
+
+    public static void createReflectedImages(ImageView imageView, Bitmap originalImage) {
         int width = originalImage.getWidth();
         int height = originalImage.getHeight();
         int imageWidth = imageView.getLayoutParams().width;
@@ -60,10 +63,7 @@ public class ImageUtil {
         paint.reset();
         paint.setColor(Color.BLACK);
         canvas.drawRect(0, 2 * height, width, bitmapWithReflection.getHeight(), paint);
-
-
         imageView.setImageBitmap(bitmapWithReflection); // 设置带倒影的Bitmap
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);//将图片按比例缩放
     }
-
 }

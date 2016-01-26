@@ -2,22 +2,28 @@ package cn.ismartv.voice.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
+import cn.ismartv.imagereflection.RelectionImageView;
 import cn.ismartv.recyclerview.widget.GridLayoutManager;
 import cn.ismartv.recyclerview.widget.RecyclerView;
 import cn.ismartv.voice.R;
+import cn.ismartv.voice.core.http.HttpAPI;
+import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.data.http.SemantichObjectEntity;
 import cn.ismartv.voice.ui.SpaceItemDecoration;
-import cn.ismartv.voice.util.ImageUtil;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * Created by huaijie on 1/18/16.
@@ -45,6 +51,7 @@ public class ContentFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
+        fetchHotWords();
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.HORIZONTAL, false);
 
@@ -53,14 +60,14 @@ public class ContentFragment extends BaseFragment {
         recyclerView.addItemDecoration(new SpaceItemDecoration(verticalSpacingInPixels, horizontalSpacingInPixels));
 
         recyclerView.setLayoutManager(gridLayoutManager);
-        ArrayList<SemantichObjectEntity> arrayList = new ArrayList<>();
-        for (int i = 0; i < 16; i++) {
-            SemantichObjectEntity objectEntity = new SemantichObjectEntity();
-            objectEntity.setPoster_url(" ");
-            objectEntity.setTitle(" ");
-            arrayList.add(objectEntity);
-        }
-        recyclerView.setAdapter(new RecyclerAdapter(arrayList));
+//        ArrayList<SemantichObjectEntity> arrayList = new ArrayList<>();
+//        for (int i = 0; i < 16; i++) {
+//            SemantichObjectEntity objectEntity = new SemantichObjectEntity();
+//            objectEntity.setPoster_url(" ");
+//            objectEntity.setTitle(" ");
+//            arrayList.add(objectEntity);
+//        }
+//        recyclerView.setAdapter(new RecyclerAdapter(arrayList));
 
 
     }
@@ -86,13 +93,24 @@ public class ContentFragment extends BaseFragment {
 
         @Override
         public void onBindViewHolder(MyViewHolder myViewHolder, int postion) {
-//            myViewHolder.textView.setText(datas.get(postion).getTitle() + "   " + postion);
-//            Picasso.with(getContext()).load(datas.get(postion).getPoster_url()).into(myViewHolder.imageView);
 
-            myViewHolder.textView.setText("电影 " + postion);
-//            Picasso.with(getContext()).load(resIds[postion]).into(myViewHolder.imageView);
-            ImageUtil.createReflectedImages(myViewHolder.imageView, resIds[postion]);
-
+            myViewHolder.textView.setText(datas.get(postion).getTitle());
+            String postUrl = datas.get(postion).getPoster_url();
+            String verticalUrl = datas.get(postion).getVertical_url();
+            if (!TextUtils.isEmpty(postUrl)) {
+                Picasso.with(getContext()).load(postUrl).error(R.drawable.horizontal_preview_bg).into(myViewHolder.imageView);
+            } else if (!TextUtils.isEmpty(verticalUrl)) {
+                Picasso.with(getContext())
+                        .load(datas.get(postion).getVertical_url())
+                        .error(R.drawable.vertical_preview_bg)
+                        .placeholder(R.drawable.vertical_preview_bg)
+                        .into(myViewHolder.imageView);
+            } else {
+                Picasso.with(getContext())
+                        .load(R.drawable.vertical_preview_bg)
+                        .placeholder(R.drawable.vertical_preview_bg)
+                        .into(myViewHolder.imageView);
+            }
         }
 
 
@@ -104,13 +122,29 @@ public class ContentFragment extends BaseFragment {
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView textView;
-        private ImageView imageView;
+        private RelectionImageView imageView;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.id_number);
-            imageView = (ImageView) itemView.findViewById(R.id.image);
+            imageView = (RelectionImageView) itemView.findViewById(R.id.image);
 
         }
+    }
+
+    private void fetchHotWords() {
+        Retrofit retrofit = HttpManager.getInstance().resetAdapter_WUGUOJUN;
+        retrofit.create(HttpAPI.Hotwords.class).doRequest().enqueue(new Callback<List<SemantichObjectEntity>>() {
+            @Override
+            public void onResponse(Response<List<SemantichObjectEntity>> response) {
+                recyclerView.setAdapter(new RecyclerAdapter(response.body()));
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+
     }
 }

@@ -16,5 +16,7 @@
     <string name="record_tip">长按语音键录音</string>
     <string name="voice_tip_text">您可以说</string>
 
+    <string name="video_type">视频</string>
+    <string name="app_type">应用</string>
 
 </resources>

@@ -6,6 +6,7 @@ import cn.ismartv.voice.core.update.VersionInfoV2Entity;
 import cn.ismartv.voice.data.http.AppSearchResponseEntity;
 import cn.ismartv.voice.data.http.SemanticSearchRequestEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
+import cn.ismartv.voice.data.http.SemantichObjectEntity;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -63,5 +64,13 @@ public class HttpAPI {
         Call<List<String>> doRequest(
                 @Path("count") int count
         );
+    }
+
+
+//    /api/{tv|mobile}/hotwords/
+
+    public interface Hotwords {
+        @GET("api/tv/hotwords/")
+        Call<List<SemantichObjectEntity>> doRequest();
     }
 }

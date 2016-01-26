@@ -20,6 +20,7 @@ import java.util.List;
 import cn.ismartv.voice.R;
 import cn.ismartv.voice.core.http.HttpAPI;
 import cn.ismartv.voice.core.http.HttpManager;
+import cn.ismartv.voice.ui.activity.HomeActivity;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -82,6 +83,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
                     case MotionEvent.ACTION_UP:
                         loopAnim(v, false);
                         voiceMicImg.setImageResource(R.drawable.voice_mic);
+                        ((HomeActivity) getActivity()).handleVoice();
                         return true;
                 }
         }

@@ -13,6 +13,7 @@
 <dimen name="textSize_30sp">15.00sp</dimen>
 <dimen name="textSize_40sp">20.00sp</dimen>
 <dimen name="textSize_36sp">18.00sp</dimen>
+<dimen name="textSize_48sp">24.00sp</dimen>
 <dimen name="voice_fragment_divider_line_margin">11.50dp</dimen>
 <dimen name="voice_fragment_divider_line_margin_top">29.00dp</dimen>
 <dimen name="voice_fragment_icon_bg_height">158.00dp</dimen>
@@ -36,5 +37,7 @@
 <dimen name="record_tip_margin_top">25.00dp</dimen>
 <dimen name="divider_line_height">2.00dp</dimen>
 <dimen name="content_divider_line_margin_lr">25.00dp</dimen>
+
+<dimen name="indicator_fragment_video_title_height">65.00dp</dimen>
 
 </resources>

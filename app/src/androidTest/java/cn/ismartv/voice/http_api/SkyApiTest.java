@@ -13,6 +13,7 @@ import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.data.http.AppSearchResponseEntity;
 import cn.ismartv.voice.data.http.SemanticSearchRequestEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
+import cn.ismartv.voice.data.http.SemantichObjectEntity;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -41,7 +42,7 @@ public class SkyApiTest extends AndroidTestCase {
         entity.setPage_on(1);
         entity.setPage_count(30);
 
-        Retrofit retrofit = HttpManager.getInstance().resetAdapter_SKY;
+        Retrofit retrofit = HttpManager.getInstance().resetAdapter_QIANGUANGZHAO;
 
         try {
             Response<SemanticSearchResponseEntity> response = retrofit.create(HttpAPI.SemanticSearch.class).doRequest(entity).execute();
@@ -76,7 +77,7 @@ public class SkyApiTest extends AndroidTestCase {
     }
 
     public void testWords() {
-        Retrofit retrofit = HttpManager.getInstance().resetAdapter_SKY;
+        Retrofit retrofit = HttpManager.getInstance().resetAdapter_WUGUOJUN;
         try {
             Response<List<String>> response = retrofit.create(HttpAPI.Words.class).doRequest(5).execute();
             String s = new Gson().toJson(response.body());
@@ -86,4 +87,14 @@ public class SkyApiTest extends AndroidTestCase {
         }
     }
 
+    public void testHotWords() {
+        Retrofit retrofit = HttpManager.getInstance().resetAdapter_WUGUOJUN;
+        try {
+            Response<List<SemantichObjectEntity>> response = retrofit.create(HttpAPI.Hotwords.class).doRequest().execute();
+            String s = new Gson().toJson(response.body());
+            Log.i(TAG, s);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
