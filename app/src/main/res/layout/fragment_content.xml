@@ -16,7 +16,10 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="4dp"
+        android:layout_height="@dimen/divider_line_height"
+        android:layout_marginLeft="@dimen/content_divider_line_margin_lr"
+        android:layout_marginRight="@dimen/content_divider_line_margin_lr"
+        android:scaleType="fitXY"
         android:src="@drawable/voice_fragment_divider_line"
         />
 

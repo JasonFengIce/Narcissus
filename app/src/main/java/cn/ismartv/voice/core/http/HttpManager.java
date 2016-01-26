@@ -29,6 +29,8 @@ public class HttpManager {
     public Retrofit resetAdapter_APP_UPDATE;
     public Retrofit resetAdapter_SKY;
     public Retrofit resetAdapter_MEDIA_LILY;
+    public Retrofit resetAdapter_WUGUOJUN;
+    public Retrofit resetAdapter_QIANGUANGZHAO;
 
     public static HttpManager getInstance() {
         return ourInstance;
@@ -60,7 +62,19 @@ public class HttpManager {
 
         resetAdapter_SKY = new Retrofit.Builder()
                 .client(client)
-                .baseUrl(appendProtocol(MainApplication.getApiDomain()))
+                .baseUrl(appendProtocol("192.168.1.150"))
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        resetAdapter_WUGUOJUN = new Retrofit.Builder()
+                .client(client)
+                .baseUrl(appendProtocol("192.168.1.150"))
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        resetAdapter_QIANGUANGZHAO = new Retrofit.Builder()
+                .client(client)
+                .baseUrl(appendProtocol("http://skytest.tvxio.com:6677"))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -75,7 +89,11 @@ public class HttpManager {
         Uri uri = Uri.parse(host);
         String url = uri.toString();
         if (!uri.toString().startsWith("http://") && !uri.toString().startsWith("https://")) {
-            url = "http://" + host.split("/");
+            url = "http://" + host;
+        }
+
+        if (!url.endsWith("/")) {
+            url = url + "/";
         }
         return url;
     }

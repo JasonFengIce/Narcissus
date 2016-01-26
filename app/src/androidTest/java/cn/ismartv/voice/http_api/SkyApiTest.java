@@ -76,14 +76,14 @@ public class SkyApiTest extends AndroidTestCase {
     }
 
     public void testWords() {
-//        Retrofit retrofit = HttpManager.getInstance().resetAdapter_SKY;
-//        try {
-//            Response<List<String>> response = retrofit.create(HttpAPI.Words.class).doRequest().execute();
-//            String s = new Gson().toJson(response.body());
-//            Log.i(TAG, s);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        Retrofit retrofit = HttpManager.getInstance().resetAdapter_SKY;
+        try {
+            Response<List<String>> response = retrofit.create(HttpAPI.Words.class).doRequest(5).execute();
+            String s = new Gson().toJson(response.body());
+            Log.i(TAG, s);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

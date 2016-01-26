@@ -14,7 +14,7 @@
 <dimen name="textSize_40sp">13.33sp</dimen>
 <dimen name="textSize_36sp">12.00sp</dimen>
 <dimen name="voice_fragment_divider_line_margin">7.67dp</dimen>
-<dimen name="voice_fragment_divider_line_margin_top">49.67dp</dimen>
+<dimen name="voice_fragment_divider_line_margin_top">19.33dp</dimen>
 <dimen name="voice_fragment_icon_bg_height">105.33dp</dimen>
 <dimen name="voice_fragment_icon_bg_width">105.33dp</dimen>
 <dimen name="voice_fragment_icon_margin_top">30.67dp</dimen>
@@ -28,4 +28,13 @@
 <dimen name="voice_fragment_tip_margin_top">18.00dp</dimen>
 <dimen name="voice_fragment_title_margin_top">39.67dp</dimen>
 <dimen name="voice_fragment_width">140.00dp</dimen>
+
+
+<dimen name="voice_tip_title_margin_top">18.00dp</dimen>
+<dimen name="voice_tip_margin_top">18.00dp</dimen>
+<dimen name="voice_tip_item_margin_top">8.33dp</dimen>
+<dimen name="record_tip_margin_top">16.67dp</dimen>
+<dimen name="divider_line_height">1.33dp</dimen>
+<dimen name="content_divider_line_margin_lr">16.67dp</dimen>
+
 </resources>

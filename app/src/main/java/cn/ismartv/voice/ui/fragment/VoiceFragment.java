@@ -2,6 +2,7 @@ package cn.ismartv.voice.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -10,19 +11,27 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import java.util.List;
 
 import cn.ismartv.voice.R;
-import cn.ismartv.voice.ui.activity.HomeActivity;
+import cn.ismartv.voice.core.http.HttpAPI;
+import cn.ismartv.voice.core.http.HttpManager;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * Created by huaijie on 1/18/16.
  */
 public class VoiceFragment extends BaseFragment implements OnClickListener, View.OnTouchListener {
 
-    private ImageButton voiceBtn;
     private ImageView voiceProgressImg;
+    private ImageView voiceMicImg;
+    private LinearLayout tipListView;
 
     @Nullable
     @Override
@@ -33,19 +42,19 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        voiceBtn = (ImageButton) view.findViewById(R.id.voice_btn);
         voiceProgressImg = (ImageView) view.findViewById(R.id.voice_progress);
-        voiceBtn.setOnClickListener(this);
+        voiceMicImg = (ImageView) view.findViewById(R.id.voice_mic);
+        tipListView = (LinearLayout) view.findViewById(R.id.tip_list);
         voiceProgressImg.setOnTouchListener(this);
+
+
+        fetchWords();
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.voice_btn:
-                ((HomeActivity) getActivity()).handleVoice();
-                break;
-        }
+//                ((HomeActivity) getActivity()).handleVoice();
+
     }
 
 
@@ -68,12 +77,40 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         loopAnim(v, true);
+                        voiceMicImg.setImageResource(R.drawable.voice_vol_1);
                         return true;
                     case MotionEvent.ACTION_UP:
                         loopAnim(v, false);
+                        voiceMicImg.setImageResource(R.drawable.voice_mic);
                         return true;
                 }
         }
         return false;
+    }
+
+    public void fetchWords() {
+        Retrofit retrofit = HttpManager.getInstance().resetAdapter_WUGUOJUN;
+        retrofit.create(HttpAPI.Words.class).doRequest(5).enqueue(new Callback<List<String>>() {
+            @Override
+            public void onResponse(Response<List<String>> response) {
+                List<String> tipList = response.body();
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
+                int marginTop = (int) (getResources().getDimension(R.dimen.voice_tip_item_margin_top) / getDensityRate());
+                layoutParams.topMargin = marginTop;
+                for (int i = 0; i < tipList.size() && i < 5; i++) {
+                    TextView textView = new TextView(getContext());
+                    textView.setTextSize(getResources().getDimension(R.dimen.textSize_36sp) / getDensityRate());
+                    textView.setText(tipList.get(i));
+                    tipListView.addView(textView, layoutParams);
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+
     }
 }

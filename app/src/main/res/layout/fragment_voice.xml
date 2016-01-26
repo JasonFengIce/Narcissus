@@ -21,23 +21,49 @@
             android:src="@drawable/voice_progress"/>
 
         <ImageView
+            android:id="@+id/voice_mic"
             android:layout_width="@dimen/voice_fragment_icon_mic_width"
             android:layout_height="@dimen/voice_fragment_icon_mic_height"
             android:layout_gravity="center"
             android:src="@drawable/voice_mic"/>
     </FrameLayout>
 
+    <TextView
+        android:id="@+id/record_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/record_tip_margin_top"
+        android:text="@string/record_tip"
+        android:textSize="@dimen/textSize_40sp"/>
+
     <ImageView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/divider_line_height"
         android:layout_marginLeft="@dimen/voice_fragment_divider_line_margin"
         android:layout_marginRight="@dimen/voice_fragment_divider_line_margin"
         android:layout_marginTop="@dimen/voice_fragment_divider_line_margin_top"
+        android:scaleType="fitXY"
         android:src="@drawable/voice_fragment_divider_line"/>
 
-    <ImageButton
-        android:id="@+id/voice_btn"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="@mipmap/ic_launcher"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/voice_tip_title_margin_top"
+        android:text="@string/voice_tip_text"
+        android:textSize="@dimen/textSize_40sp"/>
+
+    <LinearLayout
+        android:id="@+id/tip_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/voice_tip_margin_top"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        >
+
+    </LinearLayout>
+
+
 </LinearLayout>

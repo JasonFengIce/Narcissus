@@ -22,7 +22,7 @@ import retrofit2.http.Query;
 public class HttpAPI {
 
     public interface CheckAppUpdate {
-        @GET("/api/v2/upgrade/")
+        @GET("api/v2/upgrade/")
         Call<VersionInfoV2Entity> doRequest(
                 @Query("sn") String sn,
                 @Query("manu") String manu,
@@ -35,7 +35,7 @@ public class HttpAPI {
 
 
     public interface SemanticSearch {
-        @POST("/api/tv/semanticsearch/")
+        @POST("api/tv/semanticsearch/")
         Call<SemanticSearchResponseEntity> doRequest(
                 @Body SemanticSearchRequestEntity entity
         );
@@ -43,7 +43,7 @@ public class HttpAPI {
 
     public interface AppSearch {
         @FormUrlEncoded
-        @POST("/api/tv/qjhappsearch/")
+        @POST("api/tv/qjhappsearch/")
         Call<AppSearchResponseEntity> doRequest(
                 @Field("keyword") String keyword,
                 @Field("page_no") int pageNo,
@@ -59,11 +59,9 @@ public class HttpAPI {
     }
 
     public interface Words {
-        @GET("/{fragment1}/{fragment2}/{fragment3}/api/tv/words/")
+        @GET("api/tv/words/{count}/")
         Call<List<String>> doRequest(
-                @Path("fragment1") String fragment1,
-                @Path("fragment1") String fragment2,
-                @Path("fragment1") String fragment3
+                @Path("count") int count
         );
     }
 }

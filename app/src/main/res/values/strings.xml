@@ -13,4 +13,8 @@
     <string name="bluetooth">开启蓝牙</string>
 
 
+    <string name="record_tip">长按语音键录音</string>
+    <string name="voice_tip_text">您可以说</string>
+
+
 </resources>
