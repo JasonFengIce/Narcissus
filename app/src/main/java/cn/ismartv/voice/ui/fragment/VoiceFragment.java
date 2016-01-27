@@ -1,7 +1,10 @@
 package cn.ismartv.voice.ui.fragment;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -15,24 +18,45 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.baidu.voicerecognition.android.VoiceRecognitionClient;
+import com.baidu.voicerecognition.android.VoiceRecognitionClient.VoiceClientStatusChangeListener;
+import com.baidu.voicerecognition.android.VoiceRecognitionConfig;
+
 import java.util.List;
 
 import cn.ismartv.voice.R;
+import cn.ismartv.voice.core.handler.JsonResultHandler;
 import cn.ismartv.voice.core.http.HttpAPI;
 import cn.ismartv.voice.core.http.HttpManager;
+import cn.ismartv.voice.core.initialization.AppTableInit;
 import cn.ismartv.voice.ui.activity.HomeActivity;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import static com.baidu.voicerecognition.android.VoiceRecognitionClient.getInstance;
+
 /**
  * Created by huaijie on 1/18/16.
  */
-public class VoiceFragment extends BaseFragment implements OnClickListener, View.OnTouchListener {
+public class VoiceFragment extends BaseFragment implements OnClickListener, View.OnTouchListener, VoiceClientStatusChangeListener {
+    private static final String TAG = "VoiceFragment";
+
+    private static final String API_KEY = "YuKSME6OUvZwv016LktWKkjY";
+    private static final String SECRET_KEY = "5fead3154852939e74bcaa1248cf33c6";
 
     private ImageView voiceProgressImg;
     private ImageView voiceMicImg;
     private LinearLayout tipListView;
+    private VoiceRecognitionClient voiceRecognitionClient;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        voiceRecognitionClient = getInstance(getContext());
+        voiceRecognitionClient.setTokenApis(API_KEY, SECRET_KEY);
+        AppTableInit.getInstance().getLocalAppList(getContext());
+    }
 
     @Nullable
     @Override
@@ -79,11 +103,13 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
                     case MotionEvent.ACTION_DOWN:
                         loopAnim(v, true);
                         voiceMicImg.setImageResource(R.drawable.voice_vol_1);
+                        startRecord();
                         return true;
                     case MotionEvent.ACTION_UP:
                         loopAnim(v, false);
                         voiceMicImg.setImageResource(R.drawable.voice_mic);
                         ((HomeActivity) getActivity()).handleVoice();
+                        voiceRecognitionClient.speakFinish();
                         return true;
                 }
         }
@@ -117,6 +143,78 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
 
             }
         });
+
+    }
+
+    private void bindParams(VoiceRecognitionConfig config) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+        //语义解析
+        if (preferences.getBoolean(getString(R.string.nlu), true)) {
+            config.enableNLU();
+        }
+
+        //采样率
+        config.setSampleRate(Integer.parseInt(preferences.getString(getString(R.string.audio_sample), "16000")));
+
+        //语言
+        config.setLanguage(preferences.getString(getString(R.string.language), ""));
+
+        //是否开启音效
+        if (preferences.getBoolean(getString(R.string.sound_effect), true)) {
+            config.enableBeginSoundEffect(R.raw.bdspeech_recognition_start);
+            config.enableEndSoundEffect(R.raw.bdspeech_speech_end);
+        } else {
+            config.disableBeginSoundEffect();
+            config.disableEndSoundEffect();
+        }
+        //是否开启蓝牙
+        config.setUseBlueTooth(preferences.getBoolean(getString(R.string.bluetooth), false));
+    }
+
+    private void startRecord() {
+        VoiceRecognitionConfig voiceRecognitionConfig = new VoiceRecognitionConfig();
+        bindParams(voiceRecognitionConfig);
+//        voiceRecognitionConfig.setUseDefaultAudioSource(false);
+        voiceRecognitionClient.startVoiceRecognition(this, voiceRecognitionConfig);
+    }
+
+    @Override
+    public void onClientStatusChange(int status, Object o) {
+        switch (status) {
+            // 语音识别实际开始，这是真正开始识别的时间点，需在界面提示用户说话。
+            case VoiceRecognitionClient.CLIENT_STATUS_START_RECORDING:
+                break;
+            // 检测到语音起点
+            case VoiceRecognitionClient.CLIENT_STATUS_SPEECH_START:
+                break;
+            // 已经检测到语音终点，等待网络返回
+            case VoiceRecognitionClient.CLIENT_STATUS_SPEECH_END:
+                break;
+            // 语音识别完成，显示obj中的结果
+            case VoiceRecognitionClient.CLIENT_STATUS_FINISH:
+//                resultText.setText(o.toString());
+                new JsonResultHandler(o.toString());
+                Log.i(TAG, o.toString());
+                break;
+            // 处理连续上屏
+            case VoiceRecognitionClient.CLIENT_STATUS_UPDATE_RESULTS:
+                break;
+            // 用户取消
+            case VoiceRecognitionClient.CLIENT_STATUS_USER_CANCELED:
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onNetworkStatusChange(int i, Object o) {
+
+    }
+
+    @Override
+    public void onError(int i, int i1) {
 
     }
 }
