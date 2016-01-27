@@ -2,6 +2,7 @@
 <resources>
 <dimen name="content_fragment_item_height">260.00dp</dimen>
 <dimen name="content_fragment_item_img_height">236.67dp</dimen>
+<dimen name="content_fragment_item_text_margin_top">10.00dp</dimen>
 
 <dimen name="content_fragment_item_width">170.67dp</dimen>
 <dimen name="content_fragment_recycler_margin_lr">77.33dp</dimen>
@@ -39,5 +40,6 @@
 <dimen name="content_divider_line_margin_lr">33.33dp</dimen>
 
 <dimen name="indicator_fragment_video_title_height">86.67dp</dimen>
+
 
 </resources>

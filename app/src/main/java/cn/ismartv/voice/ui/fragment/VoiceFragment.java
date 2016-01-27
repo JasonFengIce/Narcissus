@@ -95,16 +95,20 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
         retrofit.create(HttpAPI.Words.class).doRequest(5).enqueue(new Callback<List<String>>() {
             @Override
             public void onResponse(Response<List<String>> response) {
-                List<String> tipList = response.body();
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
-                int marginTop = (int) (getResources().getDimension(R.dimen.voice_tip_item_margin_top) / getDensityRate());
-                layoutParams.topMargin = marginTop;
-                for (int i = 0; i < tipList.size() && i < 5; i++) {
-                    TextView textView = new TextView(getContext());
-                    textView.setTextSize(getResources().getDimension(R.dimen.textSize_36sp) / getDensityRate());
-                    textView.setText(tipList.get(i));
-                    tipListView.addView(textView, layoutParams);
+                if (response.errorBody() == null) {
+                    List<String> tipList = response.body();
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
+                    int marginTop = (int) (getResources().getDimension(R.dimen.voice_tip_item_margin_top) / getDensityRate());
+                    layoutParams.topMargin = marginTop;
+                    for (int i = 0; i < tipList.size() && i < 5; i++) {
+                        TextView textView = new TextView(getContext());
+                        textView.setTextSize(getResources().getDimension(R.dimen.textSize_36sp) / getDensityRate());
+                        textView.setText(tipList.get(i));
+                        tipListView.addView(textView, layoutParams);
+                    }
+                } else {
+
                 }
             }
 

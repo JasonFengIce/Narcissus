@@ -6,13 +6,13 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import cn.ismartv.imagereflection.RelectionImageView;
 import cn.ismartv.recyclerview.widget.GridLayoutManager;
 import cn.ismartv.recyclerview.widget.RecyclerView;
 import cn.ismartv.voice.R;
@@ -98,7 +98,9 @@ public class ContentFragment extends BaseFragment {
             String postUrl = datas.get(postion).getPoster_url();
             String verticalUrl = datas.get(postion).getVertical_url();
             if (!TextUtils.isEmpty(postUrl)) {
-                Picasso.with(getContext()).load(postUrl).error(R.drawable.horizontal_preview_bg).into(myViewHolder.imageView);
+//                Picasso.with(getContext()).load(postUrl).error(R.drawable.horizontal_preview_bg).into(myViewHolder.imageView);
+
+
             } else if (!TextUtils.isEmpty(verticalUrl)) {
                 Picasso.with(getContext())
                         .load(datas.get(postion).getVertical_url())
@@ -122,12 +124,12 @@ public class ContentFragment extends BaseFragment {
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView textView;
-        private RelectionImageView imageView;
+        private ImageView imageView;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.id_number);
-            imageView = (RelectionImageView) itemView.findViewById(R.id.image);
+            imageView = (ImageView) itemView.findViewById(R.id.image);
 
         }
     }
@@ -137,7 +139,12 @@ public class ContentFragment extends BaseFragment {
         retrofit.create(HttpAPI.Hotwords.class).doRequest().enqueue(new Callback<List<SemantichObjectEntity>>() {
             @Override
             public void onResponse(Response<List<SemantichObjectEntity>> response) {
-                recyclerView.setAdapter(new RecyclerAdapter(response.body()));
+                if (response.errorBody() == null) {
+                    recyclerView.setAdapter(new RecyclerAdapter(response.body()));
+                } else {
+
+                }
+
             }
 
             @Override
