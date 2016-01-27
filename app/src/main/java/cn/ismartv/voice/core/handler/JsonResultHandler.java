@@ -14,8 +14,10 @@ import cn.ismartv.voice.data.http.VoiceResultEntity;
  */
 public class JsonResultHandler {
     private static final String TAG = "JsonResultHandler";
+    private HandleCallback callback;
 
-    public JsonResultHandler(String json) {
+    public JsonResultHandler(String json, HandleCallback handleCallback) {
+        this.callback = handleCallback;
         getElement(json);
     }
 
@@ -34,10 +36,10 @@ public class JsonResultHandler {
                 String domain = o.get("domain").getAsString();
                 switch (domain) {
                     case "app":
-                        new AppHandler(o);
+                        new AppHandler(o, callback);
                         break;
                     case "video":
-                        new VideoHandler(o);
+                        new VideoHandler(o, callback);
                         break;
                     case "weather":
                         new WeatherHandler(o);

@@ -6,9 +6,10 @@
 
 <dimen name="content_fragment_item_width">85.33dp</dimen>
 <dimen name="content_fragment_recycler_margin_lr">38.67dp</dimen>
+<dimen name="content_fragment_recycler_margin_top">15.00dp</dimen>
 <dimen name="content_fragment_title_height">34.00dp</dimen>
 
-<dimen name="content_fragment_item_vertical_space">38.33dp</dimen>
+<dimen name="content_fragment_item_vertical_space">18.33dp</dimen>
 <dimen name="content_fragment_item_horizontal_space">26.67dp</dimen>
 
 <dimen name="textSize_30sp">10.00sp</dimen>

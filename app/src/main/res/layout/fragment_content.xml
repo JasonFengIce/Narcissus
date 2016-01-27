@@ -30,6 +30,7 @@
         android:layout_gravity="center"
         android:layout_marginLeft="@dimen/content_fragment_recycler_margin_lr"
         android:layout_marginRight="@dimen/content_fragment_recycler_margin_lr"
+        android:layout_marginTop="@dimen/content_fragment_recycler_margin_top"
         android:descendantFocusability="afterDescendants"
         />
 </LinearLayout>

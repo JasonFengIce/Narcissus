@@ -25,11 +25,14 @@ import com.baidu.voicerecognition.android.VoiceRecognitionConfig;
 import java.util.List;
 
 import cn.ismartv.voice.R;
+import cn.ismartv.voice.core.handler.HandleCallback;
 import cn.ismartv.voice.core.handler.JsonResultHandler;
 import cn.ismartv.voice.core.http.HttpAPI;
 import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.core.initialization.AppTableInit;
+import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.ui.activity.HomeActivity;
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -39,7 +42,7 @@ import static com.baidu.voicerecognition.android.VoiceRecognitionClient.getInsta
 /**
  * Created by huaijie on 1/18/16.
  */
-public class VoiceFragment extends BaseFragment implements OnClickListener, View.OnTouchListener, VoiceClientStatusChangeListener {
+public class VoiceFragment extends BaseFragment implements OnClickListener, View.OnTouchListener, VoiceClientStatusChangeListener, HandleCallback {
     private static final String TAG = "VoiceFragment";
 
     private static final String API_KEY = "YuKSME6OUvZwv016LktWKkjY";
@@ -49,6 +52,8 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
     private ImageView voiceMicImg;
     private LinearLayout tipListView;
     private VoiceRecognitionClient voiceRecognitionClient;
+    private Call wordsCall;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -108,7 +113,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
                     case MotionEvent.ACTION_UP:
                         loopAnim(v, false);
                         voiceMicImg.setImageResource(R.drawable.voice_mic);
-                        ((HomeActivity) getActivity()).handleVoice();
+//                        ((HomeActivity) getActivity()).handleVoice();
                         voiceRecognitionClient.speakFinish();
                         return true;
                 }
@@ -116,9 +121,18 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
         return false;
     }
 
+    @Override
+    public void onStop() {
+        if (wordsCall != null && !wordsCall.isCanceled()) {
+            wordsCall.cancel();
+        }
+        super.onStop();
+    }
+
     public void fetchWords() {
         Retrofit retrofit = HttpManager.getInstance().resetAdapter_WUGUOJUN;
-        retrofit.create(HttpAPI.Words.class).doRequest(5).enqueue(new Callback<List<String>>() {
+        wordsCall = retrofit.create(HttpAPI.Words.class).doRequest(5);
+        wordsCall.enqueue(new Callback<List<String>>() {
             @Override
             public void onResponse(Response<List<String>> response) {
                 if (response.errorBody() == null) {
@@ -194,7 +208,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
             // 语音识别完成，显示obj中的结果
             case VoiceRecognitionClient.CLIENT_STATUS_FINISH:
 //                resultText.setText(o.toString());
-                new JsonResultHandler(o.toString());
+                new JsonResultHandler(o.toString(), this);
                 Log.i(TAG, o.toString());
                 break;
             // 处理连续上屏
@@ -216,5 +230,10 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
     @Override
     public void onError(int i, int i1) {
 
+    }
+
+    @Override
+    public void onHandleSuccess(SemanticSearchResponseEntity entity, String rawText) {
+        ((HomeActivity) getActivity()).showIndicatorFragment(entity, rawText);
     }
 }

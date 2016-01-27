@@ -57,19 +57,19 @@ public class HomeActivity extends FragmentActivity {
         }
     }
 
+//
+//    public void handleVoice() {
+//        searchVod(null);
+//    }
 
-    public void handleVoice() {
-        searchVod(null);
+    public void handleIndicatorClick(String contentType, String rawText) {
+        searchVod(contentType, rawText);
     }
 
-    public void handleIndicatorClick(String contentType) {
-        searchVod(contentType);
-    }
-
-    private void showIndicatorFragment(SemanticSearchResponseEntity entity) {
+    public void showIndicatorFragment(SemanticSearchResponseEntity entity, String rawText) {
         hideFragment(voiceFragment);
         showFragment(indicatorFragment);
-        indicatorFragment.initIndicator(entity);
+        indicatorFragment.initIndicator(entity, rawText);
     }
 
     private void refreshContentFragment(SemanticSearchResponseEntity entity) {
@@ -118,24 +118,12 @@ public class HomeActivity extends FragmentActivity {
     }
 
 
-    private void searchVod(final String contentType) {
-        String data = "{\n" +
-                "        \"raw_text\": \"在线播放非诚勿扰\",\n" +
-                "        \"domain\": \"video\",\n" +
-                "        \"intent\": \"online\",\n" +
-                "        \"score\": 1,\n" +
-                "        \"demand\": 0,\n" +
-                "        \"update\": 1,\n" +
-                "        \"object\": {\n" +
-                "            \"name\": \"非诚勿扰\"\n" +
-                "        }\n" +
-                "    }";
+    private void searchVod(final String contentType, final String rawText) {
         SemanticSearchRequestEntity entity = new SemanticSearchRequestEntity();
-        entity.setData(data);
+        entity.setData(rawText);
         if (!TextUtils.isEmpty(contentType)) {
             entity.setContent_type(contentType);
         }
-
         entity.setPage_on(1);
         entity.setPage_count(30);
 
@@ -143,12 +131,16 @@ public class HomeActivity extends FragmentActivity {
         retrofit.create(HttpAPI.SemanticSearch.class).doRequest(entity).enqueue(new Callback<SemanticSearchResponseEntity>() {
             @Override
             public void onResponse(Response<SemanticSearchResponseEntity> response) {
-                if (TextUtils.isEmpty(contentType)) {
-                    showIndicatorFragment(response.body());
-                } else {
-                    refreshContentFragment(response.body());
-                }
+                if (response.errorBody() == null) {
 
+                    if (TextUtils.isEmpty(contentType)) {
+                        showIndicatorFragment(response.body(), rawText);
+                    } else {
+                        refreshContentFragment(response.body());
+                    }
+                } else {
+                    //error
+                }
             }
 
             @Override
@@ -156,5 +148,10 @@ public class HomeActivity extends FragmentActivity {
 
             }
         });
+    }
+
+    public void backToVoiceFragment() {
+        hideFragment(indicatorFragment);
+        showFragment(voiceFragment);
     }
 }

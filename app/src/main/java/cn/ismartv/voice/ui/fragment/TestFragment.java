@@ -23,7 +23,6 @@ import com.baidu.voicerecognition.android.ui.DialogRecognitionListener;
 
 import cn.ismartv.voice.R;
 import cn.ismartv.voice.core.Config;
-import cn.ismartv.voice.core.handler.JsonResultHandler;
 import cn.ismartv.voice.core.initialization.AppTableInit;
 import cn.ismartv.voice.ui.activity.SettingActivity;
 
@@ -147,7 +146,7 @@ public class TestFragment extends Fragment implements OnTouchListener, VoiceClie
             // 语音识别完成，显示obj中的结果
             case VoiceRecognitionClient.CLIENT_STATUS_FINISH:
                 resultText.setText(o.toString());
-                new JsonResultHandler(o.toString());
+//                new JsonResultHandler(o.toString());
                 Log.i(TAG, o.toString());
                 break;
             // 处理连续上屏

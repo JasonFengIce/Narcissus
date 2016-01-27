@@ -53,23 +53,12 @@ public class ContentFragment extends BaseFragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
         fetchHotWords();
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.HORIZONTAL, false);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 4, GridLayoutManager.VERTICAL, false);
 
         int verticalSpacingInPixels = (int) (getResources().getDimensionPixelSize(R.dimen.content_fragment_item_vertical_space) / getDensityRate());
         int horizontalSpacingInPixels = (int) (getResources().getDimensionPixelSize(R.dimen.content_fragment_item_horizontal_space) / getDensityRate());
         recyclerView.addItemDecoration(new SpaceItemDecoration(verticalSpacingInPixels, horizontalSpacingInPixels));
-
         recyclerView.setLayoutManager(gridLayoutManager);
-//        ArrayList<SemantichObjectEntity> arrayList = new ArrayList<>();
-//        for (int i = 0; i < 16; i++) {
-//            SemantichObjectEntity objectEntity = new SemantichObjectEntity();
-//            objectEntity.setPoster_url(" ");
-//            objectEntity.setTitle(" ");
-//            arrayList.add(objectEntity);
-//        }
-//        recyclerView.setAdapter(new RecyclerAdapter(arrayList));
-
-
     }
 
     public void notifyDataChanged(SemanticSearchResponseEntity responseEntity) {
@@ -98,7 +87,7 @@ public class ContentFragment extends BaseFragment {
             String postUrl = datas.get(postion).getPoster_url();
             String verticalUrl = datas.get(postion).getVertical_url();
             if (!TextUtils.isEmpty(postUrl)) {
-//                Picasso.with(getContext()).load(postUrl).error(R.drawable.horizontal_preview_bg).into(myViewHolder.imageView);
+                Picasso.with(getContext()).load(postUrl).error(R.drawable.horizontal_preview_bg).into(myViewHolder.imageView);
 
 
             } else if (!TextUtils.isEmpty(verticalUrl)) {

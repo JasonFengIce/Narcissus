@@ -18,7 +18,9 @@ import cn.ismartv.voice.data.table.AppTable;
 public class AppHandler {
     private static final String TAG = "AppHandler";
 
-    public AppHandler(JsonObject jsonObject) {
+    private HandleCallback callback;
+
+    public AppHandler(JsonObject jsonObject, HandleCallback callback) {
         String appName = jsonObject.get("object").getAsJsonObject().get("appname").getAsString();
         String intent = jsonObject.get("intent").getAsString();
         switch (intent) {

@@ -5,9 +5,11 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.util.HashMap;
 
 import cn.ismartv.voice.R;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
@@ -21,6 +23,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
     private ViewGroup mainView;
     private LinearLayout videoTypeLayout;
     private LinearLayout appTypeLayout;
+    private ImageView slideMenu;
 
     @Nullable
     @Override
@@ -34,9 +37,11 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
         super.onViewCreated(view, savedInstanceState);
         videoTypeLayout = (LinearLayout) view.findViewById(R.id.video_type_layout);
         appTypeLayout = (LinearLayout) view.findViewById(R.id.app_type_layout);
+        slideMenu = (ImageView) view.findViewById(R.id.indicator_slide_menu);
+        slideMenu.setOnClickListener(this);
     }
 
-    public void initIndicator(SemanticSearchResponseEntity entity) {
+    public void initIndicator(SemanticSearchResponseEntity entity, String rawText) {
         for (SemanticSearchResponseEntity.Facet facet : entity.getFacet()) {
 //            TextView textView = new TextView(getContext());
 //            textView.setText(facet.getContent_type());
@@ -48,13 +53,30 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
             LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.item_indicator, null);
             TextView title = (TextView) linearLayout.findViewById(R.id.title);
             title.setText(getChineseType(facet.getContent_type()) + "  ( " + facet.getTotal_count() + " )");
+
+            HashMap<String, String> tag = new HashMap<>();
+            tag.put("type", facet.getContent_type());
+            tag.put("rawText", rawText);
+            linearLayout.setTag(tag);
+            linearLayout.setOnClickListener(this);
             videoTypeLayout.addView(linearLayout);
         }
     }
 
     @Override
     public void onClick(View v) {
-        ((HomeActivity) getActivity()).handleIndicatorClick(v.getTag().toString());
+        switch (v.getId()) {
+            case R.id.indicator_slide_menu:
+                ((HomeActivity) getActivity()).backToVoiceFragment();
+                break;
+            default:
+                HashMap<String, String> tag = (HashMap<String, String>) v.getTag();
+                String type = tag.get("type");
+                String rawText = tag.get("rawText");
+                ((HomeActivity) getActivity()).handleIndicatorClick(type, rawText);
+                break;
+        }
+
     }
 
     private String getChineseType(String englishType) {
