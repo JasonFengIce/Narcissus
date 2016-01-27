@@ -47,5 +47,6 @@
 
 <dimen name="content_fragment_indicator_item_height">33.00dp</dimen>
 <dimen name="content_fragment_indicator_item_width">179.50dp</dimen>
+<dimen name="indicator_fragment_slide_width">18.50dp</dimen>
 
 </resources>
