@@ -41,5 +41,11 @@
 
 <dimen name="indicator_fragment_video_title_height">65.00dp</dimen>
 
+<dimen name="indicator_fragment_type_margin_lr">12.50dp</dimen>
+<dimen name="video_content_margin_left">18.00dp</dimen>
+<dimen name="video_content_margin_right">12.50dp</dimen>
+
+<dimen name="content_fragment_indicator_item_height">33.00dp</dimen>
+<dimen name="content_fragment_indicator_item_width">179.50dp</dimen>
 
 </resources>
