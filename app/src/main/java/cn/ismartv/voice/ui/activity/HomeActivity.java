@@ -6,9 +6,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
 
 import cn.ismartv.voice.R;
 import cn.ismartv.voice.core.http.HttpAPI;
@@ -19,6 +21,7 @@ import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.ui.fragment.ContentFragment;
 import cn.ismartv.voice.ui.fragment.IndicatorFragment;
 import cn.ismartv.voice.ui.fragment.VoiceFragment;
+import cn.ismartv.voice.ui.widget.MessagePopWindow;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -26,7 +29,7 @@ import retrofit2.Retrofit;
 /**
  * Created by huaijie on 1/18/16.
  */
-public class HomeActivity extends FragmentActivity {
+public class HomeActivity extends BaseActivity {
     private static final String VOICE_FRAGMENT_TAG = "voice_fragment_tag";
     private static final String CONTENT_FRAGMENT_TAG = "content_fragment_tag";
     private static final String INDICATOR_FRAGMENT_TAG = "indicator_fragment_tag";
@@ -36,10 +39,14 @@ public class HomeActivity extends FragmentActivity {
     private ContentFragment contentFragment;
     private IndicatorFragment indicatorFragment;
 
+    private View contentView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+
+        contentView = LayoutInflater.from(this).inflate(R.layout.activity_home, null);
+        setContentView(contentView);
         voiceFragment = new VoiceFragment();
         contentFragment = new ContentFragment();
         indicatorFragment = new IndicatorFragment();
@@ -55,6 +62,13 @@ public class HomeActivity extends FragmentActivity {
             transaction.hide(indicatorFragment);
             transaction.commit();
         }
+
+        contentView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showAppUpdatePop();
+            }
+        }, 3000);
     }
 
 //
@@ -153,5 +167,23 @@ public class HomeActivity extends FragmentActivity {
     public void backToVoiceFragment() {
         hideFragment(indicatorFragment);
         showFragment(voiceFragment);
+    }
+
+
+    private void showAppUpdatePop() {
+        final MessagePopWindow popupWindow = new MessagePopWindow(this, "是否提交反馈信息?", null);
+        popupWindow.showAtLocation(contentView, Gravity.CENTER, new MessagePopWindow.ConfirmListener() {
+                    @Override
+                    public void confirmClick(View view) {
+                        popupWindow.dismiss();
+                    }
+                },
+                new MessagePopWindow.CancelListener() {
+                    @Override
+                    public void cancelClick(View view) {
+                        popupWindow.dismiss();
+                    }
+                }
+        );
     }
 }

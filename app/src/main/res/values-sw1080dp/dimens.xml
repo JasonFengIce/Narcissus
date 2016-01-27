@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <dimen name="pop_confirm_cursor_x">240dp</dimen>
+    <dimen name="pop_cancel_cursor_x">480dp</dimen>
+
+
+    <dimen name="message_pop_width">760dp</dimen>
+    <dimen name="message_pop_height">380dp</dimen>
+
+    <dimen name="pop_text_layout_height">210dp</dimen>
+    <dimen name="pop_first_text_margin_top">55dp</dimen>
+    <dimen name="pop_text_width">630dp</dimen>
+    <dimen name="pop_second_text_margin_top">42dp</dimen>
+    <dimen name="pop_btn_height">130dp</dimen>
+    <dimen name="pop_btn_margin_lr">60dp</dimen>
+
     <dimen name="content_fragment_item_height">390.0dp</dimen>
     <dimen name="content_fragment_item_img_height">355.0dp</dimen>
     <dimen name="content_fragment_item_text_margin_top">15dp</dimen>

@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+<dimen name="message_pop_width">253.33dp</dimen>
+<dimen name="message_pop_height">113.33dp</dimen>
+
+<dimen name="pop_text_layout_height">70.00dp</dimen>
+<dimen name="pop_first_text_margin_top">18.33dp</dimen>
+<dimen name="pop_text_width">210.00dp</dimen>
+<dimen name="pop_second_text_margin_top">14.00dp</dimen>
+<dimen name="pop_btn_height">43.33dp</dimen>
+<dimen name="pop_btn_margin_lr">20.00dp</dimen>
+
 <dimen name="content_fragment_item_height">130.00dp</dimen>
 <dimen name="content_fragment_item_img_height">118.33dp</dimen>
 <dimen name="content_fragment_item_text_margin_top">5.00dp</dimen>
