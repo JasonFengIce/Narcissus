@@ -15,38 +15,43 @@ import cn.ismartv.voice.data.http.VoiceResultEntity;
 public class JsonResultHandler {
     private static final String TAG = "JsonResultHandler";
     private HandleCallback callback;
+    private AppHandleCallback appHandleCallback;
 
-    public JsonResultHandler(String json, HandleCallback handleCallback) {
+    public JsonResultHandler(String json, HandleCallback handleCallback, AppHandleCallback appHandleCallback) {
+        this.appHandleCallback = appHandleCallback;
         this.callback = handleCallback;
         getElement(json);
     }
 
     private void getElement(String result) {
+        long tag = System.currentTimeMillis();
         VoiceResultEntity[] voiceResultEntity = new Gson().fromJson(result.toString(), VoiceResultEntity[].class);
         for (VoiceResultEntity entity : voiceResultEntity) {
             JsonElement jsonElement = new JsonParser().parse(entity.getJson_res());
             JsonRes jsonRes = new Gson().fromJson(jsonElement, JsonRes.class);
             String rawText = jsonRes.getRaw_text();
             Object resultObject = jsonRes.getResults();
-
-            JsonParser jsonParser = new JsonParser();
-            JsonArray jsonArray = jsonParser.parse(resultObject.toString()).getAsJsonArray();
-            for (int i = 0; i < jsonArray.size(); i++) {
-                JsonObject o = jsonArray.get(i).getAsJsonObject();
-                String domain = o.get("domain").getAsString();
-                switch (domain) {
-                    case "app":
-                        new AppHandler(o, callback);
-                        break;
-                    case "video":
-                        new VideoHandler(o, callback);
-                        break;
-                    case "weather":
-                        new WeatherHandler(o);
-                        break;
-                    default:
-                        new DefaultHandler(o);
-                        break;
+            if (resultObject == null || new JsonParser().parse(resultObject.toString()).getAsJsonArray().size() == 0) {
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("raw_text", rawText);
+                new DefaultHandler(jsonObject, callback, tag);
+            } else {
+                JsonArray jsonArray = new JsonParser().parse(resultObject.toString()).getAsJsonArray();
+                for (int i = 0; i < jsonArray.size(); i++) {
+                    JsonObject o = jsonArray.get(i).getAsJsonObject();
+                    o.addProperty("raw_text", rawText);
+                    String domain = o.get("domain").getAsString();
+                    switch (domain) {
+                        case "app":
+                            new AppHandler(o, appHandleCallback, tag);
+                            break;
+                        case "video":
+                            new VideoHandler(o, callback, tag);
+                            break;
+                        case "weather":
+                            new WeatherHandler(o);
+                            break;
+                    }
                 }
             }
         }

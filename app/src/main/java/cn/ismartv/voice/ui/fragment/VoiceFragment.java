@@ -25,11 +25,13 @@ import com.baidu.voicerecognition.android.VoiceRecognitionConfig;
 import java.util.List;
 
 import cn.ismartv.voice.R;
+import cn.ismartv.voice.core.handler.AppHandleCallback;
 import cn.ismartv.voice.core.handler.HandleCallback;
 import cn.ismartv.voice.core.handler.JsonResultHandler;
 import cn.ismartv.voice.core.http.HttpAPI;
 import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.core.initialization.AppTableInit;
+import cn.ismartv.voice.data.http.AppSearchResponseEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.ui.activity.HomeActivity;
 import retrofit2.Call;
@@ -42,7 +44,7 @@ import static com.baidu.voicerecognition.android.VoiceRecognitionClient.getInsta
 /**
  * Created by huaijie on 1/18/16.
  */
-public class VoiceFragment extends BaseFragment implements OnClickListener, View.OnTouchListener, VoiceClientStatusChangeListener, HandleCallback {
+public class VoiceFragment extends BaseFragment implements OnClickListener, View.OnTouchListener, VoiceClientStatusChangeListener, HandleCallback, AppHandleCallback {
     private static final String TAG = "VoiceFragment";
 
     private static final String API_KEY = "YuKSME6OUvZwv016LktWKkjY";
@@ -208,7 +210,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
             // 语音识别完成，显示obj中的结果
             case VoiceRecognitionClient.CLIENT_STATUS_FINISH:
 //                resultText.setText(o.toString());
-                new JsonResultHandler(o.toString(), this);
+                new JsonResultHandler(o.toString(), this, this);
                 Log.i(TAG, o.toString());
                 break;
             // 处理连续上屏
@@ -233,7 +235,12 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
     }
 
     @Override
-    public void onHandleSuccess(SemanticSearchResponseEntity entity, String rawText) {
-        ((HomeActivity) getActivity()).showIndicatorFragment(entity, rawText);
+    public void onHandleSuccess(SemanticSearchResponseEntity entity, String jsonData, long tag) {
+        ((HomeActivity) getActivity()).showIndicatorFragment(entity, jsonData, tag);
+    }
+
+    @Override
+    public void onAppHandleSuccess(AppSearchResponseEntity entity, String data, long tag) {
+        ((HomeActivity) getActivity()).showAppIndicatorFragment(entity.getObjects(), data, tag);
     }
 }

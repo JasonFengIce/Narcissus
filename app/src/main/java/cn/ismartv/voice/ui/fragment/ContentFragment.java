@@ -16,14 +16,9 @@ import java.util.List;
 import cn.ismartv.recyclerview.widget.GridLayoutManager;
 import cn.ismartv.recyclerview.widget.RecyclerView;
 import cn.ismartv.voice.R;
-import cn.ismartv.voice.core.http.HttpAPI;
-import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.data.http.SemantichObjectEntity;
 import cn.ismartv.voice.ui.SpaceItemDecoration;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
  * Created by huaijie on 1/18/16.
@@ -66,7 +61,7 @@ public class ContentFragment extends BaseFragment {
     }
 
 
-    class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder> {
+    private class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
         private List<SemantichObjectEntity> datas;
 
@@ -111,7 +106,7 @@ public class ContentFragment extends BaseFragment {
         }
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
+    private class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView textView;
         private ImageView imageView;
 
@@ -124,23 +119,23 @@ public class ContentFragment extends BaseFragment {
     }
 
     private void fetchHotWords() {
-        Retrofit retrofit = HttpManager.getInstance().resetAdapter_WUGUOJUN;
-        retrofit.create(HttpAPI.Hotwords.class).doRequest().enqueue(new Callback<List<SemantichObjectEntity>>() {
-            @Override
-            public void onResponse(Response<List<SemantichObjectEntity>> response) {
-                if (response.errorBody() == null) {
-                    recyclerView.setAdapter(new RecyclerAdapter(response.body()));
-                } else {
-
-                }
-
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
+//        Retrofit retrofit = HttpManager.getInstance().resetAdapter_WUGUOJUN;
+//        retrofit.create(HttpAPI.SharpWords.class).doRequest().enqueue(new Callback<List<SemantichObjectEntity>>() {
+//            @Override
+//            public void onResponse(Response<List<SemantichObjectEntity>> response) {
+//                if (response.errorBody() == null) {
+//                    recyclerView.setAdapter(new RecyclerAdapter(response.body()));
+//                } else {
+//
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Throwable t) {
+//
+//            }
+//        });
 
     }
 }

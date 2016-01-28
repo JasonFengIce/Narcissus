@@ -19,7 +19,7 @@ public class VideoHandler {
     private static final String TAG = "VideoHandler";
     private HandleCallback callback;
 
-    public VideoHandler(final JsonObject jsonObject, final HandleCallback callback) {
+    public VideoHandler(final JsonObject jsonObject, final HandleCallback callback, final long tag) {
         this.callback = callback;
         SemanticSearchRequestEntity entity = new SemanticSearchRequestEntity();
         entity.setData(jsonObject.toString());
@@ -33,7 +33,7 @@ public class VideoHandler {
             @Override
             public void onResponse(Response<SemanticSearchResponseEntity> response) {
                 if (response.errorBody() == null) {
-                    callback.onHandleSuccess(response.body(), jsonObject.toString());
+                    callback.onHandleSuccess(response.body(), jsonObject.toString(), tag);
                 } else {
 
                 }

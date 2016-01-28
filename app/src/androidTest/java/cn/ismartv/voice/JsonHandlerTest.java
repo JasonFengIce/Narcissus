@@ -24,7 +24,7 @@ public class JsonHandlerTest extends AndroidTestCase {
             while ((line = bufferedReader.readLine()) != null) {
                 result.append(line);
             }
-            new JsonResultHandler(result.toString());
+//            new JsonResultHandler(result.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }

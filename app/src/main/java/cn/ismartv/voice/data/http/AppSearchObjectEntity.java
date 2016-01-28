@@ -4,6 +4,16 @@ package cn.ismartv.voice.data.http;
  * Created by huaijie on 1/20/16.
  */
 public class AppSearchObjectEntity {
+    private boolean isLocal;
+
+    public boolean isLocal() {
+        return isLocal;
+    }
+
+    public void setIsLocal(boolean isLocal) {
+        this.isLocal = isLocal;
+    }
+
     private String title;
     private String adlet_url;
     private String url;

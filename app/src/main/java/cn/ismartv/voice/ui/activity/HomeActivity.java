@@ -12,12 +12,20 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import cn.ismartv.injectdb.library.query.Select;
 import cn.ismartv.voice.R;
 import cn.ismartv.voice.core.http.HttpAPI;
 import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.core.update.AppUpdateUtilsV2;
+import cn.ismartv.voice.data.http.AppSearchObjectEntity;
+import cn.ismartv.voice.data.http.AppSearchResponseEntity;
 import cn.ismartv.voice.data.http.SemanticSearchRequestEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
+import cn.ismartv.voice.data.table.AppTable;
+import cn.ismartv.voice.ui.fragment.AppSearchFragment;
 import cn.ismartv.voice.ui.fragment.ContentFragment;
 import cn.ismartv.voice.ui.fragment.IndicatorFragment;
 import cn.ismartv.voice.ui.fragment.VoiceFragment;
@@ -33,11 +41,13 @@ public class HomeActivity extends BaseActivity {
     private static final String VOICE_FRAGMENT_TAG = "voice_fragment_tag";
     private static final String CONTENT_FRAGMENT_TAG = "content_fragment_tag";
     private static final String INDICATOR_FRAGMENT_TAG = "indicator_fragment_tag";
+    private static final String APP_SEARCH_FRAGMENT_TAG = "app_search_fragment_tag";
 
 
     private VoiceFragment voiceFragment;
     private ContentFragment contentFragment;
     private IndicatorFragment indicatorFragment;
+    private AppSearchFragment appSearchFragment;
 
     private View contentView;
 
@@ -50,6 +60,7 @@ public class HomeActivity extends BaseActivity {
         voiceFragment = new VoiceFragment();
         contentFragment = new ContentFragment();
         indicatorFragment = new IndicatorFragment();
+        appSearchFragment = new AppSearchFragment();
         AppUpdateUtilsV2.getInstance(this).checkAppUpdate();
 
         if (savedInstanceState != null) {
@@ -59,16 +70,18 @@ public class HomeActivity extends BaseActivity {
             transaction.add(R.id.left_fragment, voiceFragment, VOICE_FRAGMENT_TAG);
             transaction.add(R.id.right_fragment, contentFragment, CONTENT_FRAGMENT_TAG);
             transaction.add(R.id.left_fragment, indicatorFragment, INDICATOR_FRAGMENT_TAG);
+            transaction.add(R.id.right_fragment, appSearchFragment, APP_SEARCH_FRAGMENT_TAG);
             transaction.hide(indicatorFragment);
+            transaction.hide(appSearchFragment);
             transaction.commit();
         }
 
-        contentView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                showAppUpdatePop();
-            }
-        }, 3000);
+//        contentView.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                showAppUpdatePop();
+//            }
+//        }, 3000);
     }
 
 //
@@ -80,15 +93,73 @@ public class HomeActivity extends BaseActivity {
         searchVod(contentType, rawText);
     }
 
-    public void showIndicatorFragment(SemanticSearchResponseEntity entity, String rawText) {
+
+    public void handleAppIndicatorClick(String rawText) {
+        searchApp(rawText);
+    }
+
+    private void searchApp(String appName) {
+        final List<AppTable> appTables = new Select().from(AppTable.class).where("app_name like ?", "%" + appName + "%").execute();
+        Retrofit retrofit = HttpManager.getInstance().resetAdapter_QIANGUANGZHAO;
+        retrofit.create(HttpAPI.AppSearch.class).doRequest(appName, 1, 30).enqueue(new Callback<AppSearchResponseEntity>() {
+            @Override
+            public void onResponse(Response<AppSearchResponseEntity> response) {
+                if (response.errorBody() == null) {
+
+                    AppSearchResponseEntity appSearchResponseEntity = response.body();
+                    List<AppSearchObjectEntity> appList = new ArrayList<>();
+                    for (AppTable appTable : appTables) {
+
+                        AppSearchObjectEntity appSearchObjectEntity = new AppSearchObjectEntity();
+                        appSearchObjectEntity.setTitle(appTable.app_name);
+                        appSearchObjectEntity.setCaption(appTable.app_package);
+                        appList.add(appSearchObjectEntity);
+                    }
+                    appList.addAll(appSearchResponseEntity.getObjects());
+                    appSearchResponseEntity.setObjects(appList);
+                    appSearchResponseEntity.setTotal_count(appList.size());
+                    refreshAppSearchFragment(appSearchResponseEntity.getObjects());
+                } else {
+                    //error
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+    }
+
+
+    public void showIndicatorFragment(SemanticSearchResponseEntity entity, String rawText, long tag) {
         hideFragment(voiceFragment);
         showFragment(indicatorFragment);
-        indicatorFragment.initIndicator(entity, rawText);
+        indicatorFragment.initIndicator(entity, rawText, tag);
+    }
+
+    public void showAppIndicatorFragment(List<AppSearchObjectEntity> entity, String data, long tag) {
+        hideFragment(voiceFragment);
+        showFragment(indicatorFragment);
+        indicatorFragment.initAppIndicator(entity, data, tag);
     }
 
     private void refreshContentFragment(SemanticSearchResponseEntity entity) {
+        hideFragment(appSearchFragment);
         showFragment(contentFragment);
         contentFragment.notifyDataChanged(entity);
+    }
+
+    private void refreshAppSearchFragment(final List<AppSearchObjectEntity> list) {
+        hideFragment(contentFragment);
+        showFragment(appSearchFragment);
+        contentView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                appSearchFragment.notifyDataChanged(list);
+            }
+        }, 3000);
+
     }
 
     private void showFragment(Fragment fragment) {
@@ -146,12 +217,7 @@ public class HomeActivity extends BaseActivity {
             @Override
             public void onResponse(Response<SemanticSearchResponseEntity> response) {
                 if (response.errorBody() == null) {
-
-                    if (TextUtils.isEmpty(contentType)) {
-                        showIndicatorFragment(response.body(), rawText);
-                    } else {
-                        refreshContentFragment(response.body());
-                    }
+                    refreshContentFragment(response.body());
                 } else {
                     //error
                 }
