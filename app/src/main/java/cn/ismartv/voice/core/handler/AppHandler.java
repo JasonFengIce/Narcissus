@@ -6,11 +6,19 @@ import android.content.pm.PackageManager;
 
 import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.ismartv.injectdb.library.query.Select;
 import cn.ismartv.voice.MainApplication;
+import cn.ismartv.voice.core.http.HttpAPI;
+import cn.ismartv.voice.core.http.HttpManager;
+import cn.ismartv.voice.data.http.AppSearchObjectEntity;
+import cn.ismartv.voice.data.http.AppSearchResponseEntity;
 import cn.ismartv.voice.data.table.AppTable;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * Created by huaijie on 1/4/16.
@@ -18,29 +26,44 @@ import cn.ismartv.voice.data.table.AppTable;
 public class AppHandler {
     private static final String TAG = "AppHandler";
 
-    private HandleCallback callback;
-
-    public AppHandler(JsonObject jsonObject, HandleCallback callback) {
+    public AppHandler(final JsonObject jsonObject, final AppHandleCallback callback, final long tag) {
         String appName = jsonObject.get("object").getAsJsonObject().get("appname").getAsString();
         String intent = jsonObject.get("intent").getAsString();
-        switch (intent) {
-            case "open":
-                appOpen(appName);
-                break;
-            default:
-                break;
-        }
+        final List<AppTable> appTables = new Select().from(AppTable.class).where("app_name like ?", "%" + appName + "%").execute();
+
+
+        Retrofit retrofit = HttpManager.getInstance().resetAdapter_QIANGUANGZHAO;
+        retrofit.create(HttpAPI.AppSearch.class).doRequest(appName, 1, 30).enqueue(new Callback<AppSearchResponseEntity>() {
+            @Override
+            public void onResponse(Response<AppSearchResponseEntity> response) {
+                if (response.errorBody() == null) {
+
+                    AppSearchResponseEntity appSearchResponseEntity = response.body();
+                    List<AppSearchObjectEntity> appList = new ArrayList<>();
+                    for (AppTable appTable : appTables) {
+
+                        AppSearchObjectEntity appSearchObjectEntity = new AppSearchObjectEntity();
+                        appSearchObjectEntity.setTitle(appTable.app_name);
+                        appSearchObjectEntity.setCaption(appTable.app_package);
+                        appList.add(appSearchObjectEntity);
+                    }
+                    appList.addAll(appSearchResponseEntity.getObjects());
+                    appSearchResponseEntity.setObjects(appList);
+                    appSearchResponseEntity.setTotal_count(appList.size());
+
+                    callback.onAppHandleSuccess(appSearchResponseEntity, jsonObject.toString(), tag);
+                } else {
+                    //error
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
     }
 
-    private void appOpen(String name) {
-        List<AppTable> appTables = new Select().from(AppTable.class).where("app_name like ?", "%" + name + "%").execute();
-        if (appTables.size() == 1) {
-
-            launchApp(appTables.get(0).app_package);
-        } else {
-
-        }
-    }
 
     private void launchApp(String appPackage) {
         Context context = MainApplication.getContext();

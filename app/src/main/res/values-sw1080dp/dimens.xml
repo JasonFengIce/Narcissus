@@ -65,4 +65,6 @@
     <dimen name="content_fragment_indicator_item_width">359dp</dimen>
     <dimen name="indicator_fragment_slide_width">37dp</dimen>
 
+    <dimen name="item_app_search_width">254dp</dimen>
+
 </resources>

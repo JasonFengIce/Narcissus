@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+<dimen name="pop_confirm_cursor_x">160.00dp</dimen>
+<dimen name="pop_cancel_cursor_x">320.00dp</dimen>
+
+
 <dimen name="message_pop_width">506.67dp</dimen>
-<dimen name="message_pop_height">226.67dp</dimen>
+<dimen name="message_pop_height">253.33dp</dimen>
 
 <dimen name="pop_text_layout_height">140.00dp</dimen>
 <dimen name="pop_first_text_margin_top">36.67dp</dimen>
@@ -59,5 +64,7 @@
 <dimen name="content_fragment_indicator_item_height">44.00dp</dimen>
 <dimen name="content_fragment_indicator_item_width">239.33dp</dimen>
 <dimen name="indicator_fragment_slide_width">24.67dp</dimen>
+
+<dimen name="item_app_search_width">169.33dp</dimen>
 
 </resources>

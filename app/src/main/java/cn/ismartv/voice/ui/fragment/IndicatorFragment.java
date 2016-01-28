@@ -9,9 +9,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.JsonParser;
+
 import java.util.HashMap;
+import java.util.List;
 
 import cn.ismartv.voice.R;
+import cn.ismartv.voice.data.http.AppSearchObjectEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.ui.activity.HomeActivity;
 
@@ -23,7 +27,10 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
     private ViewGroup mainView;
     private LinearLayout videoTypeLayout;
     private LinearLayout appTypeLayout;
+    private LinearLayout videoContentLayout;
+    private LinearLayout appContentLayout;
     private ImageView slideMenu;
+
 
     @Nullable
     @Override
@@ -37,30 +44,43 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
         super.onViewCreated(view, savedInstanceState);
         videoTypeLayout = (LinearLayout) view.findViewById(R.id.video_type_layout);
         appTypeLayout = (LinearLayout) view.findViewById(R.id.app_type_layout);
+        videoContentLayout = (LinearLayout) view.findViewById(R.id.video_content);
+        appContentLayout = (LinearLayout) view.findViewById(R.id.app_content);
+
         slideMenu = (ImageView) view.findViewById(R.id.indicator_slide_menu);
         slideMenu.setOnClickListener(this);
     }
 
-    public void initIndicator(SemanticSearchResponseEntity entity, String rawText) {
+    public void initIndicator(SemanticSearchResponseEntity entity, String data, long tag) {
+        videoTypeLayout.setVisibility(View.VISIBLE);
+        videoContentLayout.removeAllViews();
         for (SemanticSearchResponseEntity.Facet facet : entity.getFacet()) {
-//            TextView textView = new TextView(getContext());
-//            textView.setText(facet.getContent_type());
-//            textView.setClickable(true);
-//            textView.setPadding(0, 100, 0, 0);
-//            textView.setOnClickListener(this);
-//            textView.setTag(facet.getContent_type());
-
             LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.item_indicator, null);
             TextView title = (TextView) linearLayout.findViewById(R.id.title);
             title.setText(getChineseType(facet.getContent_type()) + "  ( " + facet.getTotal_count() + " )");
 
-            HashMap<String, String> tag = new HashMap<>();
-            tag.put("type", facet.getContent_type());
-            tag.put("rawText", rawText);
-            linearLayout.setTag(tag);
+            HashMap<String, String> hashMap = new HashMap<>();
+            hashMap.put("type", facet.getContent_type());
+            hashMap.put("data", data);
+            linearLayout.setTag(hashMap);
             linearLayout.setOnClickListener(this);
             videoTypeLayout.addView(linearLayout);
         }
+    }
+
+
+    public void initAppIndicator(List<AppSearchObjectEntity> entitys, String data, long tag) {
+        appTypeLayout.setVisibility(View.VISIBLE);
+        appContentLayout.removeAllViews();
+        LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.item_indicator, null);
+        TextView title = (TextView) linearLayout.findViewById(R.id.title);
+        linearLayout.setId(R.id.all_app_type);
+        title.setText("全部应用" + "  ( " + entitys.size() + " )");
+
+        String rawText = new JsonParser().parse(data).getAsJsonObject().get("raw_text").toString();
+        linearLayout.setTag(rawText);
+        linearLayout.setOnClickListener(this);
+        appContentLayout.addView(linearLayout);
     }
 
     @Override
@@ -69,11 +89,15 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
             case R.id.indicator_slide_menu:
                 ((HomeActivity) getActivity()).backToVoiceFragment();
                 break;
+            case R.id.all_app_type:
+                String rawText = (String) v.getTag();
+                ((HomeActivity) getActivity()).handleAppIndicatorClick(rawText);
+                break;
             default:
                 HashMap<String, String> tag = (HashMap<String, String>) v.getTag();
                 String type = tag.get("type");
-                String rawText = tag.get("rawText");
-                ((HomeActivity) getActivity()).handleIndicatorClick(type, rawText);
+                String data = tag.get("data");
+                ((HomeActivity) getActivity()).handleIndicatorClick(type, data);
                 break;
         }
 
