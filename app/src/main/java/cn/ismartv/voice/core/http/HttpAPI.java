@@ -6,6 +6,7 @@ import cn.ismartv.voice.core.update.VersionInfoV2Entity;
 import cn.ismartv.voice.data.http.AppSearchResponseEntity;
 import cn.ismartv.voice.data.http.SemanticSearchRequestEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
+import cn.ismartv.voice.data.http.SharpHotWordsEntity;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -66,9 +67,9 @@ public class HttpAPI {
     }
 
 
-    public interface SharpWords {
-        @GET("api/tv/sharp_words/{count}/")
-        Call<ResponseBody> doRequest(
+    public interface SharpHotWords {
+        @GET("api/tv/homepage/sharphotwords/{count}/")
+        Call<SharpHotWordsEntity> doRequest(
                 @Path("count") int count
         );
     }

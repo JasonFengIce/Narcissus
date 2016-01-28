@@ -59,7 +59,7 @@ public class AppUpdateUtilsV2 extends Handler {
         String sn = MainApplication.getSnToken();
         String app = "voice";
         String ver = String.valueOf(currentApkVersionCode);
-        String manu = "sharp";
+        String manu = "google";
         String model = DeviceUtil.getModelName();
 
 

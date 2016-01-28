@@ -88,12 +88,12 @@ public class SkyApiTest extends AndroidTestCase {
 
     public void testHotWords() {
         Retrofit retrofit = HttpManager.getInstance().resetAdapter_WUGUOJUN;
-        try {
-            Response<ResponseBody> response = retrofit.create(HttpAPI.SharpWords.class).doRequest(8).execute();
-            String s = new Gson().toJson(response.body());
-            Log.i(TAG, s);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Response<ResponseBody> response = retrofit.create(HttpAPI.SharpHotWords.class).doRequest(8).execute();
+//            String s = new Gson().toJson(response.body());
+//            Log.i(TAG, s);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 }

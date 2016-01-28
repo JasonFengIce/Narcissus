@@ -16,9 +16,15 @@ import java.util.List;
 import cn.ismartv.recyclerview.widget.GridLayoutManager;
 import cn.ismartv.recyclerview.widget.RecyclerView;
 import cn.ismartv.voice.R;
+import cn.ismartv.voice.core.http.HttpAPI;
+import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.data.http.SemantichObjectEntity;
+import cn.ismartv.voice.data.http.SharpHotWordsEntity;
 import cn.ismartv.voice.ui.SpaceItemDecoration;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * Created by huaijie on 1/18/16.
@@ -46,7 +52,7 @@ public class ContentFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
-        fetchHotWords();
+        fetchSharpHotWords();
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 4, GridLayoutManager.VERTICAL, false);
 
@@ -118,24 +124,24 @@ public class ContentFragment extends BaseFragment {
         }
     }
 
-    private void fetchHotWords() {
-//        Retrofit retrofit = HttpManager.getInstance().resetAdapter_WUGUOJUN;
-//        retrofit.create(HttpAPI.SharpWords.class).doRequest().enqueue(new Callback<List<SemantichObjectEntity>>() {
-//            @Override
-//            public void onResponse(Response<List<SemantichObjectEntity>> response) {
-//                if (response.errorBody() == null) {
-//                    recyclerView.setAdapter(new RecyclerAdapter(response.body()));
-//                } else {
-//
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Throwable t) {
-//
-//            }
-//        });
+    private void fetchSharpHotWords() {
+        Retrofit retrofit = HttpManager.getInstance().resetAdapter_WUGUOJUN;
+        retrofit.create(HttpAPI.SharpHotWords.class).doRequest(8).enqueue(new Callback<SharpHotWordsEntity>() {
+            @Override
+            public void onResponse(Response<SharpHotWordsEntity> response) {
+                if (response.errorBody() == null) {
+                    recyclerView.setAdapter(new RecyclerAdapter(response.body().getObjects()));
+                } else {
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
 
     }
 }
