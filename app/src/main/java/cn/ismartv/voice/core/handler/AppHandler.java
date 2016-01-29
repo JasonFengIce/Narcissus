@@ -45,6 +45,7 @@ public class AppHandler {
                         AppSearchObjectEntity appSearchObjectEntity = new AppSearchObjectEntity();
                         appSearchObjectEntity.setTitle(appTable.app_name);
                         appSearchObjectEntity.setCaption(appTable.app_package);
+                        appSearchObjectEntity.setIsLocal(true);
                         appList.add(appSearchObjectEntity);
                     }
                     appList.addAll(appSearchResponseEntity.getObjects());

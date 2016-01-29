@@ -1,5 +1,8 @@
 package cn.ismartv.voice.ui.fragment;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -70,7 +73,14 @@ public class AppSearchFragment extends BaseFragment {
             myViewHolder.textView.setText(datas.get(postion).getTitle());
             boolean isLocal = datas.get(postion).isLocal();
             if (isLocal) {
-                Picasso.with(getContext()).load("").error(R.drawable.horizontal_preview_bg).into(myViewHolder.imageView);
+                try {
+                    PackageInfo packageInfo = getContext().getPackageManager().getPackageInfo(datas.get(postion).getCaption(), 0);
+                    Drawable drawable = packageInfo.applicationInfo.loadIcon(getContext().getPackageManager());
+                    myViewHolder.imageView.setImageDrawable(drawable);
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+//                Picasso.with(getContext()).load().error(R.drawable.horizontal_preview_bg).into(myViewHolder.imageView);
             } else {
                 Picasso.with(getContext()).load(datas.get(postion).getAdlet_url()).error(R.drawable.horizontal_preview_bg).into(myViewHolder.imageView);
             }
