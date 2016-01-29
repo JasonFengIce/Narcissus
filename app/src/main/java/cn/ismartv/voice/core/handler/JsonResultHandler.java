@@ -34,7 +34,7 @@ public class JsonResultHandler {
             if (resultObject == null || new JsonParser().parse(resultObject.toString()).getAsJsonArray().size() == 0) {
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("raw_text", rawText);
-                new DefaultHandler(jsonObject, callback, tag);
+                new DefaultHandler(jsonObject, callback, tag, 1);
             } else {
                 JsonArray jsonArray = new JsonParser().parse(resultObject.toString()).getAsJsonArray();
                 for (int i = 0; i < jsonArray.size(); i++) {
@@ -43,10 +43,10 @@ public class JsonResultHandler {
                     String domain = o.get("domain").getAsString();
                     switch (domain) {
                         case "app":
-                            new AppHandler(o, appHandleCallback, tag);
+                            new AppHandler(o, appHandleCallback, tag, jsonArray.size());
                             break;
                         case "video":
-                            new VideoHandler(o, callback, tag);
+                            new VideoHandler(o, callback, tag, jsonArray.size());
                             break;
                         case "weather":
                             new WeatherHandler(o);

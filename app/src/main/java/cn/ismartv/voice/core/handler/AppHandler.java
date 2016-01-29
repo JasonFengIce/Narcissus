@@ -26,7 +26,7 @@ import retrofit2.Retrofit;
 public class AppHandler {
     private static final String TAG = "AppHandler";
 
-    public AppHandler(final JsonObject jsonObject, final AppHandleCallback callback, final long tag) {
+    public AppHandler(final JsonObject jsonObject, final AppHandleCallback callback, final long tag, final int domainCount) {
         String appName = jsonObject.get("object").getAsJsonObject().get("appname").toString().replace("\"", "");
         String intent = jsonObject.get("intent").toString();
         final List<AppTable> appTables = new Select().from(AppTable.class).where("app_name like ?", "%" + appName + "%").execute();
@@ -51,7 +51,7 @@ public class AppHandler {
                     appSearchResponseEntity.setObjects(appList);
                     appSearchResponseEntity.setTotal_count(appList.size());
 
-                    callback.onAppHandleSuccess(appSearchResponseEntity, jsonObject.toString(), tag);
+                    callback.onAppHandleSuccess(appSearchResponseEntity, jsonObject.toString(), tag, domainCount);
                 } else {
                     //error
                 }

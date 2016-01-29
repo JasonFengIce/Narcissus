@@ -2,10 +2,13 @@ package cn.ismartv.voice.ui.fragment;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,29 +18,21 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.baidu.voicerecognition.android.VoiceRecognitionClient;
 import com.baidu.voicerecognition.android.VoiceRecognitionClient.VoiceClientStatusChangeListener;
 import com.baidu.voicerecognition.android.VoiceRecognitionConfig;
 
-import java.util.List;
+import java.lang.ref.WeakReference;
 
 import cn.ismartv.voice.R;
 import cn.ismartv.voice.core.handler.AppHandleCallback;
 import cn.ismartv.voice.core.handler.HandleCallback;
 import cn.ismartv.voice.core.handler.JsonResultHandler;
-import cn.ismartv.voice.core.http.HttpAPI;
-import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.core.initialization.AppTableInit;
 import cn.ismartv.voice.data.http.AppSearchResponseEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.ui.activity.HomeActivity;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 import static com.baidu.voicerecognition.android.VoiceRecognitionClient.getInstance;
 
@@ -50,16 +45,29 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
     private static final String API_KEY = "YuKSME6OUvZwv016LktWKkjY";
     private static final String SECRET_KEY = "5fead3154852939e74bcaa1248cf33c6";
 
+    private static final String SEARCH_TIP_FRAGMENT_TAG = "search_tip_fragment_tag";
+    private static final String SEARCH_NO_RESULT_FRAGMENT_TAG = "search_no_result_fragment_tag";
+
+    private static final int WAIT_REQUEST_TAG = 0x0001;
+    private static final int RIGHTNOW = 0x0002;
+
     private ImageView voiceProgressImg;
     private ImageView voiceMicImg;
-    private LinearLayout tipListView;
-    private VoiceRecognitionClient voiceRecognitionClient;
-    private Call wordsCall;
 
+    private VoiceRecognitionClient voiceRecognitionClient;
+
+    private SearchTipFragment searchTipFragment;
+    private SearchNoResultFragment searchNoResultFragment;
+    private MessageHandler messageHandler;
+
+    private int count = 0;
+    private long resultTag = 0;
+    private TestThread testThread;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        messageHandler = new MessageHandler(this);
         voiceRecognitionClient = getInstance(getContext());
         voiceRecognitionClient.setTokenApis(API_KEY, SECRET_KEY);
         AppTableInit.getInstance().getLocalAppList(getContext());
@@ -68,18 +76,26 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        searchTipFragment = new SearchTipFragment();
+        searchNoResultFragment = new SearchNoResultFragment();
         return inflater.inflate(R.layout.fragment_voice, null);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.search_tip_layout, searchTipFragment, SEARCH_TIP_FRAGMENT_TAG);
+        fragmentTransaction.add(R.id.search_tip_layout, searchNoResultFragment, SEARCH_NO_RESULT_FRAGMENT_TAG);
+        fragmentTransaction.hide(searchNoResultFragment);
+        fragmentTransaction.commit();
+
         voiceProgressImg = (ImageView) view.findViewById(R.id.voice_progress);
         voiceMicImg = (ImageView) view.findViewById(R.id.voice_mic);
-        tipListView = (LinearLayout) view.findViewById(R.id.tip_list);
+
         voiceProgressImg.setOnTouchListener(this);
 
-        fetchWords();
+
     }
 
     @Override
@@ -124,42 +140,10 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
 
     @Override
     public void onStop() {
-        if (wordsCall != null && !wordsCall.isCanceled()) {
-            wordsCall.cancel();
-        }
+
         super.onStop();
     }
 
-    public void fetchWords() {
-        Retrofit retrofit = HttpManager.getInstance().resetAdapter_WUGUOJUN;
-        wordsCall = retrofit.create(HttpAPI.Words.class).doRequest(5);
-        wordsCall.enqueue(new Callback<List<String>>() {
-            @Override
-            public void onResponse(Response<List<String>> response) {
-                if (response.errorBody() == null) {
-                    List<String> tipList = response.body();
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
-                    int marginTop = (int) (getResources().getDimension(R.dimen.voice_tip_item_margin_top) / getDensityRate());
-                    layoutParams.topMargin = marginTop;
-                    for (int i = 0; i < tipList.size() && i < 5; i++) {
-                        TextView textView = new TextView(getContext());
-                        textView.setTextSize(getResources().getDimension(R.dimen.textSize_36sp) / getDensityRate());
-                        textView.setText(tipList.get(i));
-                        tipListView.addView(textView, layoutParams);
-                    }
-                } else {
-
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
-
-    }
 
     private void bindParams(VoiceRecognitionConfig config) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -234,14 +218,87 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
     }
 
 
-
     @Override
-    public void onHandleSuccess(SemanticSearchResponseEntity entity, String jsonData, long tag) {
-        ((HomeActivity) getActivity()).showIndicatorFragment(entity, jsonData, tag);
+    public void onHandleSuccess(SemanticSearchResponseEntity entity, String jsonData, long tag, int requestCount) {
+        if (entity.getFacet().size() == 0) {
+            if (testThread == null) {
+                testThread = new TestThread(requestCount);
+                testThread.start();
+            } else {
+                testThread.addCount();
+            }
+
+        } else {
+            ((HomeActivity) getActivity()).showIndicatorFragment(entity, jsonData, tag);
+        }
+
     }
 
     @Override
-    public void onAppHandleSuccess(AppSearchResponseEntity entity, String data, long tag) {
-        ((HomeActivity) getActivity()).showAppIndicatorFragment(entity.getObjects(), data, tag);
+    public void onAppHandleSuccess(AppSearchResponseEntity entity, String data, long tag, int requestCount) {
+        if (entity.getObjects().size() == 0) {
+            if (testThread == null) {
+                testThread = new TestThread(requestCount);
+                testThread.start();
+            } else {
+                testThread.addCount();
+            }
+
+        } else {
+            ((HomeActivity) getActivity()).showAppIndicatorFragment(entity.getObjects(), data, tag);
+        }
+    }
+
+    private class TestThread extends Thread {
+        private int tag = 1;
+        private int count;
+
+        public TestThread(int count) {
+            this.count = count;
+        }
+
+        @Override
+        public void run() {
+            if (count == 1) {
+                messageHandler.sendEmptyMessage(RIGHTNOW);
+            } else {
+                for (int i = 0; i < 3; i++) {
+                    Message message = messageHandler.obtainMessage(WAIT_REQUEST_TAG, i);
+                    messageHandler.sendMessage(message);
+                }
+            }
+        }
+
+        public void addCount() {
+            tag = tag + 1;
+            if (tag == count) {
+                messageHandler.sendEmptyMessage(RIGHTNOW);
+            }
+        }
+    }
+
+
+    private class MessageHandler extends Handler {
+        private WeakReference<VoiceFragment> weakReference;
+
+        public MessageHandler(VoiceFragment voiceFragment) {
+            super(Looper.getMainLooper());
+            weakReference = new WeakReference<>(voiceFragment);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            VoiceFragment fragment = weakReference.get();
+            if (fragment != null) {
+                switch (msg.what) {
+                    case WAIT_REQUEST_TAG:
+                        int arg = (int) msg.obj;
+                        if (arg == 2) {
+
+                        }
+                        break;
+                }
+            }
+        }
     }
 }
