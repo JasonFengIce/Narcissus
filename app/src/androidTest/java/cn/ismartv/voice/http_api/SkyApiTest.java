@@ -11,6 +11,7 @@ import java.util.List;
 import cn.ismartv.voice.core.http.HttpAPI;
 import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.data.http.AppSearchResponseEntity;
+import cn.ismartv.voice.data.http.RecommandAppEntity;
 import cn.ismartv.voice.data.http.SemanticSearchRequestEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import okhttp3.ResponseBody;
@@ -95,5 +96,16 @@ public class SkyApiTest extends AndroidTestCase {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
+    }
+
+    public void testRecommandApp() {
+        Retrofit retrofit = HttpManager.getInstance().resetAdapter_WUGUOJUN;
+        try {
+            Response<List<RecommandAppEntity>> response = retrofit.create(HttpAPI.RecommandApp.class).doRequest(8).execute();
+            String s = new Gson().toJson(response.body());
+            Log.i(TAG, s);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

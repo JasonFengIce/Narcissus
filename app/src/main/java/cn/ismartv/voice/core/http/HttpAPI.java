@@ -4,6 +4,7 @@ import java.util.List;
 
 import cn.ismartv.voice.core.update.VersionInfoV2Entity;
 import cn.ismartv.voice.data.http.AppSearchResponseEntity;
+import cn.ismartv.voice.data.http.RecommandAppEntity;
 import cn.ismartv.voice.data.http.SemanticSearchRequestEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.data.http.SharpHotWordsEntity;
@@ -70,6 +71,13 @@ public class HttpAPI {
     public interface SharpHotWords {
         @GET("api/tv/homepage/sharphotwords/{count}/")
         Call<SharpHotWordsEntity> doRequest(
+                @Path("count") int count
+        );
+    }
+
+    public interface RecommandApp {
+        @GET("api/recommand_app/{count}/")
+        Call<List<RecommandAppEntity>> doRequest(
                 @Path("count") int count
         );
     }

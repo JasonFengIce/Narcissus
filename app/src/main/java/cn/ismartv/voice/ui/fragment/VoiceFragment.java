@@ -79,7 +79,6 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
         tipListView = (LinearLayout) view.findViewById(R.id.tip_list);
         voiceProgressImg.setOnTouchListener(this);
 
-
         fetchWords();
     }
 
@@ -233,6 +232,8 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
     public void onError(int i, int i1) {
 
     }
+
+
 
     @Override
     public void onHandleSuccess(SemanticSearchResponseEntity entity, String jsonData, long tag) {

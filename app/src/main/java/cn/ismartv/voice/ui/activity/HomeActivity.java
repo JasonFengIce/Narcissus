@@ -51,10 +51,14 @@ public class HomeActivity extends BaseActivity {
 
     private View contentView;
 
+    public void hideNavigationBar() {
+        int uiFlags = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        getWindow().getDecorView().setSystemUiVisibility(uiFlags);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         contentView = LayoutInflater.from(this).inflate(R.layout.activity_home, null);
         setContentView(contentView);
         voiceFragment = new VoiceFragment();
@@ -99,7 +103,7 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void searchApp(String appName) {
-        final List<AppTable> appTables = new Select().from(AppTable.class).where("app_name like ?", "%" + appName + "%").execute();
+        final List<AppTable> appTables = new Select().from(AppTable.class).where("app_name like ?", "%" + appName.replace("\"", "") + "%").execute();
         Retrofit retrofit = HttpManager.getInstance().resetAdapter_QIANGUANGZHAO;
         retrofit.create(HttpAPI.AppSearch.class).doRequest(appName, 1, 30).enqueue(new Callback<AppSearchResponseEntity>() {
             @Override
@@ -116,6 +120,7 @@ public class HomeActivity extends BaseActivity {
                         appList.add(appSearchObjectEntity);
                     }
                     appList.addAll(appSearchResponseEntity.getObjects());
+
                     appSearchResponseEntity.setObjects(appList);
                     appSearchResponseEntity.setTotal_count(appList.size());
                     refreshAppSearchFragment(appSearchResponseEntity.getObjects());
