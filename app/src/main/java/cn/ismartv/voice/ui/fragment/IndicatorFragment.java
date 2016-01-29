@@ -51,6 +51,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
         slideMenu.setOnClickListener(this);
     }
 
+
     public void initIndicator(SemanticSearchResponseEntity entity, String data, long tag) {
         videoTypeLayout.setVisibility(View.VISIBLE);
         videoContentLayout.removeAllViews();
@@ -65,7 +66,11 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
             linearLayout.setTag(hashMap);
             linearLayout.setOnClickListener(this);
             videoTypeLayout.addView(linearLayout);
+
+
         }
+
+        ((HomeActivity) getActivity()).handleIndicatorClick(entity.getFacet().get(0).getContent_type(), data);
     }
 
 
@@ -81,6 +86,12 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
         linearLayout.setTag(rawText);
         linearLayout.setOnClickListener(this);
         appContentLayout.addView(linearLayout);
+
+        if (videoTypeLayout.getVisibility() == View.GONE) {
+            ((HomeActivity) getActivity()).handleAppIndicatorClick(rawText);
+        }
+
+
     }
 
     @Override
@@ -114,5 +125,10 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
             default:
                 return englishType;
         }
+    }
+
+    public void clearLayout() {
+        videoTypeLayout.setVisibility(View.GONE);
+        appTypeLayout.setVisibility(View.GONE);
     }
 }

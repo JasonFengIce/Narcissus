@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.JsonParser;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -31,6 +32,7 @@ import retrofit2.Retrofit;
  */
 public class ContentFragment extends BaseFragment {
     private RecyclerView recyclerView;
+    private TextView searchTitle;
 //    private static final int resIds[] = {R.drawable.sample_1, R.drawable.sample_2, R.drawable.sample_3, R.drawable.sample_4, R.drawable.sample_5,
 //            R.drawable.sample_6, R.drawable.sample_7, R.drawable.sample_8};
 
@@ -52,6 +54,7 @@ public class ContentFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
+        searchTitle = (TextView) view.findViewById(R.id.search_title);
         fetchSharpHotWords();
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 4, GridLayoutManager.VERTICAL, false);
@@ -62,7 +65,10 @@ public class ContentFragment extends BaseFragment {
         recyclerView.setLayoutManager(gridLayoutManager);
     }
 
-    public void notifyDataChanged(SemanticSearchResponseEntity responseEntity) {
+    public void notifyDataChanged(SemanticSearchResponseEntity responseEntity, String data) {
+        String rawTextValue = getString(R.string.search_title);
+        String rawText = new JsonParser().parse(data).getAsJsonObject().get("raw_text").toString();
+        searchTitle.setText(String.format(rawTextValue, rawText));
         recyclerView.setAdapter(new RecyclerAdapter(responseEntity.getFacet().get(0).getObjects()));
     }
 

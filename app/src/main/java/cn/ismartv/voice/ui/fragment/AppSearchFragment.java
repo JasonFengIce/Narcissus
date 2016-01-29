@@ -28,6 +28,7 @@ public class AppSearchFragment extends BaseFragment {
     private View contentView;
 
     private RecyclerView recyclerView;
+    private TextView searchTitle;
 
     @Nullable
     @Override
@@ -40,6 +41,7 @@ public class AppSearchFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = (RecyclerView) view.findViewById(R.id.app_search_list);
+        searchTitle = (TextView) view.findViewById(R.id.search_title);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 4, GridLayoutManager.VERTICAL, false);
 
         int verticalSpacingInPixels = (int) (getResources().getDimensionPixelSize(R.dimen.content_fragment_item_vertical_space) / getDensityRate());
@@ -49,7 +51,9 @@ public class AppSearchFragment extends BaseFragment {
     }
 
 
-    public void notifyDataChanged(List<AppSearchObjectEntity> objectEntities) {
+    public void notifyDataChanged(List<AppSearchObjectEntity> objectEntities, String rawText) {
+        String rawTextValue = getString(R.string.search_title);
+        searchTitle.setText(String.format(rawTextValue, rawText));
         recyclerView.setAdapter(new RecyclerAdapter(objectEntities));
     }
 

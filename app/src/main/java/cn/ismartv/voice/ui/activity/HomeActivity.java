@@ -102,7 +102,7 @@ public class HomeActivity extends BaseActivity {
         searchApp(rawText);
     }
 
-    private void searchApp(String appName) {
+    private void searchApp(final String appName) {
         final List<AppTable> appTables = new Select().from(AppTable.class).where("app_name like ?", "%" + appName.replace("\"", "") + "%").execute();
         Retrofit retrofit = HttpManager.getInstance().resetAdapter_QIANGUANGZHAO;
         retrofit.create(HttpAPI.AppSearch.class).doRequest(appName, 1, 30).enqueue(new Callback<AppSearchResponseEntity>() {
@@ -124,7 +124,7 @@ public class HomeActivity extends BaseActivity {
 
                     appSearchResponseEntity.setObjects(appList);
                     appSearchResponseEntity.setTotal_count(appList.size());
-                    refreshAppSearchFragment(appSearchResponseEntity.getObjects());
+                    refreshAppSearchFragment(appSearchResponseEntity.getObjects(), appName);
                 } else {
                     //error
                 }
@@ -141,30 +141,27 @@ public class HomeActivity extends BaseActivity {
     public void showIndicatorFragment(SemanticSearchResponseEntity entity, String rawText, long tag) {
         hideFragment(voiceFragment);
         showFragment(indicatorFragment);
+        indicatorFragment.clearLayout();
         indicatorFragment.initIndicator(entity, rawText, tag);
     }
 
     public void showAppIndicatorFragment(List<AppSearchObjectEntity> entity, String data, long tag) {
         hideFragment(voiceFragment);
         showFragment(indicatorFragment);
+        indicatorFragment.clearLayout();
         indicatorFragment.initAppIndicator(entity, data, tag);
     }
 
-    private void refreshContentFragment(SemanticSearchResponseEntity entity) {
+    private void refreshContentFragment(SemanticSearchResponseEntity entity, String rawText) {
         hideFragment(appSearchFragment);
         showFragment(contentFragment);
-        contentFragment.notifyDataChanged(entity);
+        contentFragment.notifyDataChanged(entity, rawText);
     }
 
-    private void refreshAppSearchFragment(final List<AppSearchObjectEntity> list) {
+    private void refreshAppSearchFragment(final List<AppSearchObjectEntity> list, String rawText) {
         hideFragment(contentFragment);
         showFragment(appSearchFragment);
-        contentView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                appSearchFragment.notifyDataChanged(list);
-            }
-        }, 3000);
+        appSearchFragment.notifyDataChanged(list, rawText);
 
     }
 
@@ -223,7 +220,7 @@ public class HomeActivity extends BaseActivity {
             @Override
             public void onResponse(Response<SemanticSearchResponseEntity> response) {
                 if (response.errorBody() == null) {
-                    refreshContentFragment(response.body());
+                    refreshContentFragment(response.body(), rawText);
                 } else {
                     //error
                 }

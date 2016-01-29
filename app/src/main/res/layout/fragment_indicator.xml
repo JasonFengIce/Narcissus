@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:visibility="invisible">
+            android:visibility="gone">
 
 
             <TextView
@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:visibility="invisible"
+            android:visibility="gone"
             >
 
             <TextView
