@@ -24,13 +24,17 @@ import com.baidu.voicerecognition.android.VoiceRecognitionClient.VoiceClientStat
 import com.baidu.voicerecognition.android.VoiceRecognitionConfig;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 import cn.ismartv.voice.R;
 import cn.ismartv.voice.core.handler.AppHandleCallback;
 import cn.ismartv.voice.core.handler.HandleCallback;
+import cn.ismartv.voice.core.handler.JsonDomainHandler;
 import cn.ismartv.voice.core.handler.JsonResultHandler;
+import cn.ismartv.voice.core.handler.MultiHandlerCallback;
 import cn.ismartv.voice.core.initialization.AppTableInit;
 import cn.ismartv.voice.data.http.AppSearchResponseEntity;
+import cn.ismartv.voice.data.http.IndicatorResponseEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.ui.activity.HomeActivity;
 
@@ -39,7 +43,8 @@ import static com.baidu.voicerecognition.android.VoiceRecognitionClient.getInsta
 /**
  * Created by huaijie on 1/18/16.
  */
-public class VoiceFragment extends BaseFragment implements OnClickListener, View.OnTouchListener, VoiceClientStatusChangeListener, HandleCallback, AppHandleCallback {
+public class VoiceFragment extends BaseFragment implements OnClickListener, View.OnTouchListener,
+        VoiceClientStatusChangeListener, HandleCallback, AppHandleCallback, MultiHandlerCallback {
     private static final String TAG = "VoiceFragment";
 
     private static final String API_KEY = "YuKSME6OUvZwv016LktWKkjY";
@@ -193,7 +198,8 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
             // 语音识别完成，显示obj中的结果
             case VoiceRecognitionClient.CLIENT_STATUS_FINISH:
 //                resultText.setText(o.toString());
-                new JsonResultHandler(o.toString(), this, this);
+//                new JsonResultHandler(o.toString(), this, this);
+                new JsonDomainHandler(o.toString(), this, this, this);
                 Log.i(TAG, o.toString());
                 break;
             // 处理连续上屏
@@ -247,6 +253,11 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
         } else {
             ((HomeActivity) getActivity()).showAppIndicatorFragment(entity.getObjects(), data, tag);
         }
+    }
+
+    @Override
+    public void onMultiHandle(List<IndicatorResponseEntity> list) {
+
     }
 
     private class TestThread extends Thread {

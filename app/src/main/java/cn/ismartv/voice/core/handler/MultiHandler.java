@@ -122,7 +122,7 @@ public class MultiHandler extends Thread {
             if (handler != null) {
                 switch (msg.what) {
                     case HANDLE_SUCCESS:
-                        handler.callback.onHandle((List<IndicatorResponseEntity>) msg.obj);
+                        handler.callback.onMultiHandle((List<IndicatorResponseEntity>) msg.obj);
                         break;
                 }
             }

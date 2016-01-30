@@ -17,8 +17,10 @@ public class JsonDomainHandler {
 
     private HandleCallback callback;
     private AppHandleCallback appHandleCallback;
+    private MultiHandlerCallback multiHandlerCallback;
 
-    public JsonDomainHandler(String json, HandleCallback handleCallback, AppHandleCallback appHandleCallback) {
+    public JsonDomainHandler(String json, HandleCallback handleCallback, AppHandleCallback appHandleCallback, MultiHandlerCallback multiHandlerCallback) {
+        this.multiHandlerCallback = multiHandlerCallback;
         this.appHandleCallback = appHandleCallback;
         this.callback = handleCallback;
         getElement(json);
@@ -36,9 +38,9 @@ public class JsonDomainHandler {
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("raw_text", rawText);
                 new DefaultHandler(jsonObject, callback, tag, 1);
-            } else {
+            } else if (new JsonParser().parse(resultObject.toString()).getAsJsonArray().size() == 1) {
                 JsonArray jsonArray = new JsonParser().parse(resultObject.toString()).getAsJsonArray();
-                if (jsonArray.size() ==1){
+                if (jsonArray.size() == 1) {
                     JsonObject o = jsonArray.get(0).getAsJsonObject();
                     o.addProperty("raw_text", rawText);
                     String domain = o.get("domain").getAsString();
@@ -54,26 +56,10 @@ public class JsonDomainHandler {
                             break;
                     }
 
-                }else {
-
+                } else {
+                    JsonArray array = new JsonParser().parse(resultObject.toString()).getAsJsonArray();
+                    new MultiHandler(array, rawText, multiHandlerCallback);
                 }
-
-//                for (int i = 0; i < jsonArray.size(); i++) {
-//                    JsonObject o = jsonArray.get(i).getAsJsonObject();
-//                    o.addProperty("raw_text", rawText);
-//                    String domain = o.get("domain").getAsString();
-//                    switch (domain) {
-//                        case "app":
-//                            new AppHandler(o, appHandleCallback, tag, jsonArray.size());
-//                            break;
-//                        case "video":
-//                            new VideoHandler(o, callback, tag, jsonArray.size());
-//                            break;
-//                        case "weather":
-//                            new WeatherHandler(o);
-//                            break;
-//                    }
-//                }
             }
         }
     }
