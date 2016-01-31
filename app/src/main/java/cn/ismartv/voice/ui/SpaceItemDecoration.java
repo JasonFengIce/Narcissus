@@ -25,9 +25,11 @@ public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
 //            outRect.left = horizontalSpace;
 //        }
         int position = parent.getChildLayoutPosition(view);
-        if (position != 0 && position != 1 && position != 2 && position != 3) {
+        if (position != 0 || position != 1 || position != 2 || position != 3) {
             outRect.top = verticalSpace;
         }
+
+        outRect.left = 0;
 //
 //        if (position / 4 != 0 || position == 1 || position == 2 || position == 3) {
 //            outRect.left = horizontalSpace;

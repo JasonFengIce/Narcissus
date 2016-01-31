@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.JsonParser;
@@ -14,6 +13,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import cn.ismartv.imagereflection.RelectionImageView;
 import cn.ismartv.recyclerview.widget.GridLayoutManager;
 import cn.ismartv.recyclerview.widget.RecyclerView;
 import cn.ismartv.voice.R;
@@ -95,10 +95,12 @@ public class ContentFragment extends BaseFragment {
             String postUrl = datas.get(postion).getPoster_url();
             String verticalUrl = datas.get(postion).getVertical_url();
             if (!TextUtils.isEmpty(postUrl)) {
+                myViewHolder.imageView.setIsHorizontal(true);
                 Picasso.with(getContext()).load(postUrl).error(R.drawable.horizontal_preview_bg).into(myViewHolder.imageView);
 
 
             } else if (!TextUtils.isEmpty(verticalUrl)) {
+                myViewHolder.imageView.setIsHorizontal(false);
                 Picasso.with(getContext())
                         .load(datas.get(postion).getVertical_url())
                         .error(R.drawable.vertical_preview_bg)
@@ -127,12 +129,12 @@ public class ContentFragment extends BaseFragment {
 
     private class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView textView;
-        private ImageView imageView;
+        private RelectionImageView imageView;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.id_number);
-            imageView = (ImageView) itemView.findViewById(R.id.image);
+            imageView = (RelectionImageView) itemView.findViewById(R.id.image);
 
         }
     }
