@@ -18,11 +18,12 @@ import cn.ismartv.voice.R;
 import cn.ismartv.voice.data.http.AppSearchObjectEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.ui.activity.HomeActivity;
+import cn.ismartv.voice.util.ViewScaleUtil;
 
 /**
  * Created by huaijie on 1/18/16.
  */
-public class IndicatorFragment extends BaseFragment implements View.OnClickListener {
+public class IndicatorFragment extends BaseFragment implements View.OnClickListener, View.OnFocusChangeListener {
 
     private ViewGroup mainView;
     private LinearLayout videoTypeLayout;
@@ -57,6 +58,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
         videoContentLayout.removeAllViews();
         for (SemanticSearchResponseEntity.Facet facet : entity.getFacet()) {
             LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.item_indicator, null);
+            linearLayout.setBackgroundResource(R.drawable.seletor_indicator_item);
             TextView title = (TextView) linearLayout.findViewById(R.id.title);
             title.setText(getChineseType(facet.getContent_type()) + "  ( " + facet.getTotal_count() + " )");
 
@@ -85,6 +87,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
         String rawText = new JsonParser().parse(data).getAsJsonObject().get("raw_text").toString();
         linearLayout.setTag(rawText);
         linearLayout.setOnClickListener(this);
+        linearLayout.setOnFocusChangeListener(this);
         appContentLayout.addView(linearLayout);
 
         if (videoTypeLayout.getVisibility() == View.GONE) {
@@ -130,5 +133,17 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
     public void clearLayout() {
         videoTypeLayout.setVisibility(View.GONE);
         appTypeLayout.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        TextView textView = (TextView) v.findViewById(R.id.title);
+        if (hasFocus) {
+            textView.setTextColor(getResources().getColor(R.color._ff9c3c));
+            ViewScaleUtil.scaleToLarge(v);
+        } else {
+            textView.setTextColor(getResources().getColor(R.color._a6a6a6));
+            ViewScaleUtil.scaleToNormal(v);
+        }
     }
 }
