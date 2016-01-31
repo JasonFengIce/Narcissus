@@ -70,6 +70,7 @@ public class ContentFragment extends BaseFragment {
         String rawText = new JsonParser().parse(data).getAsJsonObject().get("raw_text").toString();
         searchTitle.setText(String.format(rawTextValue, rawText));
         recyclerView.setAdapter(new RecyclerAdapter(responseEntity.getFacet().get(0).getObjects()));
+        //first item request focus
     }
 
 
@@ -108,6 +109,12 @@ public class ContentFragment extends BaseFragment {
                         .load(R.drawable.vertical_preview_bg)
                         .placeholder(R.drawable.vertical_preview_bg)
                         .into(myViewHolder.imageView);
+            }
+
+            if (postion == 0) {
+                myViewHolder.imageView.requestFocusFromTouch();
+                myViewHolder.imageView.requestFocus();
+
             }
         }
 
