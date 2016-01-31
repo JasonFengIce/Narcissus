@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import cn.ismartv.voice.R;
+
 /**
  * Created by huaijie on 1/29/16.
  */
@@ -15,8 +17,8 @@ public class SearchLoadingFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
-
+        View view = inflater.inflate(R.layout.fragment_search_loading, null);
+        return view;
     }
 
 

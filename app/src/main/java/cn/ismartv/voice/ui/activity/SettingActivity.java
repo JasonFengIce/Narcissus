@@ -1,15 +1,14 @@
 package cn.ismartv.voice.ui.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import cn.ismartv.voice.R;
-import cn.ismartv.voice.ui.fragment.SettingFragment;
+import cn.ismartv.voice.ui.fragment.SearchLoadingFragment;
 
 /**
  * Created by huaijie on 12/22/15.
  */
-public class SettingActivity extends Activity {
+public class SettingActivity extends BaseActivity {
     private static final String SETTING_FRAGMENT_TAG = "SETTING_FRAGMENT";
 
     @Override
@@ -20,7 +19,7 @@ public class SettingActivity extends Activity {
         if (savedInstanceState != null) {
 
         } else {
-            getFragmentManager().beginTransaction().add(R.id.content, new SettingFragment()).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.content, new SearchLoadingFragment()).commit();
         }
 
     }

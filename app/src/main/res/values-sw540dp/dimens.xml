@@ -67,4 +67,8 @@
 
 <dimen name="item_app_search_width">127.00dp</dimen>
 
+<dimen name="loading_layout_width">550.00dp</dimen>
+<dimen name="loading_layout_height">80.00dp</dimen>
+
+
 </resources>
