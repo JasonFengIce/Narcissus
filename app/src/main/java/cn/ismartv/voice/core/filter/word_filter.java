@@ -88,7 +88,7 @@ public class word_filter {
 		return true;
 	}
 
-	public List<word_filter_result> Match(String content) {
+	public List<WordFilterResult> Match(String content) {
 		int content_len = content.length();
 		int cur = 0;
 		int prev = 0;
@@ -97,12 +97,12 @@ public class word_filter {
 
 		Map<Character, word_filter_node> cur_ft = ft;
 
-		List<word_filter_result> results = new LinkedList<word_filter_result>();
+		List<WordFilterResult> results = new LinkedList<WordFilterResult>();
 		while (cur < content_len) {
 			char p = content.charAt(cur);
 			if (cur_ft == null || !cur_ft.containsKey(p)) {
 				if (mark_count_pos >= 0) {
-					word_filter_result rslt = new word_filter_result(prev,
+					WordFilterResult rslt = new WordFilterResult(prev,
 							mark_count_pos, mark_tag);
 					results.add(rslt);
 
@@ -137,7 +137,7 @@ public class word_filter {
 							&& cur_node.tail.equals(content.substring(cur + 1,
 									cur + 1 + tail_len))) {
 						// tail部分正好是content当前位置后面字符串的子串，则发现一个新的匹配点
-						word_filter_result rslt = new word_filter_result(prev,
+						WordFilterResult rslt = new WordFilterResult(prev,
 								cur + tail_len, cur_node.tag);
 						results.add(rslt);
 
@@ -148,7 +148,7 @@ public class word_filter {
 						mark_tag = 0;
 					} else {
 						if (mark_count_pos >= 0) {
-							word_filter_result rslt = new word_filter_result(
+							WordFilterResult rslt = new WordFilterResult(
 									prev, mark_count_pos, mark_tag);
 							results.add(rslt);
 
@@ -172,7 +172,7 @@ public class word_filter {
 
 		// 遍历完毕后，对于尚未提交到result列表的最后一个发现的字符串写入结果集
 		if (mark_count_pos >= 0) {
-			word_filter_result rslt = new word_filter_result(prev,
+			WordFilterResult rslt = new WordFilterResult(prev,
 					mark_count_pos, mark_tag);
 			results.add(rslt);
 		}

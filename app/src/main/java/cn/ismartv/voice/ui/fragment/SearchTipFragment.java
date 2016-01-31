@@ -2,6 +2,10 @@ package cn.ismartv.voice.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.ScaleXSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +16,8 @@ import android.widget.TextView;
 import java.util.List;
 
 import cn.ismartv.voice.R;
+import cn.ismartv.voice.core.filter.FilterUtil;
+import cn.ismartv.voice.core.filter.WordFilterResult;
 import cn.ismartv.voice.core.http.HttpAPI;
 import cn.ismartv.voice.core.http.HttpManager;
 import retrofit2.Call;
@@ -40,7 +46,7 @@ public class SearchTipFragment extends BaseFragment {
         fetchWords();
     }
 
-
+    //http://www.jb51.net/article/37229.htm
     public void fetchWords() {
         Retrofit retrofit = HttpManager.getInstance().resetAdapter_WUGUOJUN;
         wordsCall = retrofit.create(HttpAPI.Words.class).doRequest(5);
@@ -53,10 +59,22 @@ public class SearchTipFragment extends BaseFragment {
                     layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
                     int marginTop = (int) (getResources().getDimension(R.dimen.voice_tip_item_margin_top) / getDensityRate());
                     layoutParams.topMargin = marginTop;
+                    ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(getResources().getColor(R.color._ff9c3c));
+                    ScaleXSpan scaleXSpan = new ScaleXSpan(1.2f);
+
                     for (int i = 0; i < tipList.size() && i < 5; i++) {
                         TextView textView = new TextView(getContext());
                         textView.setTextSize(getResources().getDimension(R.dimen.textSize_36sp) / getDensityRate());
-                        textView.setText(tipList.get(i));
+                        String text = tipList.get(i);
+                        List<WordFilterResult> results = FilterUtil.filter(text);
+                        SpannableStringBuilder builder = new SpannableStringBuilder(text);
+                        for (WordFilterResult result : results) {
+                            builder.setSpan(foregroundColorSpan, result.start, result.end + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            builder.setSpan(scaleXSpan, result.start, result.end + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        }
+
+
+                        textView.setText(builder);
                         tipListView.addView(textView, layoutParams);
                     }
                 } else {

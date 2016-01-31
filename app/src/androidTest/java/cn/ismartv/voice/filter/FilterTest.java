@@ -6,8 +6,8 @@ import android.util.Log;
 import java.util.List;
 
 import cn.ismartv.voice.core.filter.FilterUtil;
+import cn.ismartv.voice.core.filter.WordFilterResult;
 import cn.ismartv.voice.core.filter.word_filter;
-import cn.ismartv.voice.core.filter.word_filter_result;
 
 /**
  * Created by huaijie on 2016/1/20.
@@ -37,15 +37,15 @@ public class FilterTest extends AndroidTestCase {
                 "刘德华+少林寺中华人民共和国中华中华人民共和"};
 
         for (String content : tests) {
-            List<word_filter_result> results = wf.Match(content);
+            List<WordFilterResult> results = wf.Match(content);
             Log.i(TAG, "content---> " + content);
 
             int i = 0;
-            for (word_filter_result rslt : results) {
+            for (WordFilterResult rslt : results) {
                 i++;
                 Log.i(TAG, i + " : " +
-                        rslt.start + " - " + rslt.end +
-                        content.substring(rslt.start, rslt.end + 1) + " tag" + rslt.tag);
+                        rslt.start + " - " + rslt.end + " " +
+                        content.substring(rslt.start, rslt.end + 1) + " tag: " + rslt.tag);
             }
             System.out.println();
         }
@@ -53,8 +53,8 @@ public class FilterTest extends AndroidTestCase {
     }
 
     public void testCustom() {
-        int tag = FilterUtil.filter("请打开我的微信");
-        Log.i("custom", "tag: " + tag);
+        List<WordFilterResult> wordFilterResults = FilterUtil.filter("好");
+        Log.i(TAG, "size : " + wordFilterResults.size());
     }
 
 }

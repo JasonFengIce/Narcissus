@@ -1,8 +1,8 @@
 package cn.ismartv.voice.core.filter;
 
-public class word_filter_result
+public class WordFilterResult
 {
-	public word_filter_result( int s, int e, int t )
+	public WordFilterResult(int s, int e, int t)
 	{
 		start = s;
 		end   = e;

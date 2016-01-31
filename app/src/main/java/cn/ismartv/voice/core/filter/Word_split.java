@@ -48,8 +48,8 @@ public class Word_split {
 
     public List<Match_result> MatchWords(String content) {
         List<Match_result> result = new ArrayList<Match_result>();
-        List<word_filter_result> results = wf.Match(content);
-        for (word_filter_result rslt : results) {
+        List<WordFilterResult> results = wf.Match(content);
+        for (WordFilterResult rslt : results) {
             Match_result element = new Match_result();
             element.content = content.substring(rslt.start, rslt.end + 1);
             element.tag = rslt.tag;
@@ -102,11 +102,11 @@ public class Word_split {
                 "刘德华+少林寺中华人民共和国中华中华人民共和"};
 
         for (String content : tests) {
-            List<word_filter_result> results = wf.Match(content);
+            List<WordFilterResult> results = wf.Match(content);
             System.out.printf("content---> %s\n", content);
 
             int i = 0;
-            for (word_filter_result rslt : results) {
+            for (WordFilterResult rslt : results) {
                 i++;
                 System.out.printf("%d: %d-%d %s       tag(%d)\n", i,
                         rslt.start, rslt.end,
