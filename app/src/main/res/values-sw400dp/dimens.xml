@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+<dimen name="pop_confirm_cursor_x">88.89dp</dimen>
+<dimen name="pop_cancel_cursor_x">177.78dp</dimen>
+
+
+<dimen name="message_pop_width">281.48dp</dimen>
+<dimen name="message_pop_height">140.74dp</dimen>
+
+<dimen name="pop_text_layout_height">77.78dp</dimen>
+<dimen name="pop_first_text_margin_top">20.37dp</dimen>
+<dimen name="pop_text_width">233.33dp</dimen>
+<dimen name="pop_second_text_margin_top">15.56dp</dimen>
+<dimen name="pop_btn_height">48.15dp</dimen>
+<dimen name="pop_btn_margin_lr">22.22dp</dimen>
+
+<dimen name="content_fragment_item_height">144.44dp</dimen>
+<dimen name="content_fragment_item_img_height">131.48dp</dimen>
+<dimen name="content_fragment_item_text_margin_top">5.56dp</dimen>
+
+<dimen name="content_fragment_item_width">94.81dp</dimen>
+<dimen name="content_fragment_recycler_margin_lr">42.96dp</dimen>
+<dimen name="content_fragment_recycler_margin_top">16.67dp</dimen>
+<dimen name="content_fragment_title_height">37.78dp</dimen>
+
+<dimen name="content_fragment_item_vertical_space">20.37dp</dimen>
+<dimen name="content_fragment_item_horizontal_space">29.63dp</dimen>
+
+<dimen name="textSize_30sp">11.11sp</dimen>
+<dimen name="textSize_40sp">14.81sp</dimen>
+<dimen name="textSize_36sp">13.33sp</dimen>
+<dimen name="textSize_48sp">17.78sp</dimen>
+<dimen name="voice_fragment_divider_line_margin">8.52dp</dimen>
+<dimen name="voice_fragment_divider_line_margin_top">21.48dp</dimen>
+<dimen name="voice_fragment_icon_bg_height">117.04dp</dimen>
+<dimen name="voice_fragment_icon_bg_width">117.04dp</dimen>
+<dimen name="voice_fragment_icon_margin_top">34.07dp</dimen>
+<dimen name="voice_fragment_icon_mic_height">27.78dp</dimen>
+<dimen name="voice_fragment_icon_mic_width">28.52dp</dimen>
+<dimen name="voice_fragment_icon_progress_height">102.22dp</dimen>
+<dimen name="voice_fragment_icon_progress_width">102.22dp</dimen>
+<dimen name="voice_fragment_icon_vol_height">58.52dp</dimen>
+<dimen name="voice_fragment_icon_vol_width">24.81dp</dimen>
+<dimen name="voice_fragment_tip_margin">9.26dp</dimen>
+<dimen name="voice_fragment_tip_margin_top">20.00dp</dimen>
+<dimen name="voice_fragment_title_margin_top">44.07dp</dimen>
+<dimen name="voice_fragment_width">155.56dp</dimen>
+
+
+<dimen name="voice_tip_title_margin_top">20.00dp</dimen>
+<dimen name="voice_tip_margin_top">20.00dp</dimen>
+<dimen name="voice_tip_item_margin_top">9.26dp</dimen>
+<dimen name="record_tip_margin_top">18.52dp</dimen>
+<dimen name="divider_line_height">1.48dp</dimen>
+<dimen name="content_divider_line_margin_lr">18.52dp</dimen>
+
+<dimen name="indicator_fragment_video_title_height">48.15dp</dimen>
+
+<dimen name="indicator_fragment_type_margin_lr">9.26dp</dimen>
+<dimen name="video_content_margin_left">13.33dp</dimen>
+<dimen name="video_content_margin_right">9.26dp</dimen>
+
+<dimen name="content_fragment_indicator_item_height">24.44dp</dimen>
+<dimen name="content_fragment_indicator_item_width">132.96dp</dimen>
+<dimen name="indicator_fragment_slide_width">13.70dp</dimen>
+
+<dimen name="item_app_search_width">94.07dp</dimen>
+
+<dimen name="loading_layout_width">407.41dp</dimen>
+<dimen name="loading_layout_height">59.26dp</dimen>
+
+
+</resources>
