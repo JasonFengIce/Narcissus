@@ -1,10 +1,12 @@
 package cn.ismartv.voice.ui.fragment;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import cn.ismartv.voice.R;
 
@@ -13,6 +15,7 @@ import cn.ismartv.voice.R;
  */
 public class SearchLoadingFragment extends BaseFragment {
 
+    private ImageView progressView;
 
     @Nullable
     @Override
@@ -25,7 +28,9 @@ public class SearchLoadingFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        progressView = (ImageView) view.findViewById(R.id.progress_view);
+        AnimationDrawable drawable = (AnimationDrawable) progressView.getDrawable();
+        drawable.start();
     }
 
 
