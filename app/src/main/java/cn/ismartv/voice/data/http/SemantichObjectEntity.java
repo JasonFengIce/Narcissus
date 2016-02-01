@@ -8,6 +8,16 @@ public class SemantichObjectEntity {
     private String poster_url;
     private String vertical_url;
     private String pk;
+    private String url;
+
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     public String getVertical_url() {
         return vertical_url;
@@ -40,4 +50,5 @@ public class SemantichObjectEntity {
     public void setPk(String pk) {
         this.pk = pk;
     }
+
 }

@@ -1,5 +1,6 @@
 package cn.ismartv.voice.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.google.gson.JsonParser;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
 import java.util.List;
 
 import cn.ismartv.imagereflection.RelectionImageView;
@@ -74,7 +76,7 @@ public class ContentFragment extends BaseFragment {
     }
 
 
-    private class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder> {
+    private class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder> implements View.OnClickListener {
 
         private List<SemantichObjectEntity> datas;
 
@@ -94,25 +96,30 @@ public class ContentFragment extends BaseFragment {
             myViewHolder.textView.setText(datas.get(postion).getTitle());
             String postUrl = datas.get(postion).getPoster_url();
             String verticalUrl = datas.get(postion).getVertical_url();
+            HashMap<String, String> hashMap = new HashMap<>();
+            hashMap.put("url", datas.get(postion).getUrl());
             if (!TextUtils.isEmpty(postUrl)) {
+                hashMap.put("orientation", "horizontal");
                 myViewHolder.imageView.setIsHorizontal(true);
                 Picasso.with(getContext()).load(postUrl).error(R.drawable.horizontal_preview_bg).into(myViewHolder.imageView);
 
-
             } else if (!TextUtils.isEmpty(verticalUrl)) {
+                hashMap.put("orientation", "vertical");
                 myViewHolder.imageView.setIsHorizontal(false);
                 Picasso.with(getContext())
                         .load(datas.get(postion).getVertical_url())
                         .error(R.drawable.vertical_preview_bg)
                         .placeholder(R.drawable.vertical_preview_bg)
                         .into(myViewHolder.imageView);
+
             } else {
                 Picasso.with(getContext())
                         .load(R.drawable.vertical_preview_bg)
                         .placeholder(R.drawable.vertical_preview_bg)
                         .into(myViewHolder.imageView);
             }
-
+            myViewHolder.imageView.setTag(hashMap);
+            myViewHolder.imageView.setOnClickListener(this);
             if (postion == 0) {
                 myViewHolder.imageView.requestFocusFromTouch();
                 myViewHolder.imageView.requestFocus();
@@ -124,6 +131,26 @@ public class ContentFragment extends BaseFragment {
         @Override
         public int getItemCount() {
             return datas.size();
+        }
+
+        @Override
+        public void onClick(View v) {
+            HashMap<String, String> tag = (HashMap) v.getTag();
+            String url = tag.get("url");
+            if (!TextUtils.isEmpty(url)) {
+                Intent intent = new Intent();
+                intent.putExtra("url", url);
+                switch (tag.get("orientation")) {
+                    case "horizontal":
+                        intent.setAction("tv.ismar.daisy.Item");
+
+                        break;
+                    case "vertical":
+                        intent.setAction("tv.ismar.daisy.PFileItem");
+                        break;
+                }
+                getActivity().startActivity(intent);
+            }
         }
     }
 
