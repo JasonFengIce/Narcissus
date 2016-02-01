@@ -139,7 +139,11 @@ public class ContentFragment extends BaseFragment {
         }
     }
 
-    private void fetchSharpHotWords() {
+    public void setSearchTitle() {
+        searchTitle.setText(getString(R.string.recommend_content_title));
+    }
+
+    public void fetchSharpHotWords() {
         Retrofit retrofit = HttpManager.getInstance().resetAdapter_WUGUOJUN;
         retrofit.create(HttpAPI.SharpHotWords.class).doRequest(8).enqueue(new Callback<SharpHotWordsEntity>() {
             @Override

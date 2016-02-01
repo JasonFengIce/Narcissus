@@ -2,9 +2,6 @@ package cn.ismartv.voice.ui.fragment;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
@@ -22,15 +19,14 @@ import android.widget.ImageView;
 import com.baidu.voicerecognition.android.VoiceRecognitionClient;
 import com.baidu.voicerecognition.android.VoiceRecognitionClient.VoiceClientStatusChangeListener;
 import com.baidu.voicerecognition.android.VoiceRecognitionConfig;
+import com.google.gson.JsonParser;
 
-import java.lang.ref.WeakReference;
 import java.util.List;
 
 import cn.ismartv.voice.R;
 import cn.ismartv.voice.core.handler.AppHandleCallback;
 import cn.ismartv.voice.core.handler.HandleCallback;
 import cn.ismartv.voice.core.handler.JsonDomainHandler;
-import cn.ismartv.voice.core.handler.JsonResultHandler;
 import cn.ismartv.voice.core.handler.MultiHandlerCallback;
 import cn.ismartv.voice.core.initialization.AppTableInit;
 import cn.ismartv.voice.data.http.AppSearchResponseEntity;
@@ -53,9 +49,6 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
     private static final String SEARCH_TIP_FRAGMENT_TAG = "search_tip_fragment_tag";
     private static final String SEARCH_NO_RESULT_FRAGMENT_TAG = "search_no_result_fragment_tag";
 
-    private static final int WAIT_REQUEST_TAG = 0x0001;
-    private static final int RIGHTNOW = 0x0002;
-
     private ImageView voiceProgressImg;
     private ImageView voiceMicImg;
 
@@ -63,16 +56,11 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
 
     private SearchTipFragment searchTipFragment;
     private SearchNoResultFragment searchNoResultFragment;
-    private MessageHandler messageHandler;
 
-    private int count = 0;
-    private long resultTag = 0;
-    private TestThread testThread;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        messageHandler = new MessageHandler(this);
         voiceRecognitionClient = getInstance(getContext());
         voiceRecognitionClient.setTokenApis(API_KEY, SECRET_KEY);
         AppTableInit.getInstance().getLocalAppList(getContext());
@@ -226,13 +214,12 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
 
     @Override
     public void onHandleSuccess(SemanticSearchResponseEntity entity, String jsonData, long tag, int requestCount) {
+
         if (entity.getFacet().size() == 0) {
-            if (testThread == null) {
-                testThread = new TestThread(requestCount);
-                testThread.start();
-            } else {
-                testThread.addCount();
-            }
+//        if (true) {
+            String rawText = new JsonParser().parse(jsonData).getAsJsonObject().get("raw_text").toString();
+            showNoVideoResultFragment(rawText);
+
 
         } else {
             ((HomeActivity) getActivity()).showIndicatorFragment(entity, jsonData, tag);
@@ -243,13 +230,9 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
     @Override
     public void onAppHandleSuccess(AppSearchResponseEntity entity, String data, long tag, int requestCount) {
         if (entity.getObjects().size() == 0) {
-            if (testThread == null) {
-                testThread = new TestThread(requestCount);
-                testThread.start();
-            } else {
-                testThread.addCount();
-            }
-
+//        if (true) {
+            String rawText = new JsonParser().parse(data).getAsJsonObject().get("raw_text").toString();
+            showNoAppResultFragment(rawText);
         } else {
             ((HomeActivity) getActivity()).showAppIndicatorFragment(entity.getObjects(), data, tag);
         }
@@ -257,59 +240,30 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
 
     @Override
     public void onMultiHandle(List<IndicatorResponseEntity> list) {
+        if (list.size() == 0) {
+            showNoVideoResultFragment("");
+        } else {
 
-    }
-
-    private class TestThread extends Thread {
-        private int tag = 1;
-        private int count;
-
-        public TestThread(int count) {
-            this.count = count;
-        }
-
-        @Override
-        public void run() {
-            if (count == 1) {
-                messageHandler.sendEmptyMessage(RIGHTNOW);
-            } else {
-                for (int i = 0; i < 3; i++) {
-                    Message message = messageHandler.obtainMessage(WAIT_REQUEST_TAG, i);
-                    messageHandler.sendMessage(message);
-                }
-            }
-        }
-
-        public void addCount() {
-            tag = tag + 1;
-            if (tag == count) {
-                messageHandler.sendEmptyMessage(RIGHTNOW);
-            }
         }
     }
 
 
-    private class MessageHandler extends Handler {
-        private WeakReference<VoiceFragment> weakReference;
-
-        public MessageHandler(VoiceFragment voiceFragment) {
-            super(Looper.getMainLooper());
-            weakReference = new WeakReference<>(voiceFragment);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            VoiceFragment fragment = weakReference.get();
-            if (fragment != null) {
-                switch (msg.what) {
-                    case WAIT_REQUEST_TAG:
-                        int arg = (int) msg.obj;
-                        if (arg == 2) {
-
-                        }
-                        break;
-                }
-            }
-        }
+    private void showNoVideoResultFragment(String rawText) {
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.hide(searchTipFragment);
+        transaction.show(searchNoResultFragment);
+        transaction.commit();
+        searchNoResultFragment.setTitle(rawText);
+        ((HomeActivity) getActivity()).recommendVideo();
     }
+
+    private void showNoAppResultFragment(String rawText) {
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.hide(searchTipFragment);
+        transaction.show(searchNoResultFragment);
+        transaction.commit();
+        searchNoResultFragment.setTitle(rawText);
+        ((HomeActivity) getActivity()).recommendApp();
+    }
+
 }

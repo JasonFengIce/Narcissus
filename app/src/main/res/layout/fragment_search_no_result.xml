@@ -1,8 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@drawable/search_no_result"
-              android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/search_no_result"
+    >
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/raw_text"
+        android:layout_width="@dimen/search_no_result_title_width"
+        android:layout_height="@dimen/search_no_result_title_height"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/search_no_result_title_marginTop"
+        android:background="@drawable/search_no_result_title"
+        android:gravity="center"
+        android:textColor="@color/_ff9c3c"
+        android:textSize="@dimen/textSize_36sp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:text="@string/search_no_result"
+        android:textSize="@dimen/textSize_30sp"/>
+
+</RelativeLayout>

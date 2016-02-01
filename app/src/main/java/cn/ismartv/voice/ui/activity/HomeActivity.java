@@ -255,4 +255,18 @@ public class HomeActivity extends BaseActivity {
                 }
         );
     }
+
+    public void recommendVideo() {
+        hideFragment(appSearchFragment);
+        showFragment(contentFragment);
+        contentFragment.setSearchTitle();
+        contentFragment.fetchSharpHotWords();
+    }
+
+    public void recommendApp(){
+        hideFragment(contentFragment);
+        showFragment(appSearchFragment);
+        appSearchFragment.setSearchTitle();
+        appSearchFragment.fetchRecommendApp();
+    }
 }

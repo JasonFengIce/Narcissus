@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import cn.ismartv.voice.R;
 
@@ -12,6 +13,8 @@ import cn.ismartv.voice.R;
  * Created by huaijie on 1/29/16.
  */
 public class SearchNoResultFragment extends BaseFragment {
+
+    private TextView title;
 
     @Nullable
     @Override
@@ -23,7 +26,11 @@ public class SearchNoResultFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        title = (TextView) view.findViewById(R.id.raw_text);
+    }
 
+    public void setTitle(String rawText) {
+        title.setText(rawText.replace("\"", ""));
     }
 
 }

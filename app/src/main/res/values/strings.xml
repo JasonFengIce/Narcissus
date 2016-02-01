@@ -23,5 +23,6 @@
     <string name="cancel_text">取消</string>
 
     <string name="search_title">您正在搜索&#160;:&#160;%1$s</string>
-
+    <string name="recommend_content_title">向您推荐近似内容</string>
+    <string name="search_no_result">没有与您需求匹配的结果</string>
 </resources>

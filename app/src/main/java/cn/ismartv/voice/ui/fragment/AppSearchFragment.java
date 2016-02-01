@@ -13,13 +13,20 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.ismartv.recyclerview.widget.GridLayoutManager;
 import cn.ismartv.recyclerview.widget.RecyclerView;
 import cn.ismartv.voice.R;
+import cn.ismartv.voice.core.http.HttpAPI;
+import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.data.http.AppSearchObjectEntity;
+import cn.ismartv.voice.data.http.RecommandAppEntity;
 import cn.ismartv.voice.ui.SpaceItemDecoration;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * Created by huaijie on 1/28/16.
@@ -57,6 +64,9 @@ public class AppSearchFragment extends BaseFragment {
         recyclerView.setAdapter(new RecyclerAdapter(objectEntities));
     }
 
+    public void setSearchTitle() {
+        searchTitle.setText(getString(R.string.recommend_content_title));
+    }
 
     private class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
@@ -105,7 +115,31 @@ public class AppSearchFragment extends BaseFragment {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.id_number);
             imageView = (ImageView) itemView.findViewById(R.id.image);
-
         }
+    }
+
+    public void fetchRecommendApp() {
+        Retrofit retrofit = HttpManager.getInstance().resetAdapter_WUGUOJUN;
+        retrofit.create(HttpAPI.RecommandApp.class).doRequest(8).enqueue(new Callback<List<RecommandAppEntity>>() {
+            @Override
+            public void onResponse(Response<List<RecommandAppEntity>> response) {
+                List<RecommandAppEntity> entities = response.body();
+                ArrayList<AppSearchObjectEntity> list = new ArrayList<AppSearchObjectEntity>();
+                for (RecommandAppEntity recommandAppEntity : entities) {
+                    AppSearchObjectEntity objectEntity = new AppSearchObjectEntity();
+                    objectEntity.setIsLocal(false);
+                    objectEntity.setTitle(recommandAppEntity.getTitle());
+                    objectEntity.setUrl(recommandAppEntity.getDownload_url());
+                    objectEntity.setAdlet_url(recommandAppEntity.getIcon_url());
+                    list.add(objectEntity);
+                }
+                recyclerView.setAdapter(new RecyclerAdapter(list));
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
     }
 }
