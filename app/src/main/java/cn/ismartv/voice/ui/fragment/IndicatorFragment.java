@@ -67,7 +67,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
             hashMap.put("data", data);
             linearLayout.setTag(hashMap);
             linearLayout.setOnClickListener(this);
-            videoTypeLayout.addView(linearLayout);
+            videoContentLayout.addView(linearLayout);
 
 
         }
