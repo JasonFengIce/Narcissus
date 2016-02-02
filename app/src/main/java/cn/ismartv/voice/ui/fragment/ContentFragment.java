@@ -160,11 +160,11 @@ public class ContentFragment extends BaseFragment {
         public void onFocusChange(View v, boolean hasFocus) {
             ImageView imageView = (ImageView) v.findViewById(R.id.image);
             if (hasFocus) {
-//                imageView.setBackgroundResource(R.drawable.item_focus);
+                imageView.setBackgroundResource(R.drawable.item_focus);
                 ViewScaleUtil.scaleToLarge(v, 1.2f);
             } else {
-//                imageView.setBackgroundDrawable(null);
-                ViewScaleUtil.scaleToNormal(v,1.2f);
+                imageView.setBackgroundDrawable(null);
+                ViewScaleUtil.scaleToNormal(v, 1.2f);
             }
         }
     }
