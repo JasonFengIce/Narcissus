@@ -6,28 +6,23 @@
                 android:orientation="vertical">
 
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/progress_view"
         android:layout_width="@dimen/loading_layout_width"
-        android:layout_height="@dimen/loading_layout_height"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:orientation="vertical">
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/searching_progress"
+        />
 
-        <ImageView
-            android:id="@+id/progress_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/searching_progress"
-            />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/search_loading_text_img_marginTop"
-            android:src="@drawable/loading_text_img"/>
-
-    </LinearLayout>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/progress_view"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/search_loading_text_img_marginTop"
+        android:src="@drawable/loading_text_img"/>
 
 
 </RelativeLayout>

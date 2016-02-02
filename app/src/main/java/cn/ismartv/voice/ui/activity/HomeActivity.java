@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -28,6 +30,7 @@ import cn.ismartv.voice.data.table.AppTable;
 import cn.ismartv.voice.ui.fragment.AppSearchFragment;
 import cn.ismartv.voice.ui.fragment.ContentFragment;
 import cn.ismartv.voice.ui.fragment.IndicatorFragment;
+import cn.ismartv.voice.ui.fragment.SearchLoadingFragment;
 import cn.ismartv.voice.ui.fragment.VoiceFragment;
 import cn.ismartv.voice.ui.widget.MessagePopWindow;
 import retrofit2.Callback;
@@ -38,16 +41,22 @@ import retrofit2.Retrofit;
  * Created by huaijie on 1/18/16.
  */
 public class HomeActivity extends BaseActivity {
+    private static final String TAG = "HomeActivity";
+
     private static final String VOICE_FRAGMENT_TAG = "voice_fragment_tag";
     private static final String CONTENT_FRAGMENT_TAG = "content_fragment_tag";
     private static final String INDICATOR_FRAGMENT_TAG = "indicator_fragment_tag";
     private static final String APP_SEARCH_FRAGMENT_TAG = "app_search_fragment_tag";
+    private static final String SEARCH_LOADING_FRAGMENT = "search_loading_fragment_tag";
 
 
     private VoiceFragment voiceFragment;
     private ContentFragment contentFragment;
     private IndicatorFragment indicatorFragment;
     private AppSearchFragment appSearchFragment;
+    private SearchLoadingFragment searchLoadingFragment;
+
+    private boolean voiceBtnIsDown = false;
 
     private View contentView;
 
@@ -65,6 +74,7 @@ public class HomeActivity extends BaseActivity {
         contentFragment = new ContentFragment();
         indicatorFragment = new IndicatorFragment();
         appSearchFragment = new AppSearchFragment();
+        searchLoadingFragment = new SearchLoadingFragment();
         AppUpdateUtilsV2.getInstance(this).checkAppUpdate();
 
         if (savedInstanceState != null) {
@@ -75,6 +85,8 @@ public class HomeActivity extends BaseActivity {
             transaction.add(R.id.right_fragment, contentFragment, CONTENT_FRAGMENT_TAG);
             transaction.add(R.id.left_fragment, indicatorFragment, INDICATOR_FRAGMENT_TAG);
             transaction.add(R.id.right_fragment, appSearchFragment, APP_SEARCH_FRAGMENT_TAG);
+            transaction.add(R.id.right_fragment, searchLoadingFragment, SEARCH_LOADING_FRAGMENT);
+            transaction.hide(searchLoadingFragment);
             transaction.hide(indicatorFragment);
             transaction.hide(appSearchFragment);
             transaction.commit();
@@ -97,6 +109,48 @@ public class HomeActivity extends BaseActivity {
         searchVod(contentType, rawText);
     }
 
+//    @Override
+//    public boolean onKeyLongPress(int keyCode, KeyEvent event) {
+//        if (keyCode == KeyEvent.KEYCODE_F12) {
+//            Log.e(TAG, "long down: " + keyCode);
+//            voiceFragment.startSpeek();
+//            return true;
+//        }
+//        return super.onKeyLongPress(keyCode, event);
+//    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_F12) {
+            if (!voiceBtnIsDown) {
+                voiceBtnIsDown = true;
+                hideFragment(indicatorFragment);
+                showFragment(voiceFragment);
+                voiceFragment.startSpeek();
+            }
+
+            Log.e(TAG, "long down: " + keyCode + " event: " + event.getAction());
+
+            return true;
+        }
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            onBackPressed();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_F12) {
+            voiceBtnIsDown = false;
+            Log.e(TAG, "up: " + keyCode);
+            voiceFragment.stopSpeek();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
     public void handleAppIndicatorClick(String rawText) {
         searchApp(rawText);
@@ -154,11 +208,13 @@ public class HomeActivity extends BaseActivity {
 
     private void refreshContentFragment(SemanticSearchResponseEntity entity, String rawText) {
         hideFragment(appSearchFragment);
+        hideFragment(searchLoadingFragment);
         showFragment(contentFragment);
         contentFragment.notifyDataChanged(entity, rawText);
     }
 
     private void refreshAppSearchFragment(final List<AppSearchObjectEntity> list, String rawText) {
+        hideFragment(searchLoadingFragment);
         hideFragment(contentFragment);
         showFragment(appSearchFragment);
         appSearchFragment.notifyDataChanged(list, rawText);
@@ -258,15 +314,24 @@ public class HomeActivity extends BaseActivity {
 
     public void recommendVideo() {
         hideFragment(appSearchFragment);
+        hideFragment(searchLoadingFragment);
         showFragment(contentFragment);
         contentFragment.setSearchTitle();
         contentFragment.fetchSharpHotWords();
     }
 
-    public void recommendApp(){
+    public void recommendApp() {
         hideFragment(contentFragment);
+        hideFragment(searchLoadingFragment);
         showFragment(appSearchFragment);
         appSearchFragment.setSearchTitle();
         appSearchFragment.fetchRecommendApp();
     }
+
+    public void showSearchLoading() {
+        hideFragment(contentFragment);
+        hideFragment(appSearchFragment);
+        showFragment(searchLoadingFragment);
+    }
+
 }

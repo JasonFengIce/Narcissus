@@ -110,26 +110,36 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
 
     }
 
+
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         switch (v.getId()) {
             case R.id.voice_progress:
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        loopAnim(v, true);
-                        voiceMicImg.setImageResource(R.drawable.voice_vol_1);
-                        startRecord();
+                        startSpeek();
                         return true;
                     case MotionEvent.ACTION_UP:
-                        loopAnim(v, false);
-                        voiceMicImg.setImageResource(R.drawable.voice_mic);
-//                        ((HomeActivity) getActivity()).handleVoice();
-                        voiceRecognitionClient.speakFinish();
+                        stopSpeek();
                         return true;
                 }
         }
         return false;
     }
+
+    public void startSpeek() {
+        loopAnim(voiceProgressImg, true);
+        voiceMicImg.setImageResource(R.drawable.voice_vol_1);
+        startRecord();
+    }
+
+    public void stopSpeek() {
+        loopAnim(voiceProgressImg, false);
+        voiceMicImg.setImageResource(R.drawable.voice_mic);
+//                        ((HomeActivity) getActivity()).handleVoice();
+        voiceRecognitionClient.speakFinish();
+    }
+
 
     @Override
     public void onStop() {
@@ -182,6 +192,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
                 break;
             // 已经检测到语音终点，等待网络返回
             case VoiceRecognitionClient.CLIENT_STATUS_SPEECH_END:
+                ((HomeActivity) getActivity()).showSearchLoading();
                 break;
             // 语音识别完成，显示obj中的结果
             case VoiceRecognitionClient.CLIENT_STATUS_FINISH:
