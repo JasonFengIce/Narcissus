@@ -4,6 +4,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#405185"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     android:orientation="vertical">
 
     <TextView
@@ -31,6 +33,7 @@
         android:layout_gravity="center"
         android:layout_marginLeft="@dimen/content_fragment_recycler_margin_lr"
         android:layout_marginRight="@dimen/content_fragment_recycler_margin_lr"
-        android:layout_marginTop="@dimen/content_fragment_recycler_margin_top"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         />
 </LinearLayout>

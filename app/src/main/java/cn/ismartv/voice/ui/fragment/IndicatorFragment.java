@@ -140,10 +140,10 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
         TextView textView = (TextView) v.findViewById(R.id.title);
         if (hasFocus) {
             textView.setTextColor(getResources().getColor(R.color._ff9c3c));
-            ViewScaleUtil.scaleToLarge(v);
+            ViewScaleUtil.scaleToLarge(v, 1.3f);
         } else {
             textView.setTextColor(getResources().getColor(R.color._a6a6a6));
-            ViewScaleUtil.scaleToNormal(v);
+            ViewScaleUtil.scaleToNormal(v, 1.3f);
         }
     }
 }

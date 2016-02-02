@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.JsonParser;
@@ -25,6 +26,7 @@ import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.data.http.SemantichObjectEntity;
 import cn.ismartv.voice.data.http.SharpHotWordsEntity;
 import cn.ismartv.voice.ui.SpaceItemDecoration;
+import cn.ismartv.voice.util.ViewScaleUtil;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -76,7 +78,7 @@ public class ContentFragment extends BaseFragment {
     }
 
 
-    private class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder> implements View.OnClickListener {
+    private class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder> implements View.OnClickListener, View.OnFocusChangeListener {
 
         private List<SemantichObjectEntity> datas;
 
@@ -98,6 +100,7 @@ public class ContentFragment extends BaseFragment {
             String verticalUrl = datas.get(postion).getVertical_url();
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("url", datas.get(postion).getUrl());
+
             if (!TextUtils.isEmpty(postUrl)) {
                 hashMap.put("orientation", "horizontal");
                 myViewHolder.imageView.setIsHorizontal(true);
@@ -118,12 +121,12 @@ public class ContentFragment extends BaseFragment {
                         .placeholder(R.drawable.vertical_preview_bg)
                         .into(myViewHolder.imageView);
             }
-            myViewHolder.imageView.setTag(hashMap);
-            myViewHolder.imageView.setOnClickListener(this);
+            myViewHolder.mItemView.setTag(hashMap);
+            myViewHolder.mItemView.setOnClickListener(this);
+            myViewHolder.mItemView.setOnFocusChangeListener(this);
             if (postion == 0) {
-                myViewHolder.imageView.requestFocusFromTouch();
-                myViewHolder.imageView.requestFocus();
-
+                myViewHolder.mItemView.requestFocusFromTouch();
+                myViewHolder.mItemView.requestFocus();
             }
         }
 
@@ -132,6 +135,7 @@ public class ContentFragment extends BaseFragment {
         public int getItemCount() {
             return datas.size();
         }
+
 
         @Override
         public void onClick(View v) {
@@ -143,7 +147,6 @@ public class ContentFragment extends BaseFragment {
                 switch (tag.get("orientation")) {
                     case "horizontal":
                         intent.setAction("tv.ismar.daisy.Item");
-
                         break;
                     case "vertical":
                         intent.setAction("tv.ismar.daisy.PFileItem");
@@ -152,14 +155,28 @@ public class ContentFragment extends BaseFragment {
                 getActivity().startActivity(intent);
             }
         }
+
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            ImageView imageView = (ImageView) v.findViewById(R.id.image);
+            if (hasFocus) {
+//                imageView.setBackgroundResource(R.drawable.item_focus);
+                ViewScaleUtil.scaleToLarge(v, 1.2f);
+            } else {
+//                imageView.setBackgroundDrawable(null);
+                ViewScaleUtil.scaleToNormal(v,1.2f);
+            }
+        }
     }
 
     private class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView textView;
         private RelectionImageView imageView;
+        private View mItemView;
 
         public MyViewHolder(View itemView) {
             super(itemView);
+            this.mItemView = itemView;
             textView = (TextView) itemView.findViewById(R.id.id_number);
             imageView = (RelectionImageView) itemView.findViewById(R.id.image);
 
