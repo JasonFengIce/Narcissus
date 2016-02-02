@@ -34,4 +34,5 @@
         android:paddingLeft="@dimen/content_fragment_recycler_margin_lr"
         android:paddingRight="@dimen/content_fragment_recycler_margin_lr"
         />
+    
 </LinearLayout>
