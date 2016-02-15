@@ -15,4 +15,15 @@ public class FilterUtil {
         List<WordFilterResult> results = wf.Match(content);
         return results;
     }
+
+
+    public void input(String action, String name){
+        String  key  = action + name;
+        switch (key){
+            case "dakaiweixin":
+                break;
+            default:
+                break;
+        }
+    }
 }
