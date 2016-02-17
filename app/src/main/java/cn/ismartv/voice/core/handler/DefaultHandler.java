@@ -21,7 +21,7 @@ public class DefaultHandler {
 
     public DefaultHandler(final JsonObject jsonObject, final HandleCallback callback, final long tag, final int domainCount) {
         SemanticSearchRequestEntity entity = new SemanticSearchRequestEntity();
-        entity.setData(jsonObject.toString());
+        entity.setSemantic(jsonObject.toString());
         entity.setPage_on(1);
         entity.setPage_count(30);
 

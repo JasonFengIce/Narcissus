@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import cn.ismartv.voice.core.handler.JsonResultHandler;
 
 /**
  * Created by huaijie on 1/4/16.

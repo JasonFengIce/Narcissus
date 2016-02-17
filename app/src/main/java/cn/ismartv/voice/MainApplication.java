@@ -19,6 +19,7 @@ public class MainApplication extends Application {
     private static String snToken;
     private static String appUpdateDomain;
     private static String apiDomain;
+    private static long geoId;
 
 
     @Override
@@ -26,7 +27,7 @@ public class MainApplication extends Application {
         super.onCreate();
         mContext = getApplicationContext();
         initializeInfo();
-        new Thread(new InitializeProcess(this));
+        new Thread(new InitializeProcess(this)).start();
     }
 
     public static Context getContext() {
@@ -41,6 +42,7 @@ public class MainApplication extends Application {
             locationPY = sharedPreferences.getString("province_py", "");
             snToken = sharedPreferences.getString("sn_token", "");
             apiDomain = sharedPreferences.getString("api_domain", "");
+            geoId = sharedPreferences.getLong("geoid", 0);
 
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
@@ -51,6 +53,11 @@ public class MainApplication extends Application {
     public static String getLocationPY() {
         return locationPY;
     }
+
+    public static Long getGeoId() {
+        return geoId;
+    }
+
 
     public static String getSnToken() {
         return snToken;

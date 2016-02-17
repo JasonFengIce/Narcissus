@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+    >
+
+    <RelativeLayout
+        android:id="@+id/weather_text"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/weather_left_height"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/weather_text_margin_left"
+        >
+
+        <TextView
+            android:id="@+id/weather_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="@dimen/textSize_60sp"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/weather_temp"
+            android:layout_centerHorizontal="true"
+            >
+
+            <TextView
+                android:id="@+id/weather_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textSize_40sp"/>
+
+            <TextView
+                android:id="@+id/weather_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/weather_detail_margin_left"
+                android:layout_toRightOf="@id/weather_day"
+                android:textSize="@dimen/textSize_36sp"/>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:gravity="center"
+        android:id="@+id/weather_right_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/weather_right_height"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/weather_right_layout_margin_right"
+        >
+
+        <ImageView
+            android:id="@+id/weather_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            />
+
+        <TextView
+            android:id="@+id/weather_date"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/weather_icon"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/weather_date_margin_top_"
+            android:textSize="@dimen/textSize_40sp"/>
+    </RelativeLayout>
+
+
+</RelativeLayout>

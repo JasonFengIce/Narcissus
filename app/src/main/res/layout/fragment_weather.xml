@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#405185"
+              android:gravity="center"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/no_weather_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@id/no_weather_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/no_weather_tip"
+            android:textSize="@dimen/textSize_36sp"/>
+
+        <Button
+            android:id="@+id/more_weather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/more_weather_btn"
+            android:textSize="@dimen/textSize_36sp"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/current_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="@dimen/textSize_36sp"/>
+
+    <cn.ismartv.voice.ui.widget.WeatherView
+        android:id="@+id/today_weather"
+        android:layout_width="@dimen/weather_view_layout_width"
+        android:layout_height="@dimen/weather_view_layout_height"
+        android:background="@drawable/cloud_bg">
+    </cn.ismartv.voice.ui.widget.WeatherView>
+
+
+    <cn.ismartv.voice.ui.widget.WeatherView
+        android:id="@+id/tomorrow_weather"
+        android:layout_width="@dimen/weather_view_layout_width"
+        android:layout_height="@dimen/weather_view_layout_height"
+        android:background="@drawable/sunny_bg">
+    </cn.ismartv.voice.ui.widget.WeatherView>
+
+</LinearLayout>

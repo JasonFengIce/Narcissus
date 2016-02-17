@@ -62,22 +62,34 @@
 
         <activity
             android:name=".ui.activity.HomeActivity"
+            android:launchMode="singleInstance"
             android:screenOrientation="landscape"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <intent-filter>
+                <action android:name="cn.ismartv.voice.home"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
         </activity>
 
         <activity
-
             android:name=".ui.activity.SettingActivity"
+            android:exported="true"
             android:launchMode="singleInstance"
             android:screenOrientation="landscape"
             >
 
 
         </activity>
+
+        <receiver android:name=".core.VoiceKeyReceiver">
+            <intent-filter>
+                <action android:name="com.sharp.VOICE_KEY_PRESSED"/>
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

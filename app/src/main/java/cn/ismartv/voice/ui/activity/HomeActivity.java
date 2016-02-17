@@ -27,11 +27,13 @@ import cn.ismartv.voice.data.http.AppSearchResponseEntity;
 import cn.ismartv.voice.data.http.SemanticSearchRequestEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.data.table.AppTable;
+import cn.ismartv.voice.data.table.CityTable;
 import cn.ismartv.voice.ui.fragment.AppSearchFragment;
 import cn.ismartv.voice.ui.fragment.ContentFragment;
 import cn.ismartv.voice.ui.fragment.IndicatorFragment;
 import cn.ismartv.voice.ui.fragment.SearchLoadingFragment;
 import cn.ismartv.voice.ui.fragment.VoiceFragment;
+import cn.ismartv.voice.ui.fragment.WeatherFragment;
 import cn.ismartv.voice.ui.widget.MessagePopWindow;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -48,6 +50,7 @@ public class HomeActivity extends BaseActivity {
     private static final String INDICATOR_FRAGMENT_TAG = "indicator_fragment_tag";
     private static final String APP_SEARCH_FRAGMENT_TAG = "app_search_fragment_tag";
     private static final String SEARCH_LOADING_FRAGMENT = "search_loading_fragment_tag";
+    private static final String WEATHER_FRAGMENT_TAG = "weather_fragment_tag";
 
 
     private VoiceFragment voiceFragment;
@@ -55,6 +58,7 @@ public class HomeActivity extends BaseActivity {
     private IndicatorFragment indicatorFragment;
     private AppSearchFragment appSearchFragment;
     private SearchLoadingFragment searchLoadingFragment;
+    private WeatherFragment weatherFragment;
 
     private boolean voiceBtnIsDown = false;
 
@@ -75,6 +79,8 @@ public class HomeActivity extends BaseActivity {
         indicatorFragment = new IndicatorFragment();
         appSearchFragment = new AppSearchFragment();
         searchLoadingFragment = new SearchLoadingFragment();
+        weatherFragment = new WeatherFragment();
+
         AppUpdateUtilsV2.getInstance(this).checkAppUpdate();
 
         if (savedInstanceState != null) {
@@ -86,9 +92,12 @@ public class HomeActivity extends BaseActivity {
             transaction.add(R.id.left_fragment, indicatorFragment, INDICATOR_FRAGMENT_TAG);
             transaction.add(R.id.right_fragment, appSearchFragment, APP_SEARCH_FRAGMENT_TAG);
             transaction.add(R.id.right_fragment, searchLoadingFragment, SEARCH_LOADING_FRAGMENT);
+            transaction.add(R.id.right_fragment, weatherFragment, WEATHER_FRAGMENT_TAG);
             transaction.hide(searchLoadingFragment);
             transaction.hide(indicatorFragment);
             transaction.hide(appSearchFragment);
+            transaction.hide(weatherFragment);
+//            transaction.hide(contentFragment);
             transaction.commit();
         }
 
@@ -264,7 +273,7 @@ public class HomeActivity extends BaseActivity {
 
     private void searchVod(final String contentType, final String rawText) {
         SemanticSearchRequestEntity entity = new SemanticSearchRequestEntity();
-        entity.setData(rawText);
+        entity.setSemantic(rawText);
         if (!TextUtils.isEmpty(contentType)) {
             entity.setContent_type(contentType);
         }
@@ -332,6 +341,16 @@ public class HomeActivity extends BaseActivity {
         hideFragment(contentFragment);
         hideFragment(appSearchFragment);
         showFragment(searchLoadingFragment);
+    }
+
+    public void showWeatherNoRegion(CityTable cityTable) {
+        hideFragment(contentFragment);
+        hideFragment(appSearchFragment);
+        hideFragment(searchLoadingFragment);
+        weatherFragment.setLocation(cityTable);
+        showFragment(weatherFragment);
+
+
     }
 
 }

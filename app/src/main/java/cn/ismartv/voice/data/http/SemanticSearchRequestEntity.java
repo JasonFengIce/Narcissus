@@ -5,18 +5,18 @@ package cn.ismartv.voice.data.http;
  */
 public class SemanticSearchRequestEntity {
 
-    private String data;
+    private String semantic;
     private String content_type;
     private int page_on;
     private int page_count;
 
 
-    public String getData() {
-        return data;
+    public String getSemantic() {
+        return semantic;
     }
 
-    public void setData(String data) {
-        this.data = data;
+    public void setSemantic(String semantic) {
+        this.semantic = semantic;
     }
 
     public String getContent_type() {

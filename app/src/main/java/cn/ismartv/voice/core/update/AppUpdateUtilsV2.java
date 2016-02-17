@@ -74,7 +74,6 @@ public class AppUpdateUtilsV2 extends Handler {
 
             @Override
             public void onFailure(Throwable t) {
-                Log.e(TAG, t.getMessage());
             }
         });
 

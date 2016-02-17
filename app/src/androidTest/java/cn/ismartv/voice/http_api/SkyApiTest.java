@@ -37,7 +37,7 @@ public class SkyApiTest extends AndroidTestCase {
                 "        }\n" +
                 "    }";
         SemanticSearchRequestEntity entity = new SemanticSearchRequestEntity();
-        entity.setData(data);
+        entity.setSemantic(data);
         entity.setContent_type("movie");
         entity.setPage_on(1);
         entity.setPage_count(30);

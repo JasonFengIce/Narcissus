@@ -1,17 +1,17 @@
 package cn.ismartv.voice.core.handler;
 
-import cn.ismartv.voice.core.filter.FilterUtil;
-import cn.ismartv.voice.core.filter.WordFilterResult;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import java.util.List;
+
+import cn.ismartv.voice.core.filter.FilterUtil;
+import cn.ismartv.voice.core.filter.WordFilterResult;
 import cn.ismartv.voice.data.http.JsonRes;
 import cn.ismartv.voice.data.http.VoiceResultEntity;
-
-import java.util.List;
 
 /**
  * Created by huaijie on 2016/1/30.
@@ -22,11 +22,14 @@ public class JsonDomainHandler {
     private HandleCallback callback;
     private AppHandleCallback appHandleCallback;
     private MultiHandlerCallback multiHandlerCallback;
+    private WeatherHandlerCallback weatherHandlerCallback;
 
-    public JsonDomainHandler(String json, HandleCallback handleCallback, AppHandleCallback appHandleCallback, MultiHandlerCallback multiHandlerCallback) {
+    public JsonDomainHandler(String json, HandleCallback handleCallback, AppHandleCallback appHandleCallback, MultiHandlerCallback multiHandlerCallback,
+                             WeatherHandlerCallback weatherHandlerCallback) {
         this.multiHandlerCallback = multiHandlerCallback;
         this.appHandleCallback = appHandleCallback;
         this.callback = handleCallback;
+        this.weatherHandlerCallback = weatherHandlerCallback;
         getElement(json);
     }
 
@@ -60,7 +63,7 @@ public class JsonDomainHandler {
                                 new VideoHandler(o, callback, tag, jsonArray.size());
                                 break;
                             case "weather":
-                                new WeatherHandler(o);
+                                new WeatherHandler(o, weatherHandlerCallback);
                                 break;
                         }
 

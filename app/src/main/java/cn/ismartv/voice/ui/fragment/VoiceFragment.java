@@ -29,10 +29,12 @@ import cn.ismartv.voice.core.handler.AppHandleCallback;
 import cn.ismartv.voice.core.handler.HandleCallback;
 import cn.ismartv.voice.core.handler.JsonDomainHandler;
 import cn.ismartv.voice.core.handler.MultiHandlerCallback;
+import cn.ismartv.voice.core.handler.WeatherHandlerCallback;
 import cn.ismartv.voice.core.initialization.AppTableInit;
 import cn.ismartv.voice.data.http.AppSearchResponseEntity;
 import cn.ismartv.voice.data.http.IndicatorResponseEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
+import cn.ismartv.voice.data.table.CityTable;
 import cn.ismartv.voice.ui.activity.HomeActivity;
 
 import static com.baidu.voicerecognition.android.VoiceRecognitionClient.getInstance;
@@ -41,7 +43,7 @@ import static com.baidu.voicerecognition.android.VoiceRecognitionClient.getInsta
  * Created by huaijie on 1/18/16.
  */
 public class VoiceFragment extends BaseFragment implements OnClickListener, View.OnTouchListener,
-        VoiceClientStatusChangeListener, HandleCallback, AppHandleCallback, MultiHandlerCallback {
+        VoiceClientStatusChangeListener, HandleCallback, AppHandleCallback, MultiHandlerCallback, WeatherHandlerCallback {
     private static final String TAG = "VoiceFragment";
     /**
      * 音量更新间隔
@@ -211,7 +213,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
                 isRecognition = false;
 //                resultText.setText(o.toString());
 //                new JsonResultHandler(o.toString(), this, this);
-                new JsonDomainHandler(o.toString(), this, this, this);
+                new JsonDomainHandler(o.toString(), this, this, this, this);
                 Log.i(TAG, o.toString());
                 break;
             // 处理连续上屏
@@ -313,4 +315,8 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
     };
 
 
+    @Override
+    public void onWeatherHandle(CityTable table) {
+        ((HomeActivity) getActivity()).showWeatherNoRegion(table);
+    }
 }

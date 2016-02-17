@@ -31,6 +31,8 @@
 <dimen name="textSize_40sp">14.81sp</dimen>
 <dimen name="textSize_36sp">13.33sp</dimen>
 <dimen name="textSize_48sp">17.78sp</dimen>
+<dimen name="textSize_60sp">22.22sp</dimen>
+
 <dimen name="voice_fragment_divider_line_margin">8.52dp</dimen>
 <dimen name="voice_fragment_divider_line_margin_top">21.48dp</dimen>
 <dimen name="voice_fragment_icon_bg_height">117.04dp</dimen>
@@ -74,5 +76,19 @@
 <dimen name="search_no_result_title_marginTop">15.93dp</dimen>
 
 <dimen name="search_loading_text_img_marginTop">22.22dp</dimen>
+
+<dimen name="weather_text_margin_left">33.33dp</dimen>
+<dimen name="weather_right_layout_margin_right">39.26dp</dimen>
+
+<dimen name="weather_view_layout_width">359.26dp</dimen>
+<dimen name="weather_view_layout_height">111.11dp</dimen>
+<dimen name="weather_detail_margin_left">16.67dp</dimen>
+
+<dimen name="weather_detail_margin_top">14.81dp</dimen>
+<dimen name="weather_date_margin_top_">18.52dp</dimen>
+
+<dimen name="weather_left_height">55.56dp</dimen>
+<dimen name="weather_right_height">85.19dp</dimen>
+
 
 </resources>
