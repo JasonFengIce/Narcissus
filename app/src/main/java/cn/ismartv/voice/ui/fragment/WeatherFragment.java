@@ -2,10 +2,12 @@ package cn.ismartv.voice.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -35,7 +37,7 @@ public class WeatherFragment extends BaseFragment implements View.OnClickListene
     private WeatherView todayWeather;
     private WeatherView tomorrowWeather;
     private View noWeatherTipLayout;
-    private Button moreWeatherBtn;
+    private FrameLayout moreWeatherBtn;
     private TextView currentLocationText;
 
     private CityTable location;
@@ -53,7 +55,7 @@ public class WeatherFragment extends BaseFragment implements View.OnClickListene
         todayWeather = (WeatherView) view.findViewById(R.id.today_weather);
         tomorrowWeather = (WeatherView) view.findViewById(R.id.tomorrow_weather);
         noWeatherTipLayout = view.findViewById(R.id.no_weather_tip);
-        moreWeatherBtn = (Button) view.findViewById(R.id.more_weather);
+        moreWeatherBtn = (FrameLayout) view.findViewById(R.id.more_weather);
         currentLocationText = (TextView) view.findViewById(R.id.current_location);
         moreWeatherBtn.setOnClickListener(this);
 

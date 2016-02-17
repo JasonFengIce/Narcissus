@@ -90,5 +90,8 @@
 <dimen name="weather_left_height">50.00dp</dimen>
 <dimen name="weather_right_height">76.67dp</dimen>
 
+<dimen name="more_weather_width">81.33dp</dimen>
+<dimen name="more_weather_height">24.00dp</dimen>
+
 
 </resources>

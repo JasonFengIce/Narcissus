@@ -19,13 +19,23 @@
             android:text="@string/no_weather_tip"
             android:textSize="@dimen/textSize_36sp"/>
 
-        <Button
+        <FrameLayout
             android:id="@+id/more_weather"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/more_weather_btn"
-            android:textSize="@dimen/textSize_36sp"/>
+            android:background="@drawable/selector_item"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:layout_width="@dimen/more_weather_width"
+                android:layout_height="@dimen/more_weather_height"
+                android:background="@drawable/more_weahter_btn_bg"
+                android:gravity="center"
+                android:text="@string/more_weather_btn"
+                android:textSize="@dimen/textSize_36sp"/>
+        </FrameLayout>
+
 
     </LinearLayout>
 
