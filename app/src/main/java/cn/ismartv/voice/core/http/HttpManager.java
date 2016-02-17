@@ -74,7 +74,7 @@ public class HttpManager {
 
         resetAdapter_QIANGUANGZHAO = new Retrofit.Builder()
                 .client(client)
-                .baseUrl(appendProtocol("http://skytest.tvxio.com:6677"))
+                .baseUrl(appendProtocol("http://skytest.tvxio.com"))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

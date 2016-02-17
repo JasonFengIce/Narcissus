@@ -2,6 +2,7 @@ package cn.ismartv.voice.ui.fragment;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
@@ -42,6 +43,10 @@ import static com.baidu.voicerecognition.android.VoiceRecognitionClient.getInsta
 public class VoiceFragment extends BaseFragment implements OnClickListener, View.OnTouchListener,
         VoiceClientStatusChangeListener, HandleCallback, AppHandleCallback, MultiHandlerCallback {
     private static final String TAG = "VoiceFragment";
+    /**
+     * 音量更新间隔
+     */
+    private static final int POWER_UPDATE_INTERVAL = 100;
 
     private static final String API_KEY = "YuKSME6OUvZwv016LktWKkjY";
     private static final String SECRET_KEY = "5fead3154852939e74bcaa1248cf33c6";
@@ -57,10 +62,14 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
     private SearchTipFragment searchTipFragment;
     private SearchNoResultFragment searchNoResultFragment;
 
+    private boolean isRecognition = false;
+    private Handler mHandler;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mHandler = new Handler();
         voiceRecognitionClient = getInstance(getContext());
         voiceRecognitionClient.setTokenApis(API_KEY, SECRET_KEY);
         AppTableInit.getInstance().getLocalAppList(getContext());
@@ -186,6 +195,9 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
         switch (status) {
             // 语音识别实际开始，这是真正开始识别的时间点，需在界面提示用户说话。
             case VoiceRecognitionClient.CLIENT_STATUS_START_RECORDING:
+                isRecognition = true;
+                mHandler.removeCallbacks(mUpdateVolume);
+                mHandler.postDelayed(mUpdateVolume, POWER_UPDATE_INTERVAL);
                 break;
             // 检测到语音起点
             case VoiceRecognitionClient.CLIENT_STATUS_SPEECH_START:
@@ -196,6 +208,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
                 break;
             // 语音识别完成，显示obj中的结果
             case VoiceRecognitionClient.CLIENT_STATUS_FINISH:
+                isRecognition = false;
 //                resultText.setText(o.toString());
 //                new JsonResultHandler(o.toString(), this, this);
                 new JsonDomainHandler(o.toString(), this, this, this);
@@ -206,6 +219,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
                 break;
             // 用户取消
             case VoiceRecognitionClient.CLIENT_STATUS_USER_CANCELED:
+                isRecognition = false;
                 break;
             default:
                 break;
@@ -219,7 +233,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
 
     @Override
     public void onError(int i, int i1) {
-
+        isRecognition = false;
     }
 
 
@@ -276,5 +290,27 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
         searchNoResultFragment.setTitle(rawText);
         ((HomeActivity) getActivity()).recommendApp();
     }
+
+    private void volumeChange(int vol) {
+        if (vol <= 30) {
+            voiceMicImg.setImageResource(R.drawable.voice_vol_1);
+        } else if (vol > 30 && vol <= 60) {
+            voiceMicImg.setImageResource(R.drawable.voice_vol_2);
+        } else if (vol > 60) {
+            voiceMicImg.setImageResource(R.drawable.voice_vol_3);
+        }
+    }
+
+    private Runnable mUpdateVolume = new Runnable() {
+        public void run() {
+            if (isRecognition) {
+                long vol = voiceRecognitionClient.getCurrentDBLevelMeter();
+                volumeChange((int) vol);
+                mHandler.removeCallbacks(mUpdateVolume);
+                mHandler.postDelayed(mUpdateVolume, POWER_UPDATE_INTERVAL);
+            }
+        }
+    };
+
 
 }
