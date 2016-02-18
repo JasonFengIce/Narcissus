@@ -161,10 +161,10 @@ public class ContentFragment extends BaseFragment {
             ImageView imageView = (ImageView) v.findViewById(R.id.image);
             if (hasFocus) {
                 imageView.setBackgroundResource(R.drawable.item_focus);
-                ViewScaleUtil.scaleToLarge(v, 1.2f);
+                ViewScaleUtil.scaleToLarge(v, 1.15f);
             } else {
                 imageView.setBackgroundDrawable(null);
-                ViewScaleUtil.scaleToNormal(v, 1.2f);
+                ViewScaleUtil.scaleToNormal(v, 1.15f);
             }
         }
     }

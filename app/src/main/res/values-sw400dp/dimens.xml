@@ -21,10 +21,10 @@
 
 <dimen name="content_fragment_item_width">94.81dp</dimen>
 <dimen name="content_fragment_recycler_margin_lr">42.96dp</dimen>
-<dimen name="content_fragment_recycler_margin_top">16.67dp</dimen>
+<dimen name="content_fragment_recycler_margin_top">-5.56dp</dimen>
 <dimen name="content_fragment_title_height">37.78dp</dimen>
 
-<dimen name="content_fragment_item_vertical_space">27.78dp</dimen>
+<dimen name="content_fragment_item_vertical_space">20.37dp</dimen>
 <dimen name="content_fragment_item_horizontal_space">29.63dp</dimen>
 
 <dimen name="textSize_30sp">11.11sp</dimen>
