@@ -363,5 +363,4 @@ public class HomeActivity extends BaseActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.right_fragment, recognizeErrorFragment, RECOGNIZE_ERROR_FRAGMENT_TAG).commit();
     }
 
-
 }
