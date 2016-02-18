@@ -1,10 +1,13 @@
 package cn.ismartv.voice.ui.fragment;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +21,15 @@ import java.util.List;
 
 import cn.ismartv.recyclerview.widget.GridLayoutManager;
 import cn.ismartv.recyclerview.widget.RecyclerView;
+import cn.ismartv.voice.MainApplication;
 import cn.ismartv.voice.R;
 import cn.ismartv.voice.core.http.HttpAPI;
 import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.data.http.AppSearchObjectEntity;
 import cn.ismartv.voice.data.http.RecommandAppEntity;
 import cn.ismartv.voice.ui.SpaceItemDecoration;
+import cn.ismartv.voice.ui.widget.LaunchAppTransitionPopWindow;
+import cn.ismartv.voice.util.ViewScaleUtil;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -68,7 +74,7 @@ public class AppSearchFragment extends BaseFragment {
         searchTitle.setText(getString(R.string.recommend_content_title));
     }
 
-    private class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder> {
+    private class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder> implements View.OnClickListener, View.OnFocusChangeListener {
 
         private List<AppSearchObjectEntity> datas;
 
@@ -98,6 +104,14 @@ public class AppSearchFragment extends BaseFragment {
             } else {
                 Picasso.with(getContext()).load(datas.get(postion).getAdlet_url()).error(R.drawable.horizontal_preview_bg).into(myViewHolder.imageView);
             }
+
+            myViewHolder.mItemView.setTag(datas.get(postion));
+            myViewHolder.mItemView.setOnClickListener(this);
+            myViewHolder.mItemView.setOnFocusChangeListener(this);
+            if (postion == 0) {
+                myViewHolder.mItemView.requestFocusFromTouch();
+                myViewHolder.mItemView.requestFocus();
+            }
         }
 
 
@@ -105,16 +119,43 @@ public class AppSearchFragment extends BaseFragment {
         public int getItemCount() {
             return datas.size();
         }
+
+        @Override
+        public void onClick(View v) {
+            AppSearchObjectEntity objectEntity = (AppSearchObjectEntity) v.getTag();
+            if (objectEntity.isLocal()) {
+                launchAppTransition(objectEntity.getCaption());
+            } else {
+                Intent intent = new Intent("com.boxmate.tv.detail");
+                //app_id从服务端获取
+                intent.putExtra("app_id", objectEntity.getPk());
+                startActivity(intent);
+            }
+        }
+
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            ImageView imageView = (ImageView) v.findViewById(R.id.image);
+            if (hasFocus) {
+                imageView.setBackgroundResource(R.drawable.item_focus);
+                ViewScaleUtil.scaleToLarge(v, 1.15f);
+            } else {
+                imageView.setBackgroundDrawable(null);
+                ViewScaleUtil.scaleToNormal(v, 1.15f);
+            }
+        }
     }
 
     private class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView textView;
         private ImageView imageView;
+        private View mItemView;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.id_number);
             imageView = (ImageView) itemView.findViewById(R.id.image);
+            this.mItemView = itemView;
         }
     }
 
@@ -139,6 +180,24 @@ public class AppSearchFragment extends BaseFragment {
             @Override
             public void onFailure(Throwable t) {
 
+            }
+        });
+    }
+
+
+    private void launchApp(String appPackage) {
+        Context context = MainApplication.getContext();
+        PackageManager packageManager = context.getPackageManager();
+        Intent intent = packageManager.getLaunchIntentForPackage(appPackage);
+        context.startActivity(intent);
+    }
+
+    private void launchAppTransition(final String appPackage) {
+        LaunchAppTransitionPopWindow popWindow = new LaunchAppTransitionPopWindow(getContext());
+        popWindow.showAtLocation(getView(), Gravity.CENTER, new LaunchAppTransitionPopWindow.DisappearCallback() {
+            @Override
+            public void onDisappear() {
+                launchApp(appPackage);
             }
         });
     }

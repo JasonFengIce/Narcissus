@@ -18,6 +18,15 @@ public class AppSearchObjectEntity {
     private String adlet_url;
     private String url;
     private String caption;
+    private String pk;
+
+    public String getPk() {
+        return pk;
+    }
+
+    public void setPk(String pk) {
+        this.pk = pk;
+    }
 
     public String getTitle() {
         return title;
