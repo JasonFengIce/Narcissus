@@ -20,8 +20,11 @@ import android.widget.ImageView;
 import com.baidu.voicerecognition.android.VoiceRecognitionClient;
 import com.baidu.voicerecognition.android.VoiceRecognitionClient.VoiceClientStatusChangeListener;
 import com.baidu.voicerecognition.android.VoiceRecognitionConfig;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.ismartv.voice.R;
@@ -33,7 +36,9 @@ import cn.ismartv.voice.core.handler.WeatherHandlerCallback;
 import cn.ismartv.voice.core.initialization.AppTableInit;
 import cn.ismartv.voice.data.http.AppSearchResponseEntity;
 import cn.ismartv.voice.data.http.IndicatorResponseEntity;
+import cn.ismartv.voice.data.http.JsonRes;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
+import cn.ismartv.voice.data.http.VoiceResultEntity;
 import cn.ismartv.voice.data.table.CityTable;
 import cn.ismartv.voice.ui.activity.HomeActivity;
 
@@ -55,6 +60,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
 
     private static final String SEARCH_TIP_FRAGMENT_TAG = "search_tip_fragment_tag";
     private static final String SEARCH_NO_RESULT_FRAGMENT_TAG = "search_no_result_fragment_tag";
+    private static final String SEARCH_KEYWORD_FRAGMENT_TAG = "search_keyword_fragment_tag";
 
     private ImageView voiceProgressImg;
     private ImageView voiceMicImg;
@@ -63,9 +69,11 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
 
     private SearchTipFragment searchTipFragment;
     private SearchNoResultFragment searchNoResultFragment;
+    private SearchKeyWordFragment searchKeyWordFragment;
 
     private boolean isRecognition = false;
     private Handler mHandler;
+    private List<BaseFragment> childFragmentList;
 
 
     @Override
@@ -82,6 +90,12 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         searchTipFragment = new SearchTipFragment();
         searchNoResultFragment = new SearchNoResultFragment();
+        searchKeyWordFragment = new SearchKeyWordFragment();
+        childFragmentList = new ArrayList<>();
+        childFragmentList.add(searchTipFragment);
+        childFragmentList.add(searchNoResultFragment);
+        childFragmentList.add(searchTipFragment);
+
         return inflater.inflate(R.layout.fragment_voice, null);
     }
 
@@ -91,6 +105,8 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
         FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.search_tip_layout, searchTipFragment, SEARCH_TIP_FRAGMENT_TAG);
         fragmentTransaction.add(R.id.search_tip_layout, searchNoResultFragment, SEARCH_NO_RESULT_FRAGMENT_TAG);
+        fragmentTransaction.add(R.id.search_tip_layout, searchKeyWordFragment, SEARCH_KEYWORD_FRAGMENT_TAG);
+        fragmentTransaction.hide(searchKeyWordFragment);
         fragmentTransaction.hide(searchNoResultFragment);
         fragmentTransaction.commit();
 
@@ -211,9 +227,13 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
             // 语音识别完成，显示obj中的结果
             case VoiceRecognitionClient.CLIENT_STATUS_FINISH:
                 isRecognition = false;
-//                resultText.setText(o.toString());
-//                new JsonResultHandler(o.toString(), this, this);
+                VoiceResultEntity[] voiceResultEntity = new Gson().fromJson(o.toString(), VoiceResultEntity[].class);
+                JsonElement jsonElement = new JsonParser().parse(voiceResultEntity[0].getJson_res());
+                JsonRes jsonRes = new Gson().fromJson(jsonElement, JsonRes.class);
+                String rawText = jsonRes.getRaw_text();
+                showSearchKeyWordFragment(rawText);
                 new JsonDomainHandler(o.toString(), this, this, this, this);
+
                 Log.i(TAG, o.toString());
                 break;
             // 处理连续上屏
@@ -253,6 +273,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
     public void onHandleSuccess(SemanticSearchResponseEntity entity, String jsonData, long tag, int requestCount) {
 
         if (entity.getFacet().size() == 0) {
+
 //        if (true) {
             String rawText = new JsonParser().parse(jsonData).getAsJsonObject().get("raw_text").toString();
             showNoVideoResultFragment(rawText);
@@ -303,6 +324,11 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
         ((HomeActivity) getActivity()).recommendApp();
     }
 
+    private void showSearchKeyWordFragment(String rawText) {
+        searchKeyWordFragment.setSearchKeyWord(rawText);
+        showFragment(searchKeyWordFragment);
+    }
+
     private void volumeChange(int vol) {
         if (vol <= 30) {
             voiceMicImg.setImageResource(R.drawable.voice_vol_1);
@@ -328,5 +354,13 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
     @Override
     public void onWeatherHandle(CityTable table) {
         ((HomeActivity) getActivity()).showWeatherNoRegion(table);
+    }
+
+    private void showFragment(BaseFragment fragment) {
+        for (BaseFragment f : childFragmentList) {
+            if (fragment != f && f.isVisible())
+                getChildFragmentManager().beginTransaction().hide(f).commit();
+        }
+        getChildFragmentManager().beginTransaction().show(fragment).commit();
     }
 }

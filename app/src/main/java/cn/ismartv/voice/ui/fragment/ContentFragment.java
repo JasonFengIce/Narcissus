@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.JsonParser;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -104,13 +105,18 @@ public class ContentFragment extends BaseFragment {
             if (!TextUtils.isEmpty(postUrl)) {
                 hashMap.put("orientation", "horizontal");
                 myViewHolder.imageView.setIsHorizontal(true);
-                Picasso.with(getContext()).load(postUrl).error(R.drawable.horizontal_preview_bg).into(myViewHolder.imageView);
+                Picasso.with(getContext()).load(postUrl)
+                        .memoryPolicy(MemoryPolicy.NO_STORE)
+                        .error(R.drawable.horizontal_preview_bg)
+                        .placeholder(R.drawable.horizontal_preview_bg)
+                        .into(myViewHolder.imageView);
 
             } else if (!TextUtils.isEmpty(verticalUrl)) {
                 hashMap.put("orientation", "vertical");
                 myViewHolder.imageView.setIsHorizontal(false);
                 Picasso.with(getContext())
                         .load(datas.get(postion).getVertical_url())
+                        .memoryPolicy(MemoryPolicy.NO_STORE)
                         .error(R.drawable.vertical_preview_bg)
                         .placeholder(R.drawable.vertical_preview_bg)
                         .into(myViewHolder.imageView);
@@ -118,7 +124,9 @@ public class ContentFragment extends BaseFragment {
             } else {
                 Picasso.with(getContext())
                         .load(R.drawable.vertical_preview_bg)
+                        .memoryPolicy(MemoryPolicy.NO_STORE)
                         .placeholder(R.drawable.vertical_preview_bg)
+                        .error(R.drawable.vertical_preview_bg)
                         .into(myViewHolder.imageView);
             }
             myViewHolder.mItemView.setTag(hashMap);

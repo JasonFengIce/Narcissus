@@ -23,7 +23,6 @@ public class VideoHandler {
         this.callback = callback;
         SemanticSearchRequestEntity entity = new SemanticSearchRequestEntity();
         entity.setSemantic(jsonObject);
-        entity.setContent_type("movie");
         entity.setPage_on(1);
         entity.setPage_count(30);
 
