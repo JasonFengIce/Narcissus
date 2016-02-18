@@ -93,5 +93,6 @@
 <dimen name="more_weather_width">81.33dp</dimen>
 <dimen name="more_weather_height">24.00dp</dimen>
 
+<dimen name="recognize_error_tip_item_margin_top">27.67dp</dimen>
 
 </resources>

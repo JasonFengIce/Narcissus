@@ -234,8 +234,18 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
     }
 
     @Override
-    public void onError(int i, int i1) {
+    public void onError(int errorType, int errorCode) {
         isRecognition = false;
+        switch (errorType) {
+            case VoiceRecognitionClient.ERROR_CLIENT:
+            case VoiceRecognitionClient.ERROR_RECORDER:
+            case VoiceRecognitionClient.ERROR_SERVER:
+                ((HomeActivity) getActivity()).showRecognizeError();
+                break;
+            case VoiceRecognitionClient.ERROR_NETWORK:
+                break;
+        }
+
     }
 
 

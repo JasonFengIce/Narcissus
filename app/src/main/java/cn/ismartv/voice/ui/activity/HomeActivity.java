@@ -14,7 +14,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.util.ArrayList;
@@ -34,6 +33,7 @@ import cn.ismartv.voice.data.table.CityTable;
 import cn.ismartv.voice.ui.fragment.AppSearchFragment;
 import cn.ismartv.voice.ui.fragment.ContentFragment;
 import cn.ismartv.voice.ui.fragment.IndicatorFragment;
+import cn.ismartv.voice.ui.fragment.RecognizeErrorFragment;
 import cn.ismartv.voice.ui.fragment.SearchLoadingFragment;
 import cn.ismartv.voice.ui.fragment.VoiceFragment;
 import cn.ismartv.voice.ui.fragment.WeatherFragment;
@@ -54,6 +54,7 @@ public class HomeActivity extends BaseActivity {
     private static final String APP_SEARCH_FRAGMENT_TAG = "app_search_fragment_tag";
     private static final String SEARCH_LOADING_FRAGMENT = "search_loading_fragment_tag";
     private static final String WEATHER_FRAGMENT_TAG = "weather_fragment_tag";
+    private static final String RECOGNIZE_ERROR_FRAGMENT_TAG = "recognize_error_fragment_tag";
 
 
     private VoiceFragment voiceFragment;
@@ -62,6 +63,7 @@ public class HomeActivity extends BaseActivity {
     private AppSearchFragment appSearchFragment;
     private SearchLoadingFragment searchLoadingFragment;
     private WeatherFragment weatherFragment;
+    private RecognizeErrorFragment recognizeErrorFragment;
 
     private boolean voiceBtnIsDown = false;
 
@@ -83,6 +85,7 @@ public class HomeActivity extends BaseActivity {
         appSearchFragment = new AppSearchFragment();
         searchLoadingFragment = new SearchLoadingFragment();
         weatherFragment = new WeatherFragment();
+        recognizeErrorFragment = new RecognizeErrorFragment();
 
         AppUpdateUtilsV2.getInstance(this).checkAppUpdate();
 
@@ -96,6 +99,7 @@ public class HomeActivity extends BaseActivity {
             transaction.add(R.id.right_fragment, appSearchFragment, APP_SEARCH_FRAGMENT_TAG);
             transaction.add(R.id.right_fragment, searchLoadingFragment, SEARCH_LOADING_FRAGMENT);
             transaction.add(R.id.right_fragment, weatherFragment, WEATHER_FRAGMENT_TAG);
+//            transaction.add(R.id.right_fragment, recognizeErrorFragment, RECOGNIZE_ERROR_FRAGMENT_TAG);
             transaction.hide(searchLoadingFragment);
             transaction.hide(indicatorFragment);
             transaction.hide(appSearchFragment);
@@ -352,8 +356,12 @@ public class HomeActivity extends BaseActivity {
         hideFragment(searchLoadingFragment);
         weatherFragment.setLocation(cityTable);
         showFragment(weatherFragment);
-
-
     }
+
+
+    public void showRecognizeError() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.right_fragment, recognizeErrorFragment, RECOGNIZE_ERROR_FRAGMENT_TAG).commit();
+    }
+
 
 }
