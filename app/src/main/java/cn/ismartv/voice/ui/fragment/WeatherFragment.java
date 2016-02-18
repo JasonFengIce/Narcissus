@@ -1,12 +1,11 @@
 package cn.ismartv.voice.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -18,6 +17,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import cn.ismartv.voice.MainApplication;
 import cn.ismartv.voice.R;
 import cn.ismartv.voice.core.handler.WeatherXmlParser;
 import cn.ismartv.voice.core.http.HttpAPI;
@@ -62,13 +62,16 @@ public class WeatherFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void fetchWeather() {
-        long geoId = 0;
+        long geoId;
+        String rawTextValue = getString(R.string.weather_current_location);
         if (location == null) {
             noWeatherTipLayout.setVisibility(View.VISIBLE);
+            geoId = MainApplication.getGeoId();
+            String city = MainApplication.getCity();
+            currentLocationText.setText(String.format(rawTextValue, city));
         } else {
             noWeatherTipLayout.setVisibility(View.GONE);
             geoId = location.geo_id;
-            String rawTextValue = getString(R.string.weather_current_location);
             currentLocationText.setText(String.format(rawTextValue, location.city));
         }
 
@@ -83,6 +86,12 @@ public class WeatherFragment extends BaseFragment implements View.OnClickListene
                     try {
                         String result = response.body().string();
                         WeatherEntity weatherEntity = WeatherXmlParser.parse(result);
+                        if (weatherEntity.getToday().getCondition().equals("晴")) {
+                            todayWeather.setBackgroundResource(R.drawable.sunny_bg);
+                        } else {
+                            todayWeather.setBackgroundResource(R.drawable.cloud_bg);
+                        }
+
                         todayWeather.setWeatherTemp(weatherEntity.getToday().getTemplow() + "℃ ~ " + weatherEntity.getToday().getTemphigh() + "℃");
                         todayWeather.setWeatherDay("今天");
                         todayWeather.setWeatherDetail(weatherEntity.getToday().getCondition());
@@ -92,6 +101,11 @@ public class WeatherFragment extends BaseFragment implements View.OnClickListene
                         String todayTime = dateFormat.format(now);
                         todayWeather.setWeatherDate(todayTime);
 
+                        if (weatherEntity.getTomorrow().getCondition().equals("晴")) {
+                            tomorrowWeather.setBackgroundResource(R.drawable.sunny_bg);
+                        } else {
+                            tomorrowWeather.setBackgroundResource(R.drawable.cloud_bg);
+                        }
                         tomorrowWeather.setWeatherTemp(weatherEntity.getTomorrow().getTemplow() + "℃ ~ " + weatherEntity.getTomorrow().getTemphigh() + "℃");
                         tomorrowWeather.setWeatherDay("明天");
                         tomorrowWeather.setWeatherDetail(weatherEntity.getTomorrow().getCondition());
@@ -125,8 +139,17 @@ public class WeatherFragment extends BaseFragment implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.more_weather:
+                launchToLocation();
                 break;
         }
+    }
+
+    private void launchToLocation() {
+        Intent intent = new Intent();
+        intent.setAction("tv.ismar.daisy.usercenter");
+        intent.putExtra("flag", "location");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        getContext().startActivity(intent);
     }
 }
 
