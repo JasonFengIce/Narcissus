@@ -22,7 +22,7 @@ public class VideoHandler {
     public VideoHandler(final JsonObject jsonObject, final HandleCallback callback, final long tag, final int domainCount) {
         this.callback = callback;
         SemanticSearchRequestEntity entity = new SemanticSearchRequestEntity();
-        entity.setSemantic(jsonObject.toString());
+        entity.setSemantic(jsonObject);
         entity.setContent_type("movie");
         entity.setPage_on(1);
         entity.setPage_count(30);

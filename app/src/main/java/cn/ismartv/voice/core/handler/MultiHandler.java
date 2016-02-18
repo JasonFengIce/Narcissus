@@ -69,7 +69,7 @@ public class MultiHandler extends Thread {
                     break;
                 case "video":
                     SemanticSearchRequestEntity requestEntity = new SemanticSearchRequestEntity();
-                    requestEntity.setSemantic(jsonObject.toString());
+                    requestEntity.setSemantic(jsonObject);
                     requestEntity.setContent_type("movie");
                     requestEntity.setPage_on(AppConstant.DEFAULT_PAGE_NO);
                     requestEntity.setPage_count(AppConstant.DEFAULT_PAGE_COUNT);

@@ -4,6 +4,8 @@ import android.test.AndroidTestCase;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.io.IOException;
 import java.util.List;
@@ -36,8 +38,9 @@ public class SkyApiTest extends AndroidTestCase {
                 "            \"name\": \"非诚勿扰\"\n" +
                 "        }\n" +
                 "    }";
+        JsonObject j =  new JsonParser().parse(data).getAsJsonObject();
         SemanticSearchRequestEntity entity = new SemanticSearchRequestEntity();
-        entity.setSemantic(data);
+        entity.setSemantic(j);
         entity.setContent_type("movie");
         entity.setPage_on(1);
         entity.setPage_count(30);

@@ -14,6 +14,9 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -273,7 +276,7 @@ public class HomeActivity extends BaseActivity {
 
     private void searchVod(final String contentType, final String rawText) {
         SemanticSearchRequestEntity entity = new SemanticSearchRequestEntity();
-        entity.setSemantic(rawText);
+        entity.setSemantic(new JsonParser().parse(rawText).getAsJsonObject());
         if (!TextUtils.isEmpty(contentType)) {
             entity.setContent_type(contentType);
         }

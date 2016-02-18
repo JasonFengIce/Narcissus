@@ -1,21 +1,23 @@
 package cn.ismartv.voice.data.http;
 
+import com.google.gson.JsonObject;
+
 /**
  * Created by huaijie on 1/20/16.
  */
 public class SemanticSearchRequestEntity {
 
-    private String semantic;
+    private JsonObject semantic;
     private String content_type;
     private int page_on;
     private int page_count;
 
 
-    public String getSemantic() {
+    public JsonObject getSemantic() {
         return semantic;
     }
 
-    public void setSemantic(String semantic) {
+    public void setSemantic(JsonObject semantic) {
         this.semantic = semantic;
     }
 
@@ -42,4 +44,6 @@ public class SemanticSearchRequestEntity {
     public void setPage_count(int page_count) {
         this.page_count = page_count;
     }
+
+
 }
