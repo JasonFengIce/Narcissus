@@ -95,4 +95,7 @@
 
 <dimen name="recognize_error_tip_item_margin_top">30.74dp</dimen>
 
+<dimen name="arrow_img_width">22.22dp</dimen>
+<dimen name="arrow_img_height">14.81dp</dimen>
+
 </resources>

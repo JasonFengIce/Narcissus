@@ -50,6 +50,8 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
     };
 
     private View firstItemView;
+    private ImageView arrowUp;
+    private ImageView arrowDown;
 
     @Nullable
     @Override
@@ -62,6 +64,9 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
         super.onViewCreated(view, savedInstanceState);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
         searchTitle = (TextView) view.findViewById(R.id.search_title);
+        arrowUp = (ImageView) view.findViewById(R.id.arrow_up);
+        arrowDown = (ImageView) view.findViewById(R.id.arrow_down);
+        arrowUp.bringToFront();
         fetchSharpHotWords();
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 4, GridLayoutManager.VERTICAL, false);

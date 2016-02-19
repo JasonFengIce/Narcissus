@@ -24,15 +24,45 @@
         android:src="@drawable/voice_fragment_divider_line"
         />
 
-    <cn.ismartv.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/content_fragment_recycler_margin_top"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:clipChildren="false"
         android:clipToPadding="false"
-        android:paddingLeft="@dimen/content_fragment_recycler_margin_lr"
-        android:paddingRight="@dimen/content_fragment_recycler_margin_lr"
-        />
+        >
+
+        <ImageView
+            android:id="@+id/arrow_up"
+            android:layout_width="@dimen/arrow_img_width"
+            android:layout_height="@dimen/arrow_img_height"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/selector_arrow_up"/>
+
+        <cn.ismartv.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/content_fragment_recycler_margin_top"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:paddingLeft="@dimen/content_fragment_recycler_margin_lr"
+            android:paddingRight="@dimen/content_fragment_recycler_margin_lr"
+            />
+
+        <ImageView
+            android:id="@+id/arrow_down"
+            android:layout_width="@dimen/arrow_img_width"
+            android:layout_height="@dimen/arrow_img_height"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/selector_arrow_down"/>
+
+    </RelativeLayout>
+
 </LinearLayout>

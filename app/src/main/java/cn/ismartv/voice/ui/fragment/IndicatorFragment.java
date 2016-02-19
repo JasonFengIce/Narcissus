@@ -110,9 +110,14 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
                 ((HomeActivity) getActivity()).handleAppIndicatorClick(rawText);
                 break;
             default:
+                if (selectedView != null) {
+                    TextView textView = (TextView) selectedView.findViewById(R.id.title);
+                    textView.setTextColor(getResources().getColor(R.color._a6a6a6));
+                } else {
+                    TextView textView = (TextView) v.findViewById(R.id.title);
+                    textView.setTextColor(getResources().getColor(R.color._ffffff));
+                }
                 selectedView = v;
-                TextView textView = (TextView) v.findViewById(R.id.title);
-                textView.setTextColor(getResources().getColor(R.color._ffffff));
                 HashMap<String, String> tag = (HashMap<String, String>) v.getTag();
                 String type = tag.get("type");
                 String data = tag.get("data");
