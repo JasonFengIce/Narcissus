@@ -188,10 +188,13 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
             ImageView imageView = (ImageView) v.findViewById(R.id.image);
+            TextView textView = (TextView) v.findViewById(R.id.id_number);
             if (hasFocus) {
+                textView.setSelected(true);
                 imageView.setBackgroundResource(R.drawable.item_focus);
                 ViewScaleUtil.scaleToLarge(v, 1.15f);
             } else {
+                textView.setSelected(false);
                 imageView.setBackgroundDrawable(null);
                 ViewScaleUtil.scaleToNormal(v, 1.15f);
             }
