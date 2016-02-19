@@ -15,6 +15,7 @@ import cn.ismartv.voice.R;
 public class SearchNoResultFragment extends BaseFragment {
 
     private TextView title;
+    private TextView tip;
 
     @Nullable
     @Override
@@ -27,10 +28,18 @@ public class SearchNoResultFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         title = (TextView) view.findViewById(R.id.raw_text);
+        tip = (TextView) view.findViewById(R.id.tip);
     }
 
-    public void setTitle(String rawText) {
+    public void recognizeNoResult(String rawText) {
+        title.setVisibility(View.VISIBLE);
         title.setText(rawText.replace("\"", ""));
+        tip.setText(R.string.search_no_result);
     }
 
+    public void recognizeError() {
+        title.setVisibility(View.GONE);
+        tip.setText(R.string.recognize_error_tip);
+
+    }
 }

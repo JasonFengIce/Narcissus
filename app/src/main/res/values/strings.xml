@@ -30,4 +30,5 @@
     <string name="more_weather_btn">更多省市天气</string>
     <string name="weather_current_location">当前位置:%1$s</string>
     <string name="recognize_error_tip_title">你是否想找</string>
+    <string name="recognize_error_tip">我没有听清,请您再说一次</string>
 </resources>

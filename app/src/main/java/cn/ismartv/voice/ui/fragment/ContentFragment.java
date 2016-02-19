@@ -102,16 +102,7 @@ public class ContentFragment extends BaseFragment {
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("url", datas.get(postion).getUrl());
 
-            if (!TextUtils.isEmpty(postUrl)) {
-                hashMap.put("orientation", "horizontal");
-                myViewHolder.imageView.setIsHorizontal(true);
-                Picasso.with(getContext()).load(postUrl)
-                        .memoryPolicy(MemoryPolicy.NO_STORE)
-                        .error(R.drawable.horizontal_preview_bg)
-                        .placeholder(R.drawable.horizontal_preview_bg)
-                        .into(myViewHolder.imageView);
-
-            } else if (!TextUtils.isEmpty(verticalUrl)) {
+            if (!TextUtils.isEmpty(verticalUrl)) {
                 hashMap.put("orientation", "vertical");
                 myViewHolder.imageView.setIsHorizontal(false);
                 Picasso.with(getContext())
@@ -119,6 +110,15 @@ public class ContentFragment extends BaseFragment {
                         .memoryPolicy(MemoryPolicy.NO_STORE)
                         .error(R.drawable.vertical_preview_bg)
                         .placeholder(R.drawable.vertical_preview_bg)
+                        .into(myViewHolder.imageView);
+
+            } else if (!TextUtils.isEmpty(postUrl)) {
+                hashMap.put("orientation", "horizontal");
+                myViewHolder.imageView.setIsHorizontal(true);
+                Picasso.with(getContext()).load(postUrl)
+                        .memoryPolicy(MemoryPolicy.NO_STORE)
+                        .error(R.drawable.horizontal_preview_bg)
+                        .placeholder(R.drawable.horizontal_preview_bg)
                         .into(myViewHolder.imageView);
 
             } else {

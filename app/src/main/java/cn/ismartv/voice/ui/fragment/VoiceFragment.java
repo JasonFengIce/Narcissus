@@ -261,7 +261,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
             case VoiceRecognitionClient.ERROR_CLIENT:
             case VoiceRecognitionClient.ERROR_RECORDER:
             case VoiceRecognitionClient.ERROR_SERVER:
-                ((HomeActivity) getActivity()).showRecognizeError();
+                showRecognizeErrorFragment();
                 break;
             case VoiceRecognitionClient.ERROR_NETWORK:
                 break;
@@ -322,7 +322,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
         transaction.hide(searchTipFragment);
         transaction.show(searchNoResultFragment);
         transaction.commit();
-        searchNoResultFragment.setTitle(rawText);
+        searchNoResultFragment.recognizeNoResult(rawText);
         ((HomeActivity) getActivity()).recommendVideo();
     }
 
@@ -331,8 +331,17 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
         transaction.hide(searchTipFragment);
         transaction.show(searchNoResultFragment);
         transaction.commit();
-        searchNoResultFragment.setTitle(rawText);
+        searchNoResultFragment.recognizeNoResult(rawText);
         ((HomeActivity) getActivity()).recommendApp();
+    }
+
+    private void showRecognizeErrorFragment() {
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.hide(searchTipFragment);
+        transaction.show(searchNoResultFragment);
+        transaction.commit();
+        searchNoResultFragment.recognizeError();
+        ((HomeActivity) getActivity()).showRecognizeError();
     }
 
     private void showSearchKeyWordFragment(String rawText) {
