@@ -61,7 +61,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
             LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.item_indicator, null);
             linearLayout.setBackgroundResource(R.drawable.seletor_indicator_item);
             TextView title = (TextView) linearLayout.findViewById(R.id.title);
-            title.setText(getChineseType(facet.getContent_type()) + "  ( " + facet.getTotal_count() + " )");
+            title.setText(facet.getName() + "  ( " + facet.getTotal_count() + " )");
 
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("type", facet.getContent_type());
@@ -127,18 +127,6 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
 
     }
 
-    private String getChineseType(String englishType) {
-        switch (englishType) {
-            case "sport":
-                return "体育";
-            case "movie":
-                return "电影";
-            case "comic":
-                return "少儿";
-            default:
-                return englishType;
-        }
-    }
 
     public void clearLayout() {
         videoTypeLayout.setVisibility(View.GONE);

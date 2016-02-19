@@ -90,7 +90,9 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
     public void onFocusChange(View v, boolean hasFocus) {
         switch (v.getId()) {
             case R.id.recyclerview:
-                firstItemView.requestFocus();
+                if (firstItemView != null) {
+                    firstItemView.requestFocus();
+                }
                 break;
         }
 
