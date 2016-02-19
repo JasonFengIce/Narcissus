@@ -16,7 +16,6 @@ import java.util.List;
 
 import cn.ismartv.voice.R;
 import cn.ismartv.voice.data.http.AppSearchObjectEntity;
-import cn.ismartv.voice.data.http.IndicatorResponseEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.ui.activity.HomeActivity;
 import cn.ismartv.voice.util.ViewScaleUtil;
@@ -33,6 +32,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
     private LinearLayout appContentLayout;
     private ImageView slideMenu;
 
+    private View selectedView;
 
     @Nullable
     @Override
@@ -68,6 +68,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
             hashMap.put("data", data);
             linearLayout.setTag(hashMap);
             linearLayout.setOnClickListener(this);
+            linearLayout.setOnFocusChangeListener(this);
             videoContentLayout.addView(linearLayout);
 
 
@@ -75,8 +76,6 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
 
         ((HomeActivity) getActivity()).handleIndicatorClick(entity.getFacet().get(0).getContent_type(), data);
     }
-
-
 
 
     public void initAppIndicator(List<AppSearchObjectEntity> entitys, String data) {
@@ -111,6 +110,9 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
                 ((HomeActivity) getActivity()).handleAppIndicatorClick(rawText);
                 break;
             default:
+                selectedView = v;
+                TextView textView = (TextView) v.findViewById(R.id.title);
+                textView.setTextColor(getResources().getColor(R.color._ffffff));
                 HashMap<String, String> tag = (HashMap<String, String>) v.getTag();
                 String type = tag.get("type");
                 String data = tag.get("data");
@@ -142,11 +144,23 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
     public void onFocusChange(View v, boolean hasFocus) {
         TextView textView = (TextView) v.findViewById(R.id.title);
         if (hasFocus) {
-            textView.setTextColor(getResources().getColor(R.color._ff9c3c));
-            ViewScaleUtil.scaleToLarge(v, 1.3f);
+            if (selectedView == v) {
+                textView.setTextColor(getResources().getColor(R.color._ffffff));
+                ViewScaleUtil.scaleToLarge(v, 1.3f);
+            } else {
+                textView.setTextColor(getResources().getColor(R.color._ff9c3c));
+                ViewScaleUtil.scaleToLarge(v, 1.3f);
+            }
+
         } else {
-            textView.setTextColor(getResources().getColor(R.color._a6a6a6));
-            ViewScaleUtil.scaleToNormal(v, 1.3f);
+            if (selectedView == v) {
+                textView.setTextColor(getResources().getColor(R.color._ffffff));
+                ViewScaleUtil.scaleToNormal(v, 1.3f);
+            } else {
+                textView.setTextColor(getResources().getColor(R.color._a6a6a6));
+                ViewScaleUtil.scaleToNormal(v, 1.3f);
+            }
+
         }
     }
 }
