@@ -100,10 +100,16 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
 
 
     private class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder> implements View.OnClickListener, View.OnFocusChangeListener {
-
         private List<SemantichObjectEntity> datas;
 
         public RecyclerAdapter(List<SemantichObjectEntity> objectEntities) {
+            if (objectEntities.size() <= 8) {
+                arrowUp.setVisibility(View.GONE);
+                arrowDown.setVisibility(View.GONE);
+            } else {
+                arrowUp.setVisibility(View.VISIBLE);
+                arrowDown.setVisibility(View.VISIBLE);
+            }
             this.datas = objectEntities;
         }
 
