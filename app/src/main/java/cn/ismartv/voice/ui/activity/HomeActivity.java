@@ -26,6 +26,7 @@ import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.core.update.AppUpdateUtilsV2;
 import cn.ismartv.voice.data.http.AppSearchObjectEntity;
 import cn.ismartv.voice.data.http.AppSearchResponseEntity;
+import cn.ismartv.voice.data.http.IndicatorResponseEntity;
 import cn.ismartv.voice.data.http.SemanticSearchRequestEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.data.table.AppTable;
@@ -208,19 +209,27 @@ public class HomeActivity extends BaseActivity {
     }
 
 
-    public void showIndicatorFragment(SemanticSearchResponseEntity entity, String rawText, long tag) {
+    public void showIndicatorFragment(SemanticSearchResponseEntity entity, String rawText) {
         hideFragment(voiceFragment);
         showFragment(indicatorFragment);
         indicatorFragment.clearLayout();
-        indicatorFragment.initIndicator(entity, rawText, tag);
+        indicatorFragment.initIndicator(entity, rawText);
     }
 
-    public void showAppIndicatorFragment(List<AppSearchObjectEntity> entity, String data, long tag) {
+
+    public void showAppIndicatorFragment(List<AppSearchObjectEntity> entity, String data) {
         hideFragment(voiceFragment);
         showFragment(indicatorFragment);
         indicatorFragment.clearLayout();
-        indicatorFragment.initAppIndicator(entity, data, tag);
+        indicatorFragment.initAppIndicator(entity, data);
     }
+
+    public void showAppIndicatorFragmentNoClear(List<AppSearchObjectEntity> entity, String data) {
+        hideFragment(voiceFragment);
+        showFragment(indicatorFragment);
+        indicatorFragment.initAppIndicator(entity, data);
+    }
+
 
     private void refreshContentFragment(SemanticSearchResponseEntity entity, String rawText) {
         hideFragment(appSearchFragment);

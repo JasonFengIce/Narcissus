@@ -34,6 +34,7 @@ import cn.ismartv.voice.core.handler.JsonDomainHandler;
 import cn.ismartv.voice.core.handler.MultiHandlerCallback;
 import cn.ismartv.voice.core.handler.WeatherHandlerCallback;
 import cn.ismartv.voice.core.initialization.AppTableInit;
+import cn.ismartv.voice.data.http.AppSearchObjectEntity;
 import cn.ismartv.voice.data.http.AppSearchResponseEntity;
 import cn.ismartv.voice.data.http.IndicatorResponseEntity;
 import cn.ismartv.voice.data.http.JsonRes;
@@ -270,7 +271,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
 
 
     @Override
-    public void onHandleSuccess(SemanticSearchResponseEntity entity, String jsonData, long tag, int requestCount) {
+    public void onHandleSuccess(SemanticSearchResponseEntity entity, String jsonData) {
 
         if (entity.getFacet().size() == 0) {
 
@@ -280,19 +281,19 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
 
 
         } else {
-            ((HomeActivity) getActivity()).showIndicatorFragment(entity, jsonData, tag);
+            ((HomeActivity) getActivity()).showIndicatorFragment(entity, jsonData);
         }
 
     }
 
     @Override
-    public void onAppHandleSuccess(AppSearchResponseEntity entity, String data, long tag, int requestCount) {
+    public void onAppHandleSuccess(AppSearchResponseEntity entity, String data) {
         if (entity.getObjects().size() == 0) {
 //        if (true) {
             String rawText = new JsonParser().parse(data).getAsJsonObject().get("raw_text").toString();
             showNoAppResultFragment(rawText);
         } else {
-            ((HomeActivity) getActivity()).showAppIndicatorFragment(entity.getObjects(), data, tag);
+            ((HomeActivity) getActivity()).showAppIndicatorFragment(entity.getObjects(), data);
         }
     }
 
@@ -301,6 +302,16 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
         if (list.size() == 0) {
             showNoVideoResultFragment("");
         } else {
+            for (IndicatorResponseEntity entity : list) {
+                switch (entity.getType()) {
+                    case "video":
+                        ((HomeActivity) getActivity()).showIndicatorFragment((SemanticSearchResponseEntity) entity.getSearchData(), entity.getSemantic());
+                        break;
+                    case "app":
+                        ((HomeActivity) getActivity()).showAppIndicatorFragmentNoClear((List<AppSearchObjectEntity>) entity.getSearchData(), entity.getSemantic());
+                        break;
+                }
+            }
 
         }
     }

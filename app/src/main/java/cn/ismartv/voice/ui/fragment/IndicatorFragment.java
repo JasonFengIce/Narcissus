@@ -16,6 +16,7 @@ import java.util.List;
 
 import cn.ismartv.voice.R;
 import cn.ismartv.voice.data.http.AppSearchObjectEntity;
+import cn.ismartv.voice.data.http.IndicatorResponseEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.ui.activity.HomeActivity;
 import cn.ismartv.voice.util.ViewScaleUtil;
@@ -53,7 +54,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
     }
 
 
-    public void initIndicator(SemanticSearchResponseEntity entity, String data, long tag) {
+    public void initIndicator(SemanticSearchResponseEntity entity, String data) {
         videoTypeLayout.setVisibility(View.VISIBLE);
         videoContentLayout.removeAllViews();
         for (SemanticSearchResponseEntity.Facet facet : entity.getFacet()) {
@@ -76,7 +77,9 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
     }
 
 
-    public void initAppIndicator(List<AppSearchObjectEntity> entitys, String data, long tag) {
+
+
+    public void initAppIndicator(List<AppSearchObjectEntity> entitys, String data) {
         appTypeLayout.setVisibility(View.VISIBLE);
         appContentLayout.removeAllViews();
         LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.item_indicator, null);

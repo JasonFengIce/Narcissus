@@ -16,6 +16,7 @@ import cn.ismartv.injectdb.library.query.Select;
 import cn.ismartv.voice.AppConstant;
 import cn.ismartv.voice.core.http.HttpAPI;
 import cn.ismartv.voice.core.http.HttpManager;
+import cn.ismartv.voice.data.http.AppSearchObjectEntity;
 import cn.ismartv.voice.data.http.AppSearchResponseEntity;
 import cn.ismartv.voice.data.http.IndicatorResponseEntity;
 import cn.ismartv.voice.data.http.SemanticSearchRequestEntity;
@@ -57,12 +58,25 @@ public class MultiHandler extends Thread {
                                 .execute();
                         AppSearchResponseEntity responseEntity = response.body();
 
+                        List<AppSearchObjectEntity> appList = new ArrayList<>();
+                        for (AppTable appTable : appTables) {
+
+                            AppSearchObjectEntity appSearchObjectEntity = new AppSearchObjectEntity();
+                            appSearchObjectEntity.setTitle(appTable.app_name);
+                            appSearchObjectEntity.setCaption(appTable.app_package);
+                            appSearchObjectEntity.setIsLocal(true);
+                            appList.add(appSearchObjectEntity);
+                        }
+                        appList.addAll(responseEntity.getObjects());
+
                         IndicatorResponseEntity entity = new IndicatorResponseEntity();
-                        entity.setTitle("全部应用");
                         entity.setType("app");
-                        entity.setCount(appTables.size() + responseEntity.getTotal_count());
-                        entity.setSearchData(rawText);
+                        entity.setSearchData(appList);
+                        entity.setSemantic(jsonObject.toString());
+
                         indicatorList.add(entity);
+
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -70,20 +84,16 @@ public class MultiHandler extends Thread {
                 case "video":
                     SemanticSearchRequestEntity requestEntity = new SemanticSearchRequestEntity();
                     requestEntity.setSemantic(jsonObject);
-                    requestEntity.setContent_type("movie");
                     requestEntity.setPage_on(AppConstant.DEFAULT_PAGE_NO);
                     requestEntity.setPage_count(AppConstant.DEFAULT_PAGE_COUNT);
                     try {
                         Response<SemanticSearchResponseEntity> response = HttpManager.getInstance().resetAdapter_QIANGUANGZHAO.create(HttpAPI.SemanticSearch.class)
                                 .doRequest(requestEntity).execute();
-                        for (SemanticSearchResponseEntity.Facet facet : response.body().getFacet()) {
-                            IndicatorResponseEntity entity = new IndicatorResponseEntity();
-                            entity.setTitle(getChineseType(facet.getContent_type()));
-                            entity.setType(facet.getContent_type());
-                            entity.setCount(facet.getCount());
-                            entity.setSearchData(rawText);
-                            indicatorList.add(entity);
-                        }
+                        IndicatorResponseEntity entity = new IndicatorResponseEntity();
+                        entity.setType("video");
+                        entity.setSearchData(response.body());
+                        entity.setSemantic(jsonObject.toString());
+                        indicatorList.add(0, entity);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -95,18 +105,6 @@ public class MultiHandler extends Thread {
         messageHandler.sendMessage(message);
     }
 
-    private String getChineseType(String englishType) {
-        switch (englishType) {
-            case "sport":
-                return "体育";
-            case "movie":
-                return "电影";
-            case "comic":
-                return "少儿";
-            default:
-                return englishType;
-        }
-    }
 
     private class MessageHandler extends Handler {
         public WeakReference<MultiHandler> weakReference;

@@ -19,7 +19,7 @@ public class DefaultHandler {
     private static final String TAG = "DefaultHandler";
 
 
-    public DefaultHandler(final JsonObject jsonObject, final HandleCallback callback, final long tag, final int domainCount) {
+    public DefaultHandler(final JsonObject jsonObject, final HandleCallback callback) {
         SemanticSearchRequestEntity entity = new SemanticSearchRequestEntity();
         entity.setSemantic(jsonObject);
         entity.setPage_on(1);
@@ -31,7 +31,7 @@ public class DefaultHandler {
             @Override
             public void onResponse(Response<SemanticSearchResponseEntity> response) {
                 if (response.errorBody() == null) {
-                    callback.onHandleSuccess(response.body(), jsonObject.toString(), tag , domainCount);
+                    callback.onHandleSuccess(response.body(), jsonObject.toString());
                 } else {
 
                 }
