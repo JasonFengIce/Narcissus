@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ public class AppHandler {
                     appSearchResponseEntity.setObjects(appList);
                     appSearchResponseEntity.setTotal_count(appList.size());
 
-                    callback.onAppHandleSuccess(appSearchResponseEntity, jsonObject.toString());
+                    callback.onAppHandleSuccess(appSearchResponseEntity, new Gson().toJson(jsonObject));
                 } else {
                     //error
                 }

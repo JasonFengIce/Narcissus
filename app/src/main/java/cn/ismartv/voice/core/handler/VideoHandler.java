@@ -2,6 +2,7 @@ package cn.ismartv.voice.core.handler;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import cn.ismartv.voice.core.http.HttpAPI;
@@ -32,7 +33,7 @@ public class VideoHandler {
             @Override
             public void onResponse(Response<SemanticSearchResponseEntity> response) {
                 if (response.errorBody() == null) {
-                    callback.onHandleSuccess(response.body(), jsonObject.toString());
+                    callback.onHandleSuccess(response.body(), new Gson().toJson(jsonObject));
                 } else {
 
                 }

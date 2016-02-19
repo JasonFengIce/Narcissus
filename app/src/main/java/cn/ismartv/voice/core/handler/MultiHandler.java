@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -72,7 +73,7 @@ public class MultiHandler extends Thread {
                         IndicatorResponseEntity entity = new IndicatorResponseEntity();
                         entity.setType("app");
                         entity.setSearchData(appList);
-                        entity.setSemantic(jsonObject.toString());
+                        entity.setSemantic(new Gson().toJson(jsonObject));
 
                         indicatorList.add(entity);
 
@@ -92,7 +93,7 @@ public class MultiHandler extends Thread {
                         IndicatorResponseEntity entity = new IndicatorResponseEntity();
                         entity.setType("video");
                         entity.setSearchData(response.body());
-                        entity.setSemantic(jsonObject.toString());
+                        entity.setSemantic(new Gson().toJson(jsonObject));
                         indicatorList.add(0, entity);
                     } catch (IOException e) {
                         e.printStackTrace();

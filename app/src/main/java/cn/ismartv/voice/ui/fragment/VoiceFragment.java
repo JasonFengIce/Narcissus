@@ -308,11 +308,14 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
                         ((HomeActivity) getActivity()).showIndicatorFragment((SemanticSearchResponseEntity) entity.getSearchData(), entity.getSemantic());
                         break;
                     case "app":
-                        ((HomeActivity) getActivity()).showAppIndicatorFragmentNoClear((List<AppSearchObjectEntity>) entity.getSearchData(), entity.getSemantic());
+                        if (list.size() == 1) {
+                            ((HomeActivity) getActivity()).showAppIndicatorFragmentNoClear((List<AppSearchObjectEntity>) entity.getSearchData(), entity.getSemantic());
+                        } else {
+                            ((HomeActivity) getActivity()).showAppIndicatorFragment((List<AppSearchObjectEntity>) entity.getSearchData(), entity.getSemantic());
+                        }
                         break;
                 }
             }
-
         }
     }
 

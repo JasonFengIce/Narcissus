@@ -41,13 +41,14 @@ public class JsonDomainHandler {
 //            if (!filterResults.isEmpty()) {
 //            } else {
             Object resultObject = jsonRes.getResults();
-            Log.i(TAG, resultObject.toString());
-            if (resultObject == null || new JsonParser().parse(resultObject.toString()).getAsJsonArray().size() == 0) {
+            String json = new Gson().toJson(resultObject);
+            Log.i(TAG, json);
+            if (resultObject == null || new JsonParser().parse(json).getAsJsonArray().size() == 0) {
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("raw_text", rawText);
                 new DefaultHandler(jsonObject, callback);
-            } else if (new JsonParser().parse(resultObject.toString()).getAsJsonArray().size() == 1) {
-                JsonArray jsonArray = new JsonParser().parse(resultObject.toString()).getAsJsonArray();
+            } else if (new JsonParser().parse(json).getAsJsonArray().size() == 1) {
+                JsonArray jsonArray = new JsonParser().parse(json).getAsJsonArray();
                 JsonObject o = jsonArray.get(0).getAsJsonObject();
                 o.addProperty("raw_text", rawText);
                 String domain = o.get("domain").getAsString();
@@ -64,7 +65,7 @@ public class JsonDomainHandler {
                 }
 
             } else {
-                JsonArray array = new JsonParser().parse(resultObject.toString()).getAsJsonArray();
+                JsonArray array = new JsonParser().parse(json).getAsJsonArray();
                 new MultiHandler(array, rawText, multiHandlerCallback).start();
             }
         }

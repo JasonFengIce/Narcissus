@@ -67,6 +67,7 @@ public class HomeActivity extends BaseActivity {
     private RecognizeErrorFragment recognizeErrorFragment;
 
     private List<BaseFragment> fragmentList;
+    private List<BaseFragment> leftFragmentList;
 
     private boolean voiceBtnIsDown = false;
 
@@ -96,6 +97,9 @@ public class HomeActivity extends BaseActivity {
         fragmentList.add(weatherFragment);
         fragmentList.add(recognizeErrorFragment);
 
+        leftFragmentList = new ArrayList<>();
+        leftFragmentList.add(voiceFragment);
+        leftFragmentList.add(indicatorFragment);
 
         AppUpdateUtilsV2.getInstance(this).checkAppUpdate();
 
@@ -151,8 +155,7 @@ public class HomeActivity extends BaseActivity {
         if (keyCode == KeyEvent.KEYCODE_F12) {
             if (!voiceBtnIsDown) {
                 voiceBtnIsDown = true;
-                hideFragment(indicatorFragment);
-                showFragment(voiceFragment);
+                showLeftFragment(voiceFragment);
                 voiceFragment.startSpeek();
             }
 
@@ -220,48 +223,35 @@ public class HomeActivity extends BaseActivity {
 
 
     public void showIndicatorFragment(SemanticSearchResponseEntity entity, String rawText) {
-        hideFragment(voiceFragment);
-        showFragment(indicatorFragment);
+        showLeftFragment(indicatorFragment);
         indicatorFragment.clearLayout();
         indicatorFragment.initIndicator(entity, rawText);
     }
 
 
     public void showAppIndicatorFragment(List<AppSearchObjectEntity> entity, String data) {
-        hideFragment(voiceFragment);
-        showFragment(indicatorFragment);
+        showLeftFragment(indicatorFragment);
         indicatorFragment.clearLayout();
         indicatorFragment.initAppIndicator(entity, data);
     }
 
     public void showAppIndicatorFragmentNoClear(List<AppSearchObjectEntity> entity, String data) {
-        hideFragment(voiceFragment);
-        showFragment(indicatorFragment);
+        showLeftFragment(indicatorFragment);
         indicatorFragment.initAppIndicator(entity, data);
     }
 
 
     private void refreshContentFragment(SemanticSearchResponseEntity entity, String rawText) {
-        hideFragment(appSearchFragment);
-        hideFragment(searchLoadingFragment);
-        showFragment(contentFragment);
+        showMyFragment(contentFragment);
         contentFragment.notifyDataChanged(entity, rawText);
     }
 
     private void refreshAppSearchFragment(final List<AppSearchObjectEntity> list, String rawText) {
-        hideFragment(searchLoadingFragment);
-        hideFragment(contentFragment);
-        showFragment(appSearchFragment);
+        showMyFragment(appSearchFragment);
         appSearchFragment.notifyDataChanged(list, rawText);
 
     }
 
-    private void showFragment(Fragment fragment) {
-        if (fragment.isHidden()) {
-            getSupportFragmentManager().beginTransaction().show(fragment).commit();
-        }
-
-    }
 
     private void hideFragment(Fragment fragment) {
         if (fragment.isVisible()) {
@@ -325,8 +315,7 @@ public class HomeActivity extends BaseActivity {
     }
 
     public void backToVoiceFragment() {
-        hideFragment(indicatorFragment);
-        showFragment(voiceFragment);
+        showLeftFragment(voiceFragment);
     }
 
 
@@ -348,33 +337,24 @@ public class HomeActivity extends BaseActivity {
     }
 
     public void recommendVideo() {
-        hideFragment(appSearchFragment);
-        hideFragment(searchLoadingFragment);
-        showFragment(contentFragment);
+        showMyFragment(contentFragment);
         contentFragment.setSearchTitle();
         contentFragment.fetchSharpHotWords();
     }
 
     public void recommendApp() {
-        hideFragment(contentFragment);
-        hideFragment(searchLoadingFragment);
-        showFragment(appSearchFragment);
+        showMyFragment(appSearchFragment);
         appSearchFragment.setSearchTitle();
         appSearchFragment.fetchRecommendApp();
     }
 
     public void showSearchLoading() {
-        hideFragment(contentFragment);
-        hideFragment(appSearchFragment);
-        showFragment(searchLoadingFragment);
+        showMyFragment(searchLoadingFragment);
     }
 
     public void showWeatherNoRegion(CityTable cityTable) {
-        hideFragment(contentFragment);
-        hideFragment(appSearchFragment);
-        hideFragment(searchLoadingFragment);
         weatherFragment.setLocation(cityTable);
-        showFragment(weatherFragment);
+        showMyFragment(weatherFragment);
     }
 
 
@@ -390,5 +370,11 @@ public class HomeActivity extends BaseActivity {
         getSupportFragmentManager().beginTransaction().show(fragment).commit();
     }
 
-
+    private void showLeftFragment(BaseFragment fragment) {
+        for (BaseFragment f : leftFragmentList) {
+            if (fragment != f && f.isVisible())
+                getSupportFragmentManager().beginTransaction().hide(f).commit();
+        }
+        getSupportFragmentManager().beginTransaction().show(fragment).commit();
+    }
 }
