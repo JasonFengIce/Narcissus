@@ -26,12 +26,12 @@ import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.core.update.AppUpdateUtilsV2;
 import cn.ismartv.voice.data.http.AppSearchObjectEntity;
 import cn.ismartv.voice.data.http.AppSearchResponseEntity;
-import cn.ismartv.voice.data.http.IndicatorResponseEntity;
 import cn.ismartv.voice.data.http.SemanticSearchRequestEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.data.table.AppTable;
 import cn.ismartv.voice.data.table.CityTable;
 import cn.ismartv.voice.ui.fragment.AppSearchFragment;
+import cn.ismartv.voice.ui.fragment.BaseFragment;
 import cn.ismartv.voice.ui.fragment.ContentFragment;
 import cn.ismartv.voice.ui.fragment.IndicatorFragment;
 import cn.ismartv.voice.ui.fragment.RecognizeErrorFragment;
@@ -66,6 +66,8 @@ public class HomeActivity extends BaseActivity {
     private WeatherFragment weatherFragment;
     private RecognizeErrorFragment recognizeErrorFragment;
 
+    private List<BaseFragment> fragmentList;
+
     private boolean voiceBtnIsDown = false;
 
     private View contentView;
@@ -87,6 +89,13 @@ public class HomeActivity extends BaseActivity {
         searchLoadingFragment = new SearchLoadingFragment();
         weatherFragment = new WeatherFragment();
         recognizeErrorFragment = new RecognizeErrorFragment();
+        fragmentList = new ArrayList<>();
+        fragmentList.add(contentFragment);
+        fragmentList.add(appSearchFragment);
+        fragmentList.add(searchLoadingFragment);
+        fragmentList.add(weatherFragment);
+        fragmentList.add(recognizeErrorFragment);
+
 
         AppUpdateUtilsV2.getInstance(this).checkAppUpdate();
 
@@ -100,11 +109,12 @@ public class HomeActivity extends BaseActivity {
             transaction.add(R.id.right_fragment, appSearchFragment, APP_SEARCH_FRAGMENT_TAG);
             transaction.add(R.id.right_fragment, searchLoadingFragment, SEARCH_LOADING_FRAGMENT);
             transaction.add(R.id.right_fragment, weatherFragment, WEATHER_FRAGMENT_TAG);
-//            transaction.add(R.id.right_fragment, recognizeErrorFragment, RECOGNIZE_ERROR_FRAGMENT_TAG);
+            transaction.add(R.id.right_fragment, recognizeErrorFragment, RECOGNIZE_ERROR_FRAGMENT_TAG);
             transaction.hide(searchLoadingFragment);
             transaction.hide(indicatorFragment);
             transaction.hide(appSearchFragment);
             transaction.hide(weatherFragment);
+            transaction.hide(recognizeErrorFragment);
 //            transaction.hide(contentFragment);
             transaction.commit();
         }
@@ -369,7 +379,16 @@ public class HomeActivity extends BaseActivity {
 
 
     public void showRecognizeError() {
-        getSupportFragmentManager().beginTransaction().replace(R.id.right_fragment, recognizeErrorFragment, RECOGNIZE_ERROR_FRAGMENT_TAG).commit();
+        showMyFragment(recognizeErrorFragment);
     }
+
+    private void showMyFragment(BaseFragment fragment) {
+        for (BaseFragment f : fragmentList) {
+            if (fragment != f && f.isVisible())
+                getSupportFragmentManager().beginTransaction().hide(f).commit();
+        }
+        getSupportFragmentManager().beginTransaction().show(fragment).commit();
+    }
+
 
 }
