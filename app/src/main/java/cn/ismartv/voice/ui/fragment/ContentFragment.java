@@ -35,7 +35,7 @@ import retrofit2.Retrofit;
 /**
  * Created by huaijie on 1/18/16.
  */
-public class ContentFragment extends BaseFragment {
+public class ContentFragment extends BaseFragment implements View.OnFocusChangeListener {
     private RecyclerView recyclerView;
     private TextView searchTitle;
 //    private static final int resIds[] = {R.drawable.sample_1, R.drawable.sample_2, R.drawable.sample_3, R.drawable.sample_4, R.drawable.sample_5,
@@ -48,6 +48,8 @@ public class ContentFragment extends BaseFragment {
 
 
     };
+
+    private View firstItemView;
 
     @Nullable
     @Override
@@ -68,6 +70,7 @@ public class ContentFragment extends BaseFragment {
         int horizontalSpacingInPixels = (int) (getResources().getDimensionPixelSize(R.dimen.content_fragment_item_horizontal_space) / getDensityRate());
         recyclerView.addItemDecoration(new SpaceItemDecoration(verticalSpacingInPixels, horizontalSpacingInPixels));
         recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setOnFocusChangeListener(this);
     }
 
     public void notifyDataChanged(SemanticSearchResponseEntity responseEntity, String data) {
@@ -76,6 +79,16 @@ public class ContentFragment extends BaseFragment {
         searchTitle.setText(String.format(rawTextValue, rawText));
         recyclerView.setAdapter(new RecyclerAdapter(responseEntity.getFacet().get(0).getObjects()));
         //first item request focus
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        switch (v.getId()) {
+            case R.id.recyclerview:
+                firstItemView.requestFocus();
+                break;
+        }
+
     }
 
 
@@ -133,6 +146,7 @@ public class ContentFragment extends BaseFragment {
             myViewHolder.mItemView.setOnClickListener(this);
             myViewHolder.mItemView.setOnFocusChangeListener(this);
             if (postion == 0) {
+                firstItemView = myViewHolder.mItemView;
                 myViewHolder.mItemView.requestFocusFromTouch();
                 myViewHolder.mItemView.requestFocus();
             }
