@@ -95,7 +95,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
         childFragmentList = new ArrayList<>();
         childFragmentList.add(searchTipFragment);
         childFragmentList.add(searchNoResultFragment);
-        childFragmentList.add(searchTipFragment);
+        childFragmentList.add(searchKeyWordFragment);
 
         return inflater.inflate(R.layout.fragment_voice, null);
     }
@@ -321,28 +321,19 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
 
 
     private void showNoVideoResultFragment(String rawText) {
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.hide(searchTipFragment);
-        transaction.show(searchNoResultFragment);
-        transaction.commit();
+        showFragment(searchNoResultFragment);
         searchNoResultFragment.recognizeNoResult(rawText);
         ((HomeActivity) getActivity()).recommendVideo();
     }
 
     private void showNoAppResultFragment(String rawText) {
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.hide(searchTipFragment);
-        transaction.show(searchNoResultFragment);
-        transaction.commit();
+        showFragment(searchNoResultFragment);
         searchNoResultFragment.recognizeNoResult(rawText);
         ((HomeActivity) getActivity()).recommendApp();
     }
 
     private void showRecognizeErrorFragment() {
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.hide(searchTipFragment);
-        transaction.show(searchNoResultFragment);
-        transaction.commit();
+        showFragment(searchNoResultFragment);
         searchNoResultFragment.recognizeError();
         ((HomeActivity) getActivity()).showRecognizeError();
     }
