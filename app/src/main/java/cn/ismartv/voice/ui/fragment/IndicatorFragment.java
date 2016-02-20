@@ -70,9 +70,13 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
             linearLayout.setOnClickListener(this);
             linearLayout.setOnFocusChangeListener(this);
             videoContentLayout.addView(linearLayout);
-
-
         }
+
+        if (videoContentLayout.getChildCount() != 0) {
+            TextView textView = (TextView) videoContentLayout.findViewById(R.id.title);
+            textView.setTextColor(getResources().getColor(R.color._ffffff));
+        }
+
 
         ((HomeActivity) getActivity()).handleIndicatorClick(entity.getFacet().get(0).getContent_type(), data);
     }
@@ -93,6 +97,10 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
         appContentLayout.addView(linearLayout);
 
         if (videoTypeLayout.getVisibility() == View.GONE) {
+            if (appContentLayout.getChildCount() != 0) {
+                TextView textView = (TextView) appContentLayout.findViewById(R.id.title);
+                textView.setTextColor(getResources().getColor(R.color._ffffff));
+            }
             ((HomeActivity) getActivity()).handleAppIndicatorClick(rawText);
         }
 
