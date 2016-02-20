@@ -49,7 +49,7 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
 
     };
 
-    private View firstItemView;
+    private View lostFocusItemView;
     private ImageView arrowUp;
     private ImageView arrowDown;
 
@@ -90,8 +90,8 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
     public void onFocusChange(View v, boolean hasFocus) {
         switch (v.getId()) {
             case R.id.recyclerview:
-                if (firstItemView != null) {
-                    firstItemView.requestFocus();
+                if (lostFocusItemView != null) {
+                    lostFocusItemView.requestFocus();
                 }
                 break;
         }
@@ -159,7 +159,7 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
             myViewHolder.mItemView.setOnClickListener(this);
             myViewHolder.mItemView.setOnFocusChangeListener(this);
             if (postion == 0) {
-                firstItemView = myViewHolder.mItemView;
+                lostFocusItemView = myViewHolder.mItemView;
                 myViewHolder.mItemView.requestFocusFromTouch();
                 myViewHolder.mItemView.requestFocus();
             }
@@ -200,6 +200,7 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
                 imageView.setBackgroundResource(R.drawable.item_focus);
                 ViewScaleUtil.scaleToLarge(v, 1.15f);
             } else {
+                lostFocusItemView = v;
                 textView.setSelected(false);
                 imageView.setBackgroundDrawable(null);
                 ViewScaleUtil.scaleToNormal(v, 1.15f);
