@@ -23,14 +23,46 @@
         android:src="@drawable/voice_fragment_divider_line"
         />
 
-    <cn.ismartv.recyclerview.widget.RecyclerView
-        android:id="@+id/app_search_list"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/content_fragment_recycler_margin_lr"
-        android:layout_marginRight="@dimen/content_fragment_recycler_margin_lr"
-        android:layout_marginTop="@dimen/content_fragment_recycler_margin_top"
-        android:descendantFocusability="afterDescendants"
-        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        >
+
+        <ImageView
+            android:id="@+id/arrow_up"
+            android:layout_width="@dimen/arrow_img_width"
+            android:layout_height="@dimen/arrow_img_height"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/selector_arrow_up"
+            android:visibility="gone"/>
+
+        <cn.ismartv.recyclerview.widget.RecyclerView
+            android:id="@+id/app_search_list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/content_fragment_recycler_margin_lr"
+            android:layout_marginRight="@dimen/content_fragment_recycler_margin_lr"
+            android:layout_marginTop="@dimen/content_fragment_recycler_margin_top"
+            android:descendantFocusability="afterDescendants"
+            />
+
+        <ImageView
+            android:id="@+id/arrow_down"
+            android:layout_width="@dimen/arrow_img_width"
+            android:layout_height="@dimen/arrow_img_height"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/selector_arrow_down"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
 </LinearLayout>

@@ -2,8 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:descendantFocusability="afterDescendants"
-
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
     >
 
     <ImageView
@@ -11,7 +12,6 @@
         android:layout_width="@dimen/item_app_search_width"
         android:layout_height="@dimen/item_app_search_width"
         android:background="@drawable/selector_item"
-        android:focusable="true"
         android:scaleType="fitXY"
 
         />
@@ -22,8 +22,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/image"
         android:layout_marginTop="@dimen/content_fragment_item_text_margin_top"
+        android:ellipsize="marquee"
         android:gravity="center"
-        android:maxLength="6"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:singleLine="true"
         android:textSize="@dimen/textSize_36sp"
         />
 

@@ -37,11 +37,16 @@ import retrofit2.Retrofit;
 /**
  * Created by huaijie on 1/28/16.
  */
-public class AppSearchFragment extends BaseFragment {
+public class AppSearchFragment extends BaseFragment implements View.OnFocusChangeListener {
     private View contentView;
 
     private RecyclerView recyclerView;
     private TextView searchTitle;
+
+
+    private ImageView arrowUp;
+    private ImageView arrowDown;
+    private View firstItemView;
 
     @Nullable
     @Override
@@ -55,6 +60,10 @@ public class AppSearchFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = (RecyclerView) view.findViewById(R.id.app_search_list);
         searchTitle = (TextView) view.findViewById(R.id.search_title);
+
+        arrowUp = (ImageView) view.findViewById(R.id.arrow_up);
+        arrowDown = (ImageView) view.findViewById(R.id.arrow_down);
+        arrowUp.bringToFront();
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 4, GridLayoutManager.VERTICAL, false);
 
         int verticalSpacingInPixels = (int) (getResources().getDimensionPixelSize(R.dimen.content_fragment_item_vertical_space) / getDensityRate());
@@ -74,11 +83,31 @@ public class AppSearchFragment extends BaseFragment {
         searchTitle.setText(getString(R.string.recommend_content_title));
     }
 
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        switch (v.getId()) {
+            case R.id.recyclerview:
+                if (firstItemView != null) {
+                    firstItemView.requestFocus();
+                }
+                break;
+        }
+
+    }
+
     private class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder> implements View.OnClickListener, View.OnFocusChangeListener {
 
         private List<AppSearchObjectEntity> datas;
 
         public RecyclerAdapter(List<AppSearchObjectEntity> objectEntities) {
+            if (objectEntities.size() <= 8) {
+                arrowUp.setVisibility(View.GONE);
+                arrowDown.setVisibility(View.GONE);
+            } else {
+                arrowUp.setVisibility(View.VISIBLE);
+                arrowDown.setVisibility(View.VISIBLE);
+            }
+
             this.datas = objectEntities;
         }
 
@@ -109,6 +138,7 @@ public class AppSearchFragment extends BaseFragment {
             myViewHolder.mItemView.setOnClickListener(this);
             myViewHolder.mItemView.setOnFocusChangeListener(this);
             if (postion == 0) {
+                firstItemView = myViewHolder.mItemView;
                 myViewHolder.mItemView.requestFocusFromTouch();
                 myViewHolder.mItemView.requestFocus();
             }
@@ -136,10 +166,13 @@ public class AppSearchFragment extends BaseFragment {
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
             ImageView imageView = (ImageView) v.findViewById(R.id.image);
+            TextView textView = (TextView) v.findViewById(R.id.id_number);
             if (hasFocus) {
+                textView.setSelected(true);
                 imageView.setBackgroundResource(R.drawable.item_focus);
                 ViewScaleUtil.scaleToLarge(v, 1.15f);
             } else {
+                textView.setSelected(false);
                 imageView.setBackgroundDrawable(null);
                 ViewScaleUtil.scaleToNormal(v, 1.15f);
             }
