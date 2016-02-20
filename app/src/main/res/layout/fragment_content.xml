@@ -39,7 +39,8 @@
             android:layout_centerHorizontal="true"
             android:clickable="true"
             android:focusable="true"
-            android:src="@drawable/selector_arrow_up"/>
+            android:src="@drawable/selector_arrow_up"
+            android:visibility="gone"/>
 
         <cn.ismartv.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview"
@@ -61,7 +62,8 @@
             android:layout_centerHorizontal="true"
             android:clickable="true"
             android:focusable="true"
-            android:src="@drawable/selector_arrow_down"/>
+            android:src="@drawable/selector_arrow_down"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 
