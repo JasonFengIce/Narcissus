@@ -1,5 +1,6 @@
 package cn.ismartv.voice.ui.fragment;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -156,10 +158,15 @@ public class AppSearchFragment extends BaseFragment implements View.OnFocusChang
             if (objectEntity.isLocal()) {
                 launchAppTransition(objectEntity.getCaption());
             } else {
+
                 Intent intent = new Intent("com.boxmate.tv.detail");
                 //app_id从服务端获取
                 intent.putExtra("app_id", objectEntity.getPk());
-                startActivity(intent);
+                try {
+                    startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    Toast.makeText(getContext(), R.string.ismartv_store_app_not_install, Toast.LENGTH_LONG).show();
+                }
             }
         }
 
