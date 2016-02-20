@@ -62,6 +62,9 @@ public class JsonDomainHandler {
                     case "weather":
                         new WeatherHandler(o, weatherHandlerCallback);
                         break;
+                    default:
+                        new VideoHandler(o, callback);
+                        break;
                 }
 
             } else {
