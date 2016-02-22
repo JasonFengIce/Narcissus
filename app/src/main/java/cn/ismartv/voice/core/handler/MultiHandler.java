@@ -18,6 +18,7 @@ import cn.ismartv.voice.AppConstant;
 import cn.ismartv.voice.core.http.HttpAPI;
 import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.data.http.AppSearchObjectEntity;
+import cn.ismartv.voice.data.http.AppSearchRequestParams;
 import cn.ismartv.voice.data.http.AppSearchResponseEntity;
 import cn.ismartv.voice.data.http.IndicatorResponseEntity;
 import cn.ismartv.voice.data.http.SemanticSearchRequestEntity;
@@ -54,8 +55,13 @@ public class MultiHandler extends Thread {
                     String appName = jsonObject.get("object").getAsJsonObject().get("appname").toString().replace("\"", "");
                     final List<AppTable> appTables = new Select().from(AppTable.class).where("app_name like ?", "%" + appName + "%").execute();
                     try {
+                        AppSearchRequestParams params = new AppSearchRequestParams();
+                        params.setKeyword(appName);
+                        params.setContent_type("app");
+                        params.setPage_count(30);
+                        params.setPage_no(1);
                         Response<AppSearchResponseEntity> response = HttpManager.getInstance().resetAdapter_QIANGUANGZHAO.create(HttpAPI.AppSearch.class)
-                                .doRequest(appName, AppConstant.DEFAULT_PAGE_NO, AppConstant.DEFAULT_PAGE_COUNT)
+                                .doRequest(params)
                                 .execute();
                         AppSearchResponseEntity responseEntity = response.body();
 
@@ -68,7 +74,11 @@ public class MultiHandler extends Thread {
                             appSearchObjectEntity.setIsLocal(true);
                             appList.add(appSearchObjectEntity);
                         }
-                        appList.addAll(responseEntity.getObjects());
+
+                      AppSearchResponseEntity.Facet[] facet = responseEntity.getFacet();
+                        if (facet != null) {
+                            appList.addAll(responseEntity.getFacet()[0].getObjects());
+                        }
 
                         IndicatorResponseEntity entity = new IndicatorResponseEntity();
                         entity.setType("app");

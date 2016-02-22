@@ -291,12 +291,12 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
 
     @Override
     public void onAppHandleSuccess(AppSearchResponseEntity entity, String data) {
-        if (entity.getObjects().size() == 0) {
+        if (entity.getFacet() == null || entity.getFacet()[0].getObjects().size() == 0) {
 //        if (true) {
             String rawText = new JsonParser().parse(data).getAsJsonObject().get("raw_text").toString();
             showNoAppResultFragment(rawText);
         } else {
-            ((HomeActivity) getActivity()).showAppIndicatorFragment(entity.getObjects(), data);
+            ((HomeActivity) getActivity()).showAppIndicatorFragment(entity.getFacet()[0].getObjects(), data);
         }
     }
 

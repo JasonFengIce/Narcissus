@@ -9,7 +9,24 @@ public class SemantichObjectEntity {
     private String vertical_url;
     private String pk;
     private String url;
+    private String content_model;
+    private AttributesEntity attributes;
 
+    public AttributesEntity getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(AttributesEntity attributes) {
+        this.attributes = attributes;
+    }
+
+    public String getContent_model() {
+        return content_model;
+    }
+
+    public void setContent_model(String content_model) {
+        this.content_model = content_model;
+    }
 
     public String getUrl() {
         return url;

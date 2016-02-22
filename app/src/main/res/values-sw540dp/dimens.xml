@@ -98,4 +98,18 @@
 <dimen name="arrow_img_width">30.00dp</dimen>
 <dimen name="arrow_img_height">20.00dp</dimen>
 
+<dimen name="film_star_title_marginTop">50.50dp</dimen>
+<dimen name="film_star_title_marginLeft">85.50dp</dimen>
+
+<dimen name="film_star_indicator_width">19.50dp</dimen>
+<dimen name="film_star_indicator_height">18.00dp</dimen>
+<dimen name="film_star_indicator_bg_width">263.00dp</dimen>
+<dimen name="film_star_indicator_bg_height">13.00dp</dimen>
+
+<dimen name="filmStar_contentArrow_width">17.50dp</dimen>
+<dimen name="filmStar_contentArrow_height">30.00dp</dimen>
+
+<dimen name="filmStar_content_height">300.00dp</dimen>
+
+
 </resources>

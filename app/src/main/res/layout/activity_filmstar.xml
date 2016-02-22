@@ -2,34 +2,130 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:background="#405185"
               android:orientation="vertical">
 
     <TextView
-        android:id="@+id/film_star_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <LinearLayout
-        android:id="@+id/film_list_indicator"
+        android:id="@+id/film_star_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginLeft="@dimen/film_star_title_marginLeft"
+        android:layout_marginTop="@dimen/film_star_title_marginTop"
+        android:textSize="@dimen/textSize_40sp"/>
+
+    <LinearLayout
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+
+        >
+
+        <ImageView
+            android:id="@+id/indicator_left"
+            android:layout_width="@dimen/film_star_indicator_width"
+            android:layout_height="@dimen/film_star_indicator_height"
+            android:background="@drawable/selector_star_arrow_left"/>
+
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/film_list_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <ImageView
+            android:id="@+id/indicator_right"
+            android:layout_width="@dimen/film_star_indicator_width"
+            android:layout_height="@dimen/film_star_indicator_height"
+            android:background="@drawable/selector_star_arrow_right"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/film_scroll_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/filmStar_content_height"
         android:orientation="horizontal">
 
+        <ImageView
+            android:id="@+id/content_arrow_left"
+            android:layout_width="@dimen/filmStar_contentArrow_width"
+            android:layout_height="@dimen/filmStar_contentArrow_height"
+            android:background="@drawable/select_arrow_left"
+            />
+
+        <cn.ismartv.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/content_fragment_recycler_margin_top"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:paddingLeft="@dimen/content_fragment_recycler_margin_lr"
+            android:paddingRight="@dimen/content_fragment_recycler_margin_lr"/>
+
+        <ImageView
+            android:id="@+id/content_arrow_right"
+            android:layout_width="@dimen/filmStar_contentArrow_width"
+            android:layout_height="@dimen/filmStar_contentArrow_height"
+            android:background="@drawable/select_arrow_right"
+            />
+
     </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_line_height"
+        android:background="@drawable/film_star_divider"/>
 
     <LinearLayout
         android:id="@+id/film_description"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/actor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textSize_30sp"/>
+
+            <TextView
+                android:id="@+id/director"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textSize_30sp"/>
+
+            <TextView
+                android:id="@+id/area"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textSize_30sp"/>
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="@dimen/textSize_30sp"/>
 
     </LinearLayout>
 

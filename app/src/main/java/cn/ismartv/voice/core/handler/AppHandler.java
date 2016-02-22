@@ -3,6 +3,7 @@ package cn.ismartv.voice.core.handler;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -15,6 +16,7 @@ import cn.ismartv.voice.MainApplication;
 import cn.ismartv.voice.core.http.HttpAPI;
 import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.data.http.AppSearchObjectEntity;
+import cn.ismartv.voice.data.http.AppSearchRequestParams;
 import cn.ismartv.voice.data.http.AppSearchResponseEntity;
 import cn.ismartv.voice.data.table.AppTable;
 import retrofit2.Callback;
@@ -34,9 +36,15 @@ public class AppHandler {
 
 
         Retrofit retrofit = HttpManager.getInstance().resetAdapter_QIANGUANGZHAO;
-        retrofit.create(HttpAPI.AppSearch.class).doRequest(appName, 1, 30).enqueue(new Callback<AppSearchResponseEntity>() {
+        AppSearchRequestParams params = new AppSearchRequestParams();
+        params.setKeyword(appName);
+        params.setContent_type("app");
+        params.setPage_count(30);
+        params.setPage_no(1);
+        retrofit.create(HttpAPI.AppSearch.class).doRequest(params).enqueue(new Callback<AppSearchResponseEntity>() {
             @Override
             public void onResponse(Response<AppSearchResponseEntity> response) {
+                Log.i(TAG, new Gson().toJson(response.body()));
                 if (response.errorBody() == null) {
 
                     AppSearchResponseEntity appSearchResponseEntity = response.body();
@@ -49,11 +57,15 @@ public class AppHandler {
                         appSearchObjectEntity.setIsLocal(true);
                         appList.add(appSearchObjectEntity);
                     }
-                    appList.addAll(appSearchResponseEntity.getObjects());
-                    appSearchResponseEntity.setObjects(appList);
-                    appSearchResponseEntity.setTotal_count(appList.size());
-
+                    AppSearchResponseEntity.Facet[] facet = appSearchResponseEntity.getFacet();
+                    if (facet != null) {
+                        appList.addAll(appSearchResponseEntity.getFacet()[0].getObjects());
+                        appSearchResponseEntity.getFacet()[0].setObjects(appList);
+                        appSearchResponseEntity.getFacet()[0].setTotal_count(appList.size());
+                    }
+                    Log.i(TAG, new Gson().toJson(appSearchResponseEntity));
                     callback.onAppHandleSuccess(appSearchResponseEntity, new Gson().toJson(jsonObject));
+
                 } else {
                     //error
                 }
