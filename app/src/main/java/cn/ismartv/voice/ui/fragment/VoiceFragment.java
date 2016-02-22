@@ -229,12 +229,15 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
             case VoiceRecognitionClient.CLIENT_STATUS_FINISH:
                 isRecognition = false;
                 VoiceResultEntity[] voiceResultEntity = new Gson().fromJson(o.toString(), VoiceResultEntity[].class);
-                JsonElement jsonElement = new JsonParser().parse(voiceResultEntity[0].getJson_res());
-                JsonRes jsonRes = new Gson().fromJson(jsonElement, JsonRes.class);
-                String rawText = jsonRes.getRaw_text();
-                showSearchKeyWordFragment(rawText);
-                new JsonDomainHandler(o.toString(), this, this, this, this);
-
+                if (voiceResultEntity.length == 0) {
+                    showRecognizeErrorFragment();
+                } else {
+                    JsonElement jsonElement = new JsonParser().parse(voiceResultEntity[0].getJson_res());
+                    JsonRes jsonRes = new Gson().fromJson(jsonElement, JsonRes.class);
+                    String rawText = jsonRes.getRaw_text();
+                    showSearchKeyWordFragment(rawText);
+                    new JsonDomainHandler(o.toString(), this, this, this, this);
+                }
                 Log.i(TAG, o.toString());
                 break;
             // 处理连续上屏
