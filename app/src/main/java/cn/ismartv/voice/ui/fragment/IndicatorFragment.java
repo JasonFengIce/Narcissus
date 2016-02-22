@@ -73,7 +73,8 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
         }
 
         if (videoContentLayout.getChildCount() != 0) {
-            TextView textView = (TextView) videoContentLayout.findViewById(R.id.title);
+            selectedView = videoContentLayout.getChildAt(0);
+            TextView textView = (TextView) selectedView.findViewById(R.id.title);
             textView.setTextColor(getResources().getColor(R.color._ffffff));
         }
 
@@ -98,7 +99,8 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
 
         if (videoTypeLayout.getVisibility() == View.GONE) {
             if (appContentLayout.getChildCount() != 0) {
-                TextView textView = (TextView) appContentLayout.findViewById(R.id.title);
+                selectedView = appContentLayout.getChildAt(0);
+                TextView textView = (TextView) selectedView.findViewById(R.id.title);
                 textView.setTextColor(getResources().getColor(R.color._ffffff));
             }
             ((HomeActivity) getActivity()).handleAppIndicatorClick(rawText);
