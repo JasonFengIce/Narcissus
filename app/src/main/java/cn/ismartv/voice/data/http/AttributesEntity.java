@@ -8,15 +8,7 @@ public class AttributesEntity {
     private String[][] director;
     private String[] area;
     private String[][] attendee;
-    private String description;
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     public String[][] getActor() {
         return actor;

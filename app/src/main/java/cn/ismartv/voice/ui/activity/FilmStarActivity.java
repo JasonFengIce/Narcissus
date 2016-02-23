@@ -63,10 +63,10 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
         setContentView(R.layout.activity_filmstar);
         initViews();
         Intent intent = getIntent();
-        pk = intent.getLongExtra("pk", 0);
-//        pk = 1054;
-        String title = intent.getStringExtra("title");
-//        String title = "刘德华";
+//        pk = intent.getLongExtra("pk", 0);
+        pk = 1054;
+//        String title = intent.getStringExtra("title");
+        String title = "刘德华";
         filmStartitle.setText(title);
         fetchActorRelate(pk);
 
@@ -240,6 +240,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
             hashMap.put("pk", datas.get(postion).getPk());
             hashMap.put("title", datas.get(postion).getTitle());
             hashMap.put("attr", new Gson().toJson(datas.get(postion).getAttributes()));
+            hashMap.put("description", datas.get(postion).getDescription());
 
             if (!TextUtils.isEmpty(verticalUrl)) {
                 hashMap.put("orientation", "vertical");
@@ -326,10 +327,11 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
         public void onFocusChange(View v, boolean hasFocus) {
             HashMap<String, String> tag = (HashMap) v.getTag();
             AttributesEntity attributesEntity = new Gson().fromJson(tag.get("attr"), AttributesEntity.class);
+            String description = tag.get("description");
             ImageView imageView = (ImageView) v.findViewById(R.id.image);
             TextView textView = (TextView) v.findViewById(R.id.id_number);
             if (hasFocus) {
-                setFilmAttr(attributesEntity);
+                setFilmAttr(attributesEntity, description);
                 textView.setSelected(true);
                 imageView.setBackgroundResource(R.drawable.item_focus);
                 ViewScaleUtil.scaleToLarge(v, 1.15f);
@@ -341,7 +343,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
         }
     }
 
-    private void setFilmAttr(AttributesEntity attributesEntity) {
+    private void setFilmAttr(AttributesEntity attributesEntity, String description) {
         actorView.setText("演员 : ");
         descriptionView.setText("导演 : ");
         areaView.setText("国家/地区 : ");
@@ -372,8 +374,8 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
             areaView.setVisibility(View.GONE);
         }
 
-        if (!TextUtils.isEmpty(attributesEntity.getDescription())) {
-            descriptionView.append(attributesEntity.getDescription() + " ");
+        if (!TextUtils.isEmpty(description)) {
+            descriptionView.append(description + " ");
         } else {
             descriptionView.setVisibility(View.GONE);
         }

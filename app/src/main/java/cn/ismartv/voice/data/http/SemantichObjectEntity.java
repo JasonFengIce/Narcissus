@@ -11,6 +11,15 @@ public class SemantichObjectEntity {
     private String url;
     private String content_model;
     private AttributesEntity attributes;
+    private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public AttributesEntity getAttributes() {
         return attributes;
