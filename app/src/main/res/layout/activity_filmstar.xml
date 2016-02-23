@@ -2,34 +2,170 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:background="#405185"
               android:orientation="vertical">
 
     <TextView
-        android:id="@+id/film_star_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <LinearLayout
-        android:id="@+id/film_list_indicator"
+        android:id="@+id/film_star_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-    </LinearLayout>
+        android:layout_marginLeft="@dimen/film_star_title_marginLeft"
+        android:layout_marginTop="@dimen/film_star_title_marginTop"
+        android:gravity="center"
+        android:textSize="@dimen/textSize_40sp"/>
 
     <LinearLayout
-        android:id="@+id/film_scroll_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/filmStar_indicatorLayout_marginLeft"
+        android:layout_marginTop="@dimen/filmStar_indicatorLayout_marginTop"
+        android:orientation="horizontal"
+
+        >
+
+        <ImageView
+            android:id="@+id/indicator_left"
+            android:layout_width="@dimen/film_star_indicator_width"
+            android:layout_height="@dimen/film_star_indicator_height"
+            android:layout_marginLeft="@dimen/arrow_margin"
+            android:background="@drawable/selector_star_arrow_left"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            />
+
+        <HorizontalScrollView
+            android:id="@+id/scrollview"
+            android:layout_width="@dimen/filmStar_indicatorLayout_width"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            >
+
+            <LinearLayout
+                android:id="@+id/film_list_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:orientation="horizontal">
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+        <ImageView
+            android:id="@+id/indicator_right"
+            android:layout_width="@dimen/film_star_indicator_width"
+            android:layout_height="@dimen/film_star_indicator_height"
+            android:layout_marginRight="@dimen/arrow_margin"
+            android:background="@drawable/selector_star_arrow_right"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:padding="10dp"/>
 
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/film_scroll_list"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/filmStar_content_height"
+        >
+
+        <ImageView
+            android:id="@+id/content_arrow_left"
+            android:layout_width="@dimen/filmStar_contentArrow_width"
+            android:layout_height="@dimen/filmStar_contentArrow_height"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/content_arrow_left_margin_left"
+            android:background="@drawable/select_arrow_left"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            />
+
+        <cn.ismartv.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="@dimen/filmStar_recycler_marginLeft"
+            android:layout_marginRight="@dimen/filmStar_recycler_marginLeft"
+            android:paddingLeft="@dimen/filmStar_recycler_marginLeft"
+            android:paddingRight="@dimen/filmStar_recycler_marginLeft"
+            />
+
+        <ImageView
+            android:id="@+id/content_arrow_right"
+            android:layout_width="@dimen/filmStar_contentArrow_width"
+            android:layout_height="@dimen/filmStar_contentArrow_height"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/content_arrow_left_margin_left"
+            android:background="@drawable/select_arrow_right"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/filmStar_divider_height"
+        android:layout_marginLeft="@dimen/filmStar_divider_margin"
+        android:layout_marginRight="@dimen/filmStar_divider_margin"
+        android:scaleType="fitXY"
+        android:src="#202e5d"
+        />
 
     <LinearLayout
         android:id="@+id/film_description"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/filmStar_description_Layout_height"
+        android:layout_marginLeft="@dimen/filmStar_description_margin"
+        android:layout_marginRight="@dimen/filmStar_description_margin"
         android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/actor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/filmStar_description_text_margin"
+                android:textSize="@dimen/textSize_30sp"/>
+
+            <TextView
+                android:id="@+id/director"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/filmStar_description_text_margin"
+                android:textSize="@dimen/textSize_30sp"/>
+
+            <TextView
+                android:id="@+id/area"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/filmStar_description_text_margin"
+                android:textSize="@dimen/textSize_30sp"/>
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/filmStar_description_text_margin"
+            android:layout_weight="1"
+            android:textSize="@dimen/textSize_30sp"/>
 
     </LinearLayout>
 

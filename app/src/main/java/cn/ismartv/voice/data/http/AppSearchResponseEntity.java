@@ -6,32 +6,45 @@ import java.util.List;
  * Created by huaijie on 1/20/16.
  */
 public class AppSearchResponseEntity {
-    private int count;
-    private int total_count;
+    private Facet[] facet;
 
-    private List<AppSearchObjectEntity> objects;
-
-    public int getCount() {
-        return count;
+    public Facet[] getFacet() {
+        return facet;
     }
 
-    public void setCount(int count) {
-        this.count = count;
+    public void setFacet(Facet[] facet) {
+        this.facet = facet;
     }
 
-    public int getTotal_count() {
-        return total_count;
-    }
+    public class Facet {
+        private int count;
+        private int total_count;
 
-    public void setTotal_count(int total_count) {
-        this.total_count = total_count;
-    }
+        private List<AppSearchObjectEntity> objects;
 
-    public List<AppSearchObjectEntity> getObjects() {
-        return objects;
-    }
+        public int getCount() {
+            return count;
+        }
 
-    public void setObjects(List<AppSearchObjectEntity> objects) {
-        this.objects = objects;
+        public void setCount(int count) {
+            this.count = count;
+        }
+
+        public int getTotal_count() {
+            return total_count;
+        }
+
+        public void setTotal_count(int total_count) {
+            this.total_count = total_count;
+        }
+
+        public List<AppSearchObjectEntity> getObjects() {
+            return objects;
+        }
+
+        public void setObjects(List<AppSearchObjectEntity> objects) {
+            this.objects = objects;
+        }
+
     }
 }

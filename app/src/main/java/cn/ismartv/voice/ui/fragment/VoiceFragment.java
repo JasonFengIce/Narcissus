@@ -16,6 +16,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.baidu.voicerecognition.android.VoiceRecognitionClient;
 import com.baidu.voicerecognition.android.VoiceRecognitionClient.VoiceClientStatusChangeListener;
@@ -75,6 +76,8 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
     private boolean isRecognition = false;
     private Handler mHandler;
     private List<BaseFragment> childFragmentList;
+
+    private boolean voiceIsEnable = true;
 
 
     @Override
@@ -156,9 +159,21 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
     }
 
     public void startSpeek() {
-        loopAnim(voiceProgressImg, true);
-        voiceMicImg.setImageResource(R.drawable.voice_vol_1);
-        startRecord();
+        if (voiceIsEnable) {
+            voiceIsEnable = false;
+            loopAnim(voiceProgressImg, true);
+            voiceMicImg.setImageResource(R.drawable.voice_vol_1);
+            startRecord();
+            voiceMicImg.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    voiceIsEnable = true;
+                }
+            }, 1000);
+
+        } else {
+            Toast.makeText(getContext(), "您操作太过频繁!!!", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void stopSpeek() {
@@ -291,12 +306,12 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
 
     @Override
     public void onAppHandleSuccess(AppSearchResponseEntity entity, String data) {
-        if (entity.getObjects().size() == 0) {
+        if (entity.getFacet() == null || entity.getFacet()[0].getObjects().size() == 0) {
 //        if (true) {
             String rawText = new JsonParser().parse(data).getAsJsonObject().get("raw_text").toString();
             showNoAppResultFragment(rawText);
         } else {
-            ((HomeActivity) getActivity()).showAppIndicatorFragment(entity.getObjects(), data);
+            ((HomeActivity) getActivity()).showAppIndicatorFragment(entity.getFacet()[0].getObjects(), data);
         }
     }
 

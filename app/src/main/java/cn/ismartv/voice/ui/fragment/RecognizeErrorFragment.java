@@ -20,6 +20,8 @@ import cn.ismartv.voice.core.filter.FilterUtil;
 import cn.ismartv.voice.core.filter.WordFilterResult;
 import cn.ismartv.voice.core.http.HttpAPI;
 import cn.ismartv.voice.core.http.HttpManager;
+import cn.ismartv.voice.data.http.SemantichObjectEntity;
+import cn.ismartv.voice.data.http.SharpHotWordsEntity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -58,12 +60,12 @@ public class RecognizeErrorFragment extends BaseFragment {
 
     public void fetchWords() {
         Retrofit retrofit = HttpManager.getInstance().resetAdapter_WUGUOJUN;
-        wordsCall = retrofit.create(HttpAPI.Words.class).doRequest(7);
-        wordsCall.enqueue(new Callback<List<String>>() {
+        wordsCall = retrofit.create(HttpAPI.SharpHotWords.class).doRequest(7);
+        wordsCall.enqueue(new Callback<SharpHotWordsEntity>() {
             @Override
-            public void onResponse(Response<List<String>> response) {
+            public void onResponse(Response<SharpHotWordsEntity> response) {
                 if (response.errorBody() == null) {
-                    List<String> tipList = response.body();
+                    SharpHotWordsEntity tipList = response.body();
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
                     int marginTop = (int) (getResources().getDimension(R.dimen.recognize_error_tip_item_margin_top) / getDensityRate());
@@ -71,10 +73,12 @@ public class RecognizeErrorFragment extends BaseFragment {
                     ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(getResources().getColor(R.color._ff9c3c));
                     ScaleXSpan scaleXSpan = new ScaleXSpan(1.2f);
 
-                    for (int i = 0; i < tipList.size() && i < 7; i++) {
+                    for (int i = 0; i < tipList.getObjects().size() && i < 7; i++) {
                         TextView textView = new TextView(getContext());
                         textView.setTextSize(getResources().getDimension(R.dimen.textSize_36sp) / getDensityRate());
-                        String text = tipList.get(i);
+                        SemantichObjectEntity entity = tipList.getObjects().get(i);
+                        String text = entity.getTitle();
+
                         List<WordFilterResult> results = FilterUtil.filter(text);
                         SpannableStringBuilder builder = new SpannableStringBuilder(text);
                         for (WordFilterResult result : results) {

@@ -3,6 +3,8 @@ package cn.ismartv.voice.core.http;
 import java.util.List;
 
 import cn.ismartv.voice.core.update.VersionInfoV2Entity;
+import cn.ismartv.voice.data.http.ActorRelateRequestParams;
+import cn.ismartv.voice.data.http.AppSearchRequestParams;
 import cn.ismartv.voice.data.http.AppSearchResponseEntity;
 import cn.ismartv.voice.data.http.RecommandAppEntity;
 import cn.ismartv.voice.data.http.SemanticSearchRequestEntity;
@@ -11,8 +13,6 @@ import cn.ismartv.voice.data.http.SharpHotWordsEntity;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -44,12 +44,9 @@ public class HttpAPI {
     }
 
     public interface AppSearch {
-        @FormUrlEncoded
         @POST("api/tv/qjhappsearch/")
         Call<AppSearchResponseEntity> doRequest(
-                @Field("keyword") String keyword,
-                @Field("page_no") int pageNo,
-                @Field("page_count") int pageCount
+                @Body AppSearchRequestParams entity
         );
     }
 
@@ -80,5 +77,13 @@ public class HttpAPI {
         Call<List<RecommandAppEntity>> doRequest(
                 @Path("count") int count
         );
+    }
+
+    public interface ActorRelate {
+        @POST("api/tv/actorrelate/")
+        Call<SemanticSearchResponseEntity> doRequest(
+                @Body ActorRelateRequestParams params
+        );
+
     }
 }

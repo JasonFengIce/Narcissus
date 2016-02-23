@@ -62,7 +62,7 @@ public class HttpManager {
 
         resetAdapter_SKY = new Retrofit.Builder()
                 .client(client)
-                .baseUrl(appendProtocol("192.168.1.150"))
+                .baseUrl(appendProtocol("http://skytest.tvxio.com"))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

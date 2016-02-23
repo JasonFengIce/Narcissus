@@ -25,6 +25,7 @@ import cn.ismartv.voice.core.http.HttpAPI;
 import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.core.update.AppUpdateUtilsV2;
 import cn.ismartv.voice.data.http.AppSearchObjectEntity;
+import cn.ismartv.voice.data.http.AppSearchRequestParams;
 import cn.ismartv.voice.data.http.AppSearchResponseEntity;
 import cn.ismartv.voice.data.http.SemanticSearchRequestEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
@@ -189,7 +190,12 @@ public class HomeActivity extends BaseActivity {
     private void searchApp(final String appName) {
         final List<AppTable> appTables = new Select().from(AppTable.class).where("app_name like ?", "%" + appName.replace("\"", "") + "%").execute();
         Retrofit retrofit = HttpManager.getInstance().resetAdapter_QIANGUANGZHAO;
-        retrofit.create(HttpAPI.AppSearch.class).doRequest(appName, 1, 30).enqueue(new Callback<AppSearchResponseEntity>() {
+        AppSearchRequestParams params = new AppSearchRequestParams();
+        params.setKeyword(appName);
+        params.setPage_count(30);
+        params.setPage_no(1);
+        params.setContent_type("app");
+        retrofit.create(HttpAPI.AppSearch.class).doRequest(params).enqueue(new Callback<AppSearchResponseEntity>() {
             @Override
             public void onResponse(Response<AppSearchResponseEntity> response) {
                 if (response.errorBody() == null) {
@@ -204,11 +210,13 @@ public class HomeActivity extends BaseActivity {
                         appSearchObjectEntity.setIsLocal(true);
                         appList.add(appSearchObjectEntity);
                     }
-                    appList.addAll(appSearchResponseEntity.getObjects());
+                    if (appSearchResponseEntity.getFacet() != null) {
+                        appList.addAll(appSearchResponseEntity.getFacet()[0].getObjects());
+                        appSearchResponseEntity.getFacet()[0].setObjects(appList);
+                        appSearchResponseEntity.getFacet()[0].setTotal_count(appList.size());
+                    }
 
-                    appSearchResponseEntity.setObjects(appList);
-                    appSearchResponseEntity.setTotal_count(appList.size());
-                    refreshAppSearchFragment(appSearchResponseEntity.getObjects(), appName);
+                    refreshAppSearchFragment(appList, appName);
                 } else {
                     //error
                 }

@@ -127,6 +127,9 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
             String verticalUrl = datas.get(postion).getVertical_url();
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("url", datas.get(postion).getUrl());
+            hashMap.put("content_model", datas.get(postion).getContent_model());
+            hashMap.put("pk", datas.get(postion).getPk());
+            hashMap.put("title", datas.get(postion).getTitle());
 
             if (!TextUtils.isEmpty(verticalUrl)) {
                 hashMap.put("orientation", "vertical");
@@ -148,6 +151,8 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
                         .into(myViewHolder.imageView);
 
             } else {
+                hashMap.put("orientation", "vertical");
+                myViewHolder.imageView.setIsHorizontal(false);
                 Picasso.with(getContext())
                         .load(R.drawable.vertical_preview_bg)
                         .memoryPolicy(MemoryPolicy.NO_STORE)
@@ -176,19 +181,35 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
         public void onClick(View v) {
             HashMap<String, String> tag = (HashMap) v.getTag();
             String url = tag.get("url");
-            if (!TextUtils.isEmpty(url)) {
-                Intent intent = new Intent();
-                intent.putExtra("url", url);
-                switch (tag.get("orientation")) {
-                    case "horizontal":
-                        intent.setAction("tv.ismar.daisy.Item");
-                        break;
-                    case "vertical":
-                        intent.setAction("tv.ismar.daisy.PFileItem");
-                        break;
-                }
-                getActivity().startActivity(intent);
+            String contentModel = tag.get("content_model");
+            Long pk = Long.parseLong(tag.get("pk"));
+            String title = tag.get("title");
+            Intent intent = new Intent();
+            switch (contentModel) {
+                case "person":
+                    intent.putExtra("pk", pk);
+                    intent.putExtra("title", title);
+                    intent.setAction("cn.ismartv.voice.film_star");
+                    startActivity(intent);
+                    break;
+                default:
+                    if (!TextUtils.isEmpty(url)) {
+
+                        intent.putExtra("url", url);
+
+                        switch (tag.get("orientation")) {
+                            case "horizontal":
+                                intent.setAction("tv.ismar.daisy.Item");
+                                break;
+                            case "vertical":
+                                intent.setAction("tv.ismar.daisy.PFileItem");
+                                break;
+                        }
+                        startActivity(intent);
+                    }
+                    break;
             }
+
         }
 
         @Override

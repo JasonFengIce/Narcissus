@@ -82,9 +82,30 @@
             android:launchMode="singleInstance"
             android:screenOrientation="landscape"
             >
-
-
         </activity>
+        <activity
+            android:name=".ui.activity.FilmStarActivity"
+            android:screenOrientation="landscape"
+            >
+
+            <intent-filter>
+                <action android:name="cn.ismartv.voice.film_star"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+
+        <service
+            android:name=".core.service.LauncherService"
+            android:exported="true"
+            >
+            <intent-filter>
+                <action android:name="cn.ismartv.voice.launcher_service"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+
+        </service>
 
         <receiver android:name=".core.VoiceKeyReceiver">
             <intent-filter>
