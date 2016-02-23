@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:gravity="center"
-              android:orientation="vertical"
+<LinearLayout
+    android:id="@+id/filmStar_indicator_item"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:gravity="center"
+    android:orientation="vertical"
     >
 
     <TextView
@@ -17,6 +22,7 @@
         android:id="@+id/indicator_bg"
         android:layout_width="@dimen/film_star_indicator_bg_width"
         android:layout_height="@dimen/film_star_indicator_bg_height"
-        android:background="@drawable/film_star_indicator_focus_bg"/>
+        android:background="@drawable/film_star_indicator_focus_bg"
+        android:visibility="invisible"/>
 
 </LinearLayout>

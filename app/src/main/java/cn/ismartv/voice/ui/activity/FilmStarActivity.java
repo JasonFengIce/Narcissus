@@ -28,6 +28,7 @@ import cn.ismartv.voice.data.http.ActorRelateRequestParams;
 import cn.ismartv.voice.data.http.AttributesEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.data.http.SemantichObjectEntity;
+import cn.ismartv.voice.ui.StarSpaceItemDecoration;
 import cn.ismartv.voice.util.ViewScaleUtil;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -35,7 +36,7 @@ import retrofit2.Response;
 /**
  * Created by huaijie on 2/22/16.
  */
-public class FilmStarActivity extends BaseActivity implements OnFocusChangeListener {
+public class FilmStarActivity extends BaseActivity implements OnFocusChangeListener, View.OnClickListener {
     private static final String TAG = "FilmStarActivity";
 
     private long pk;
@@ -50,6 +51,10 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
     private TextView directorView;
     private TextView areaView;
     private TextView descriptionView;
+    private ImageView indicatorArrowLeft;
+    private ImageView indicatorArrowRight;
+
+    private View lostFocusView;
 
 
     @Override
@@ -59,7 +64,9 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
         initViews();
         Intent intent = getIntent();
         pk = intent.getLongExtra("pk", 0);
+//        pk = 1054;
         String title = intent.getStringExtra("title");
+//        String title = "刘德华";
         filmStartitle.setText(title);
         fetchActorRelate(pk);
 
@@ -69,19 +76,24 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
         filmStartitle = (TextView) findViewById(R.id.film_star_title);
         indicatorListLayout = (LinearLayout) findViewById(R.id.film_list_indicator);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        contentArrowLeft = (ImageView) findViewById(R.id.content_arrow_left);
-        contentArrowRight = (ImageView) findViewById(R.id.content_arrow_right);
         actorView = (TextView) findViewById(R.id.actor);
         directorView = (TextView) findViewById(R.id.director);
         areaView = (TextView) findViewById(R.id.area);
         descriptionView = (TextView) findViewById(R.id.description);
-
+        contentArrowLeft = (ImageView) findViewById(R.id.content_arrow_left);
+        contentArrowRight = (ImageView) findViewById(R.id.content_arrow_right);
+        indicatorArrowLeft = (ImageView) findViewById(R.id.indicator_left);
+        indicatorArrowRight = (ImageView) findViewById(R.id.indicator_right);
+        contentArrowRight.setOnFocusChangeListener(this);
+        contentArrowLeft.setOnFocusChangeListener(this);
+        indicatorArrowLeft.setOnFocusChangeListener(this);
+        indicatorArrowRight.setOnFocusChangeListener(this);
 
         LinearLayoutManager gridLayoutManager = new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false);
 
-//        int verticalSpacingInPixels = (int) (getResources().getDimensionPixelSize(R.dimen.content_fragment_item_vertical_space) / getDensityRate());
-//        int horizontalSpacingInPixels = (int) (getResources().getDimensionPixelSize(R.dimen.content_fragment_item_horizontal_space) / getDensityRate());
-//        recyclerView.addItemDecoration(new SpaceItemDecoration(verticalSpacingInPixels, horizontalSpacingInPixels));
+        int verticalSpacingInPixels = (int) (getResources().getDimensionPixelSize(R.dimen.content_fragment_item_vertical_space));
+        int horizontalSpacingInPixels = (int) (getResources().getDimensionPixelSize(R.dimen.filmStar_item_horizontal_space));
+        recyclerView.addItemDecoration(new StarSpaceItemDecoration(verticalSpacingInPixels, horizontalSpacingInPixels));
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setOnFocusChangeListener(this);
     }
@@ -98,11 +110,24 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                 if (response.errorBody() == null) {
                     SemanticSearchResponseEntity entity = response.body();
                     indicatorListLayout.removeAllViews();
+                    int i = 0;
                     for (SemanticSearchResponseEntity.Facet facet : entity.getFacet()) {
                         View itemView = LayoutInflater.from(FilmStarActivity.this).inflate(R.layout.item_film_star_indicator, null);
                         TextView indicatorTitle = (TextView) itemView.findViewById(R.id.title);
                         indicatorTitle.setText(facet.getName());
-                        indicatorListLayout.addView(itemView);
+                        itemView.setOnFocusChangeListener(FilmStarActivity.this);
+                        itemView.setOnClickListener(FilmStarActivity.this);
+                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        int marginLeft = (int) (getResources().getDimension(R.dimen.filmStar_indicatorLayout_item_marginLeft));
+                        layoutParams.setMargins(marginLeft, 0, 0, 0);
+                        itemView.setTag(facet.getContent_type());
+                        if (i == 0) {
+                            indicatorListLayout.addView(itemView);
+                        } else {
+
+                            indicatorListLayout.addView(itemView, layoutParams);
+                        }
+                        i = i + 1;
                     }
                     fetchActorRelateByType(pk, entity.getFacet().get(0).getContent_type());
                 } else {
@@ -116,6 +141,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
             }
         });
     }
+
 
     private void fetchActorRelateByType(long pk, String type) {
         ActorRelateRequestParams params = new ActorRelateRequestParams();
@@ -143,7 +169,42 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
+        switch (v.getId()) {
+            case R.id.filmStar_indicator_item:
+                ImageView bg = (ImageView) v.findViewById(R.id.indicator_bg);
+                TextView textView = (TextView) v.findViewById(R.id.title);
 
+                if (hasFocus) {
+                    textView.setTextColor(getResources().getColor(R.color._ff9c3c));
+                    bg.setVisibility(View.VISIBLE);
+                    ViewScaleUtil.scaleToLarge(v, 1.3f);
+                } else {
+                    textView.setTextColor(getResources().getColor(R.color._a6a6a6));
+                    bg.setVisibility(View.INVISIBLE);
+                    ViewScaleUtil.scaleToNormal(v, 1.3f);
+                }
+                break;
+            case R.id.content_arrow_left:
+            case R.id.content_arrow_right:
+            case R.id.indicator_left:
+            case R.id.indicator_right:
+                if (hasFocus) {
+                    ViewScaleUtil.scaleToLarge(v, 1.3f);
+                } else {
+                    ViewScaleUtil.scaleToNormal(v, 1.3f);
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.filmStar_indicator_item:
+                String type = (String) v.getTag();
+                fetchActorRelateByType(pk, type);
+                break;
+        }
     }
 
 
@@ -293,20 +354,28 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
             for (String[] strings : attributesEntity.getAttendee()) {
                 actorView.append(strings[1] + " ");
             }
+        } else {
+            actorView.setVisibility(View.GONE);
         }
 
         if (attributesEntity.getDirector() != null && attributesEntity.getDirector().length != 0) {
             for (String[] strings : attributesEntity.getDirector()) {
                 directorView.append(strings[1] + " ");
             }
+        } else {
+            directorView.setVisibility(View.GONE);
         }
 
         if (attributesEntity.getArea() != null && attributesEntity.getArea().length != 0) {
             areaView.append(attributesEntity.getArea()[1] + " ");
+        } else {
+            areaView.setVisibility(View.GONE);
         }
 
         if (!TextUtils.isEmpty(attributesEntity.getDescription())) {
             descriptionView.append(attributesEntity.getDescription() + " ");
+        } else {
+            descriptionView.setVisibility(View.GONE);
         }
     }
 
@@ -320,6 +389,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
             this.mItemView = itemView;
             textView = (TextView) itemView.findViewById(R.id.id_number);
             imageView = (RelectionImageView) itemView.findViewById(R.id.image);
+//            imageView.setLrPaddingFlag(1);
 
         }
     }
