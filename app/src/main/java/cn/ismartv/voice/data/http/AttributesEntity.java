@@ -4,41 +4,41 @@ package cn.ismartv.voice.data.http;
  * Created by huaijie on 2/22/16.
  */
 public class AttributesEntity {
-    private String[][] actor;
-    private String[][] director;
-    private String[] area;
-    private String[][] attendee;
+    private Object[][] actor;
+    private Object[][] director;
+    private Object[] area;
+    private Object[][] attendee;
 
 
-    public String[][] getActor() {
+    public Object[][] getActor() {
         return actor;
     }
 
-    public void setActor(String[][] actor) {
+    public void setActor(Object[][] actor) {
         this.actor = actor;
     }
 
-    public String[][] getDirector() {
+    public Object[][] getDirector() {
         return director;
     }
 
-    public void setDirector(String[][] director) {
+    public void setDirector(Object[][] director) {
         this.director = director;
     }
 
-    public String[] getArea() {
+    public Object[] getArea() {
         return area;
     }
 
-    public void setArea(String[] area) {
+    public void setArea(Object[] area) {
         this.area = area;
     }
 
-    public String[][] getAttendee() {
+    public Object[][] getAttendee() {
         return attendee;
     }
 
-    public void setAttendee(String[][] attendee) {
+    public void setAttendee(Object[][] attendee) {
         this.attendee = attendee;
     }
 }

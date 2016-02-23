@@ -345,15 +345,17 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
 
     private void setFilmAttr(AttributesEntity attributesEntity, String description) {
         actorView.setText("演员 : ");
-        descriptionView.setText("导演 : ");
+        directorView.setText("导演 : ");
         areaView.setText("国家/地区 : ");
         descriptionView.setText("影片介绍 : ");
         if (attributesEntity.getActor() != null && attributesEntity.getActor().length != 0) {
-            for (String[] strings : attributesEntity.getActor()) {
+            for (Object[] strings : attributesEntity.getActor()) {
+                actorView.setVisibility(View.VISIBLE);
                 actorView.append(strings[1] + " ");
             }
         } else if (attributesEntity.getAttendee() != null && attributesEntity.getAttendee().length != 0) {
-            for (String[] strings : attributesEntity.getAttendee()) {
+            for (Object[] strings : attributesEntity.getAttendee()) {
+                actorView.setVisibility(View.VISIBLE);
                 actorView.append(strings[1] + " ");
             }
         } else {
@@ -361,7 +363,8 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
         }
 
         if (attributesEntity.getDirector() != null && attributesEntity.getDirector().length != 0) {
-            for (String[] strings : attributesEntity.getDirector()) {
+            for (Object[] strings : attributesEntity.getDirector()) {
+                directorView.setVisibility(View.VISIBLE);
                 directorView.append(strings[1] + " ");
             }
         } else {
@@ -369,12 +372,14 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
         }
 
         if (attributesEntity.getArea() != null && attributesEntity.getArea().length != 0) {
+            areaView.setVisibility(View.VISIBLE);
             areaView.append(attributesEntity.getArea()[1] + " ");
         } else {
             areaView.setVisibility(View.GONE);
         }
 
         if (!TextUtils.isEmpty(description)) {
+            descriptionView.setVisibility(View.VISIBLE);
             descriptionView.append(description + " ");
         } else {
             descriptionView.setVisibility(View.GONE);
