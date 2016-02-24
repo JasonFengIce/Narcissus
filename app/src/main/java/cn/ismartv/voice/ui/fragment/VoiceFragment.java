@@ -81,6 +81,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
 
     private boolean voiceIsEnable = true;
 
+    private ImageView slideMenu;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -123,13 +124,32 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
         voiceProgressImg = (ImageView) view.findViewById(R.id.voice_progress);
         voiceMicImg = (ImageView) view.findViewById(R.id.voice_mic);
 
+        slideMenu = (ImageView) view.findViewById(R.id.indicator_right_slide_menu);
+        slideMenu.setOnClickListener(this);
         voiceProgressImg.setOnTouchListener(this);
 
 
     }
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            if (searchKeyWordFragment.isVisible()) {
+                slideMenu.setVisibility(View.VISIBLE);
+            } else {
+                slideMenu.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    @Override
     public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.indicator_right_slide_menu:
+                ((HomeActivity) getActivity()).showIndicatorFragment();
+                break;
+        }
 //                ((HomeActivity) getActivity()).handleVoice();
 
     }
@@ -166,6 +186,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
 
     public void startSpeek() {
         if (voiceIsEnable) {
+            slideMenu.setVisibility(View.GONE);
             voiceIsEnable = false;
             loopAnim(voiceProgressImg, true);
             voiceMicImg.setImageResource(R.drawable.voice_vol_1);

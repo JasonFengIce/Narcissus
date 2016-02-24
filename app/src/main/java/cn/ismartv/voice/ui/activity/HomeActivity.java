@@ -385,4 +385,8 @@ public class HomeActivity extends BaseActivity {
         }
         getSupportFragmentManager().beginTransaction().show(fragment).commit();
     }
+
+    public void showIndicatorFragment() {
+        showLeftFragment(indicatorFragment);
+    }
 }

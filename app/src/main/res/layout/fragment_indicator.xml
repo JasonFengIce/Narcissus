@@ -12,7 +12,10 @@
         android:layout_height="match_parent"
         android:clickable="true"
         android:focusable="true"
-        android:src="@drawable/selector_indicator_slide"/>
+        android:focusableInTouchMode="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/selector_indicator_slide"
+        />
 
 
     <LinearLayout
