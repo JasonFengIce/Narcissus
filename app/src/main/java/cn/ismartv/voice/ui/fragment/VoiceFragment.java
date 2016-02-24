@@ -170,6 +170,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
                     voiceIsEnable = true;
                 }
             }, 1000);
+
         } else {
             Toast.makeText(getContext(), "您操作太过频繁!!!", Toast.LENGTH_LONG).show();
         }
