@@ -126,4 +126,11 @@
 
     <dimen name="arrow_margin">30dp</dimen>
 
+    <dimen name="left_search_loading_icon_width">125dp</dimen>
+    <dimen name="left_search_loading_icon_height">220dp</dimen>
+    <dimen name="left_search_loading_icon_margin_top">185dp</dimen>
+    <dimen name="keyword_icon_margin_top">54dp</dimen>
+    <dimen name="keyword_margin_top">90dp</dimen>
+
+
 </resources>

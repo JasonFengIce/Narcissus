@@ -63,6 +63,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
     private static final String SEARCH_TIP_FRAGMENT_TAG = "search_tip_fragment_tag";
     private static final String SEARCH_NO_RESULT_FRAGMENT_TAG = "search_no_result_fragment_tag";
     private static final String SEARCH_KEYWORD_FRAGMENT_TAG = "search_keyword_fragment_tag";
+    private static final String LEFT_SEARCHING_LOADING_FRAGMENT = "left_searching_loading_fragment";
 
     private ImageView voiceProgressImg;
     private ImageView voiceMicImg;
@@ -72,6 +73,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
     private SearchTipFragment searchTipFragment;
     private SearchNoResultFragment searchNoResultFragment;
     private SearchKeyWordFragment searchKeyWordFragment;
+    private LeftSearchLoadingFragment leftSearchLoadingFragment;
 
     private boolean isRecognition = false;
     private Handler mHandler;
@@ -95,10 +97,12 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
         searchTipFragment = new SearchTipFragment();
         searchNoResultFragment = new SearchNoResultFragment();
         searchKeyWordFragment = new SearchKeyWordFragment();
+        leftSearchLoadingFragment = new LeftSearchLoadingFragment();
         childFragmentList = new ArrayList<>();
         childFragmentList.add(searchTipFragment);
         childFragmentList.add(searchNoResultFragment);
         childFragmentList.add(searchKeyWordFragment);
+        childFragmentList.add(leftSearchLoadingFragment);
 
         return inflater.inflate(R.layout.fragment_voice, null);
     }
@@ -110,6 +114,8 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
         fragmentTransaction.add(R.id.search_tip_layout, searchTipFragment, SEARCH_TIP_FRAGMENT_TAG);
         fragmentTransaction.add(R.id.search_tip_layout, searchNoResultFragment, SEARCH_NO_RESULT_FRAGMENT_TAG);
         fragmentTransaction.add(R.id.search_tip_layout, searchKeyWordFragment, SEARCH_KEYWORD_FRAGMENT_TAG);
+        fragmentTransaction.add(R.id.search_tip_layout, leftSearchLoadingFragment, LEFT_SEARCHING_LOADING_FRAGMENT);
+        fragmentTransaction.hide(leftSearchLoadingFragment);
         fragmentTransaction.hide(searchKeyWordFragment);
         fragmentTransaction.hide(searchNoResultFragment);
         fragmentTransaction.commit();
@@ -238,6 +244,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
                 break;
             // 已经检测到语音终点，等待网络返回
             case VoiceRecognitionClient.CLIENT_STATUS_SPEECH_END:
+                showFragment(leftSearchLoadingFragment);
                 ((HomeActivity) getActivity()).showSearchLoading();
                 break;
             // 语音识别完成，显示obj中的结果

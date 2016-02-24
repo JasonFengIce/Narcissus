@@ -5,21 +5,9 @@
               android:gravity="center_horizontal"
               android:orientation="vertical">
 
-
-    <TextView
-        android:id="@+id/search_keyword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/keyword_margin_top"
-        android:gravity="center"
-        android:textColor="@color/_ff9c3c"
-        android:textSize="@dimen/textSize_36sp"/>
-
-
     <ImageView
         android:layout_width="@dimen/left_search_loading_icon_width"
         android:layout_height="@dimen/left_search_loading_icon_height"
-        android:layout_marginTop="@dimen/keyword_icon_margin_top"
+        android:layout_marginTop="@dimen/left_search_loading_icon_margin_top"
         android:src="@drawable/left_searchloading_icon"/>
-
 </LinearLayout>
