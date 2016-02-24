@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,7 +36,7 @@ import retrofit2.Retrofit;
 /**
  * Created by huaijie on 1/18/16.
  */
-public class ContentFragment extends BaseFragment implements View.OnFocusChangeListener {
+public class ContentFragment extends BaseFragment implements View.OnFocusChangeListener, OnClickListener {
     private RecyclerView recyclerView;
     private TextView searchTitle;
 //    private static final int resIds[] = {R.drawable.sample_1, R.drawable.sample_2, R.drawable.sample_3, R.drawable.sample_4, R.drawable.sample_5,
@@ -66,6 +67,8 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
         searchTitle = (TextView) view.findViewById(R.id.search_title);
         arrowUp = (ImageView) view.findViewById(R.id.arrow_up);
         arrowDown = (ImageView) view.findViewById(R.id.arrow_down);
+        arrowUp.setOnClickListener(this);
+        arrowDown.setOnClickListener(this);
         arrowUp.bringToFront();
         fetchSharpHotWords();
 
@@ -98,8 +101,20 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
 
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.arrow_up:
+                recyclerView.smoothScrollBy(0, -recyclerView.getHeight());
+                break;
+            case R.id.arrow_down:
+                recyclerView.smoothScrollBy(0, recyclerView.getHeight());
+                break;
+        }
+    }
 
-    private class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder> implements View.OnClickListener, View.OnFocusChangeListener {
+
+    private class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder> implements OnClickListener, View.OnFocusChangeListener {
         private List<SemantichObjectEntity> datas;
 
         public RecyclerAdapter(List<SemantichObjectEntity> objectEntities) {
