@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -95,7 +96,7 @@ public class WeatherFragment extends BaseFragment implements View.OnClickListene
                         todayWeather.setWeatherTemp(weatherEntity.getToday().getTemplow() + "℃ ~ " + weatherEntity.getToday().getTemphigh() + "℃");
                         todayWeather.setWeatherDay("今天");
                         todayWeather.setWeatherDetail(weatherEntity.getToday().getCondition());
-                        Picasso.with(getContext()).load(weatherEntity.getToday().getImage_url()).into(todayWeather.getWeatherIcon());
+                        Picasso.with(getContext()).load(weatherEntity.getToday().getImage_url()).memoryPolicy(MemoryPolicy.NO_STORE).into(todayWeather.getWeatherIcon());
                         Date now = new Date();
                         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日");//可以方便地修改日期格式
                         String todayTime = dateFormat.format(now);
@@ -109,7 +110,7 @@ public class WeatherFragment extends BaseFragment implements View.OnClickListene
                         tomorrowWeather.setWeatherTemp(weatherEntity.getTomorrow().getTemplow() + "℃ ~ " + weatherEntity.getTomorrow().getTemphigh() + "℃");
                         tomorrowWeather.setWeatherDay("明天");
                         tomorrowWeather.setWeatherDetail(weatherEntity.getTomorrow().getCondition());
-                        Picasso.with(getContext()).load(weatherEntity.getTomorrow().getImage_url()).into(tomorrowWeather.getWeatherIcon());
+                        Picasso.with(getContext()).load(weatherEntity.getTomorrow().getImage_url()).memoryPolicy(MemoryPolicy.NO_STORE).into(tomorrowWeather.getWeatherIcon());
                         Calendar calendar = new GregorianCalendar();
                         calendar.setTime(now);
                         calendar.add(calendar.DATE, 1);//把日期往后增加一天.整数往后推,负数往前移动

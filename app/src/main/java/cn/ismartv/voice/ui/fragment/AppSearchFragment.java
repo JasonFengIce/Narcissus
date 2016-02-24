@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -133,7 +134,7 @@ public class AppSearchFragment extends BaseFragment implements View.OnFocusChang
                 }
 //                Picasso.with(getContext()).load().error(R.drawable.horizontal_preview_bg).into(myViewHolder.imageView);
             } else {
-                Picasso.with(getContext()).load(datas.get(postion).getAdlet_url()).error(R.drawable.horizontal_preview_bg).into(myViewHolder.imageView);
+                Picasso.with(getContext()).load(datas.get(postion).getAdlet_url()).memoryPolicy(MemoryPolicy.NO_STORE).error(R.drawable.horizontal_preview_bg).into(myViewHolder.imageView);
             }
 
             myViewHolder.mItemView.setTag(datas.get(postion));
