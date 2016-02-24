@@ -345,7 +345,19 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
 
     @Override
     public void onMultiHandle(List<IndicatorResponseEntity> list) {
-        if (list.size() == 0) {
+        int totalSize = 0;
+        for (IndicatorResponseEntity entity : list) {
+            switch (entity.getType()) {
+                case "video":
+                    totalSize = totalSize + ((SemanticSearchResponseEntity) entity.getSearchData()).getFacet().size();
+                    break;
+                case "app":
+                    totalSize = totalSize + ((List<AppSearchObjectEntity>) entity.getSearchData()).size();
+                    break;
+            }
+        }
+
+        if (totalSize == 0) {
             showNoVideoResultFragment("");
         } else {
             for (IndicatorResponseEntity entity : list) {

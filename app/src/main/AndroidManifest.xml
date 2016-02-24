@@ -112,5 +112,14 @@
                 <action android:name="com.sharp.VOICE_KEY_PRESSED"/>
             </intent-filter>
         </receiver>
+
+        <receiver android:name=".core.AppChangeReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED"/>
+                <action android:name="android.intent.action.PACKAGE_REMOVED"/>
+
+                <data android:scheme="package"/>
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

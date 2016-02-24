@@ -22,6 +22,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.ismartv.injectdb.library.query.Select;
 import cn.ismartv.recyclerview.widget.GridLayoutManager;
 import cn.ismartv.recyclerview.widget.RecyclerView;
 import cn.ismartv.voice.MainApplication;
@@ -30,6 +31,7 @@ import cn.ismartv.voice.core.http.HttpAPI;
 import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.data.http.AppSearchObjectEntity;
 import cn.ismartv.voice.data.http.RecommandAppEntity;
+import cn.ismartv.voice.data.table.AppTable;
 import cn.ismartv.voice.ui.SpaceItemDecoration;
 import cn.ismartv.voice.ui.widget.LaunchAppTransitionPopWindow;
 import cn.ismartv.voice.util.ViewScaleUtil;
@@ -158,14 +160,19 @@ public class AppSearchFragment extends BaseFragment implements View.OnFocusChang
             if (objectEntity.isLocal()) {
                 launchAppTransition(objectEntity.getCaption());
             } else {
-
-                Intent intent = new Intent("com.boxmate.tv.detail");
-                //app_id从服务端获取
-                intent.putExtra("app_id", objectEntity.getPk());
-                try {
-                    startActivity(intent);
-                } catch (ActivityNotFoundException e) {
-                    Toast.makeText(getContext(), R.string.ismartv_store_app_not_install, Toast.LENGTH_LONG).show();
+                String appPackage = objectEntity.getCaption();
+                final List<AppTable> appTables = new Select().from(AppTable.class).where("app_package = ?", appPackage).execute();
+                if (appTables.size() != 0) {
+                    launchAppTransition(objectEntity.getCaption());
+                } else {
+                    Intent intent = new Intent("com.boxmate.tv.detail");
+                    //app_id从服务端获取
+                    intent.putExtra("app_id", objectEntity.getPk());
+                    try {
+                        startActivity(intent);
+                    } catch (ActivityNotFoundException e) {
+                        Toast.makeText(getContext(), R.string.ismartv_store_app_not_install, Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         }
