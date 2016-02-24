@@ -95,7 +95,6 @@ public class AppSearchFragment extends BaseFragment implements View.OnFocusChang
                 }
                 break;
         }
-
     }
 
     private class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder> implements View.OnClickListener, View.OnFocusChangeListener {
