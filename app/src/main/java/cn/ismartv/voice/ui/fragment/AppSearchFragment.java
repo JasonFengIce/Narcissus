@@ -19,7 +19,6 @@ import android.widget.Toast;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import cn.ismartv.injectdb.library.query.Select;
@@ -30,7 +29,6 @@ import cn.ismartv.voice.R;
 import cn.ismartv.voice.core.http.HttpAPI;
 import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.data.http.AppSearchObjectEntity;
-import cn.ismartv.voice.data.http.RecommandAppEntity;
 import cn.ismartv.voice.data.table.AppTable;
 import cn.ismartv.voice.ui.SpaceItemDecoration;
 import cn.ismartv.voice.ui.widget.LaunchAppTransitionPopWindow;
@@ -75,6 +73,9 @@ public class AppSearchFragment extends BaseFragment implements View.OnFocusChang
         int horizontalSpacingInPixels = (int) (getResources().getDimensionPixelSize(R.dimen.content_fragment_item_horizontal_space) / getDensityRate());
         recyclerView.addItemDecoration(new SpaceItemDecoration(verticalSpacingInPixels, horizontalSpacingInPixels));
         recyclerView.setLayoutManager(gridLayoutManager);
+
+        fetchRecommendApp();
+
     }
 
 
@@ -208,20 +209,11 @@ public class AppSearchFragment extends BaseFragment implements View.OnFocusChang
 
     public void fetchRecommendApp() {
         Retrofit retrofit = HttpManager.getInstance().resetAdapter_WUGUOJUN;
-        retrofit.create(HttpAPI.RecommandApp.class).doRequest(8).enqueue(new Callback<List<RecommandAppEntity>>() {
+        retrofit.create(HttpAPI.RecommandApp.class).doRequest(8).enqueue(new Callback<List<AppSearchObjectEntity>>() {
             @Override
-            public void onResponse(Response<List<RecommandAppEntity>> response) {
-                List<RecommandAppEntity> entities = response.body();
-                ArrayList<AppSearchObjectEntity> list = new ArrayList<AppSearchObjectEntity>();
-                for (RecommandAppEntity recommandAppEntity : entities) {
-                    AppSearchObjectEntity objectEntity = new AppSearchObjectEntity();
-                    objectEntity.setIsLocal(false);
-                    objectEntity.setTitle(recommandAppEntity.getTitle());
-                    objectEntity.setUrl(recommandAppEntity.getDownload_url());
-                    objectEntity.setAdlet_url(recommandAppEntity.getIcon_url());
-                    list.add(objectEntity);
-                }
-                recyclerView.setAdapter(new RecyclerAdapter(list));
+            public void onResponse(Response<List<AppSearchObjectEntity>> response) {
+                List<AppSearchObjectEntity> entities = response.body();
+                recyclerView.setAdapter(new RecyclerAdapter(entities));
             }
 
             @Override

@@ -4,6 +4,7 @@ import java.util.List;
 
 import cn.ismartv.voice.core.update.VersionInfoV2Entity;
 import cn.ismartv.voice.data.http.ActorRelateRequestParams;
+import cn.ismartv.voice.data.http.AppSearchObjectEntity;
 import cn.ismartv.voice.data.http.AppSearchRequestParams;
 import cn.ismartv.voice.data.http.AppSearchResponseEntity;
 import cn.ismartv.voice.data.http.RecommandAppEntity;
@@ -74,7 +75,7 @@ public class HttpAPI {
 
     public interface RecommandApp {
         @GET("api/recommand_app/{count}/")
-        Call<List<RecommandAppEntity>> doRequest(
+        Call<List<AppSearchObjectEntity>> doRequest(
                 @Path("count") int count
         );
     }
