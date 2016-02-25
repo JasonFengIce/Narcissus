@@ -26,8 +26,5 @@ public class LauncherService extends Service {
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
         return super.onStartCommand(intent, flags, startId);
-
     }
-
-
 }
