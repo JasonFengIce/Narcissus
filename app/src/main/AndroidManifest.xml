@@ -107,12 +107,6 @@
 
         </service>
 
-        <receiver android:name=".core.VoiceKeyReceiver">
-            <intent-filter>
-                <action android:name="com.sharp.VOICE_KEY_PRESSED"/>
-            </intent-filter>
-        </receiver>
-
         <receiver android:name=".core.AppChangeReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED"/>
