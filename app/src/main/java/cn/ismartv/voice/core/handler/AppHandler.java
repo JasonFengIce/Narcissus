@@ -58,12 +58,18 @@ public class AppHandler {
                         appList.add(appSearchObjectEntity);
                     }
                     AppSearchResponseEntity.Facet[] facet = appSearchResponseEntity.getFacet();
+
                     if (facet != null) {
-                        appList.addAll(appSearchResponseEntity.getFacet()[0].getObjects());
+                        List<AppSearchObjectEntity> serverAppList = facet[0].getObjects();
+                        for (AppSearchObjectEntity entity : serverAppList) {
+                            List<AppTable> appTables = new Select().from(AppTable.class).where("app_package = ?", entity.getCaption()).execute();
+                            if (appTables.size() == 0) {
+                                appList.add(entity);
+                            }
+                        }
                         appSearchResponseEntity.getFacet()[0].setObjects(appList);
                         appSearchResponseEntity.getFacet()[0].setTotal_count(appList.size());
                     }
-                    Log.i(TAG, new Gson().toJson(appSearchResponseEntity));
                     callback.onAppHandleSuccess(appSearchResponseEntity, new Gson().toJson(jsonObject));
 
                 } else {

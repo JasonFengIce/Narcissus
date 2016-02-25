@@ -75,9 +75,18 @@ public class MultiHandler extends Thread {
                             appList.add(appSearchObjectEntity);
                         }
 
+
+
                         AppSearchResponseEntity.Facet[] facet = responseEntity.getFacet();
+
                         if (facet != null) {
-                            appList.addAll(responseEntity.getFacet()[0].getObjects());
+                            List<AppSearchObjectEntity> serverAppList = facet[0].getObjects();
+                            for (AppSearchObjectEntity entity : serverAppList) {
+                                List<AppTable> tables = new Select().from(AppTable.class).where("app_package = ?", entity.getCaption()).execute();
+                                if (tables.size() == 0) {
+                                    appList.add(entity);
+                                }
+                            }
                         }
 
                         IndicatorResponseEntity entity = new IndicatorResponseEntity();

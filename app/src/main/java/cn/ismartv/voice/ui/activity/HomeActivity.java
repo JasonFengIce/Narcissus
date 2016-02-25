@@ -210,8 +210,15 @@ public class HomeActivity extends BaseActivity {
                         appSearchObjectEntity.setIsLocal(true);
                         appList.add(appSearchObjectEntity);
                     }
-                    if (appSearchResponseEntity.getFacet() != null) {
-                        appList.addAll(appSearchResponseEntity.getFacet()[0].getObjects());
+                    AppSearchResponseEntity.Facet facet[] = appSearchResponseEntity.getFacet();
+                    if (facet != null) {
+                        List<AppSearchObjectEntity> serverAppList = facet[0].getObjects();
+                        for (AppSearchObjectEntity entity : serverAppList) {
+                            List<AppTable> appTables = new Select().from(AppTable.class).where("app_package = ?", entity.getCaption()).execute();
+                            if (appTables.size() == 0) {
+                                appList.add(entity);
+                            }
+                        }
                         appSearchResponseEntity.getFacet()[0].setObjects(appList);
                         appSearchResponseEntity.getFacet()[0].setTotal_count(appList.size());
                     }
