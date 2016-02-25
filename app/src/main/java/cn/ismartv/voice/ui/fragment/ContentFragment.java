@@ -39,16 +39,6 @@ import retrofit2.Retrofit;
 public class ContentFragment extends BaseFragment implements View.OnFocusChangeListener, OnClickListener {
     private RecyclerView recyclerView;
     private TextView searchTitle;
-//    private static final int resIds[] = {R.drawable.sample_1, R.drawable.sample_2, R.drawable.sample_3, R.drawable.sample_4, R.drawable.sample_5,
-//            R.drawable.sample_6, R.drawable.sample_7, R.drawable.sample_8};
-
-    private static final int resIds[] = {R.drawable.test_1, R.drawable.test_2, R.drawable.test_3, R.drawable.test_4, R.drawable.test_5,
-            R.drawable.test_6, R.drawable.test_7, R.drawable.test_8,
-            R.drawable.sample_1, R.drawable.sample_2, R.drawable.sample_3, R.drawable.sample_4, R.drawable.sample_5,
-            R.drawable.sample_6, R.drawable.sample_7, R.drawable.sample_8
-
-
-    };
 
     private View lostFocusItemView;
     private ImageView arrowUp;
