@@ -223,7 +223,6 @@ public class AppSearchFragment extends BaseFragment implements View.OnFocusChang
         });
     }
 
-
     private void launchApp(String appPackage) {
         Context context = MainApplication.getContext();
         PackageManager packageManager = context.getPackageManager();
