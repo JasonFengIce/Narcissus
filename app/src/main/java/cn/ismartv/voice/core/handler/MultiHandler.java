@@ -75,7 +75,7 @@ public class MultiHandler extends Thread {
                             appList.add(appSearchObjectEntity);
                         }
 
-                      AppSearchResponseEntity.Facet[] facet = responseEntity.getFacet();
+                        AppSearchResponseEntity.Facet[] facet = responseEntity.getFacet();
                         if (facet != null) {
                             appList.addAll(responseEntity.getFacet()[0].getObjects());
                         }
@@ -93,6 +93,7 @@ public class MultiHandler extends Thread {
                     }
                     break;
                 case "video":
+                case "tv_show":
                     SemanticSearchRequestEntity requestEntity = new SemanticSearchRequestEntity();
                     requestEntity.setSemantic(jsonObject);
                     requestEntity.setPage_on(AppConstant.DEFAULT_PAGE_NO);

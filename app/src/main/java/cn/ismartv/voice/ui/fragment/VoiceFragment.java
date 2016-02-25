@@ -346,13 +346,17 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
     @Override
     public void onMultiHandle(List<IndicatorResponseEntity> list) {
         int totalSize = 0;
+        int videoListSize = 0;
+        int appListSize = 0;
         for (IndicatorResponseEntity entity : list) {
             switch (entity.getType()) {
                 case "video":
-                    totalSize = totalSize + ((SemanticSearchResponseEntity) entity.getSearchData()).getFacet().size();
+                    videoListSize = ((SemanticSearchResponseEntity) entity.getSearchData()).getFacet().size();
+                    totalSize = totalSize + videoListSize;
                     break;
                 case "app":
-                    totalSize = totalSize + ((List<AppSearchObjectEntity>) entity.getSearchData()).size();
+                    appListSize = ((List<AppSearchObjectEntity>) entity.getSearchData()).size();
+                    totalSize = totalSize + appListSize;
                     break;
             }
         }
@@ -366,10 +370,12 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
                         ((HomeActivity) getActivity()).showIndicatorFragment((SemanticSearchResponseEntity) entity.getSearchData(), entity.getSemantic());
                         break;
                     case "app":
-                        if (list.size() == 1) {
-                            ((HomeActivity) getActivity()).showAppIndicatorFragmentNoClear((List<AppSearchObjectEntity>) entity.getSearchData(), entity.getSemantic());
-                        } else {
-                            ((HomeActivity) getActivity()).showAppIndicatorFragment((List<AppSearchObjectEntity>) entity.getSearchData(), entity.getSemantic());
+                        if (appListSize != 0) {
+                            if (videoListSize == 0) {
+                                ((HomeActivity) getActivity()).showAppIndicatorFragment((List<AppSearchObjectEntity>) entity.getSearchData(), entity.getSemantic());
+                            } else {
+                                ((HomeActivity) getActivity()).showAppIndicatorFragmentNoClear((List<AppSearchObjectEntity>) entity.getSearchData(), entity.getSemantic());
+                            }
                         }
                         break;
                 }

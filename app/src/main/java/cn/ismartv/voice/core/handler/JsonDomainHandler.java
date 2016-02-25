@@ -57,6 +57,7 @@ public class JsonDomainHandler {
                         new AppHandler(o, appHandleCallback);
                         break;
                     case "video":
+                    case "tv_show":
                         new VideoHandler(o, callback);
                         break;
                     case "weather":
