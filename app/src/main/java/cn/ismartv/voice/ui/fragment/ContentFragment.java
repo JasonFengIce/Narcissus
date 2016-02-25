@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,6 +38,7 @@ import retrofit2.Retrofit;
  * Created by huaijie on 1/18/16.
  */
 public class ContentFragment extends BaseFragment implements View.OnFocusChangeListener, OnClickListener {
+    private static final String TAG = "ContentFragment";
     private RecyclerView recyclerView;
     private TextView searchTitle;
 
@@ -108,12 +110,10 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
         private List<SemantichObjectEntity> datas;
 
         public RecyclerAdapter(List<SemantichObjectEntity> objectEntities) {
-            if (objectEntities.size() <= 8) {
-                arrowUp.setVisibility(View.GONE);
-                arrowDown.setVisibility(View.GONE);
-            } else {
-                arrowUp.setVisibility(View.VISIBLE);
+            if (objectEntities.size() > 8) {
                 arrowDown.setVisibility(View.VISIBLE);
+            } else {
+                arrowDown.setVisibility(View.GONE);
             }
             this.datas = objectEntities;
         }
@@ -126,7 +126,7 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
 
         @Override
         public void onBindViewHolder(MyViewHolder myViewHolder, int postion) {
-
+            Log.i(TAG, "position: " + postion);
             myViewHolder.textView.setText(datas.get(postion).getTitle());
             String postUrl = datas.get(postion).getPoster_url();
             String verticalUrl = datas.get(postion).getVertical_url();
@@ -173,6 +173,19 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
                 myViewHolder.mItemView.requestFocusFromTouch();
                 myViewHolder.mItemView.requestFocus();
             }
+
+            if (postion >= 8) {
+                arrowUp.setVisibility(View.VISIBLE);
+            } else {
+                arrowUp.setVisibility(View.GONE);
+            }
+
+            if (postion == datas.size() - 1) {
+                arrowDown.setVisibility(View.GONE);
+            } else {
+                arrowDown.setVisibility(View.VISIBLE);
+            }
+
         }
 
 

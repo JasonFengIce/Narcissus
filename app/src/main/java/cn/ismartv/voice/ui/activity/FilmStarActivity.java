@@ -63,10 +63,10 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
         setContentView(R.layout.activity_filmstar);
         initViews();
         Intent intent = getIntent();
-//        pk = intent.getLongExtra("pk", 0);
-        pk = 1054;
-//        String title = intent.getStringExtra("title");
-        String title = "刘德华";
+        pk = intent.getLongExtra("pk", 0);
+//        pk = 1054;
+        String title = intent.getStringExtra("title");
+//        String title = "刘德华";
         filmStartitle.setText(title);
         fetchActorRelate(pk);
 
