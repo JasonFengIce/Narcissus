@@ -73,7 +73,7 @@ public class WeatherFragment extends BaseFragment implements View.OnClickListene
         } else {
             noWeatherTipLayout.setVisibility(View.GONE);
             geoId = location.geo_id;
-            currentLocationText.setText(String.format(rawTextValue, location.city));
+            currentLocationText.setText(location.city);
         }
 
 
