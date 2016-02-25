@@ -3,6 +3,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.Holo.Light.NoActionBar.Fullscreen">
         <item name="android:textColorSecondary">#ffffff</item>
+        <item name="android:windowBackground">@drawable/window_bg</item>
     </style>
 
 </resources>
