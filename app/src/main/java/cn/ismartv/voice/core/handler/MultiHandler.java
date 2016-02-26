@@ -11,6 +11,7 @@ import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import cn.ismartv.injectdb.library.query.Select;
@@ -76,7 +77,6 @@ public class MultiHandler extends Thread {
                         }
 
 
-
                         AppSearchResponseEntity.Facet[] facet = responseEntity.getFacet();
 
                         if (facet != null) {
@@ -122,7 +122,10 @@ public class MultiHandler extends Thread {
             }
         }
         //send message
-        Message message = messageHandler.obtainMessage(HANDLE_SUCCESS, indicatorList);
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("list", indicatorList);
+        hashMap.put("rawText", rawText);
+        Message message = messageHandler.obtainMessage(HANDLE_SUCCESS, hashMap);
         messageHandler.sendMessage(message);
     }
 
@@ -141,7 +144,10 @@ public class MultiHandler extends Thread {
             if (handler != null) {
                 switch (msg.what) {
                     case HANDLE_SUCCESS:
-                        handler.callback.onMultiHandle((List<IndicatorResponseEntity>) msg.obj);
+                        HashMap<String, Object> hashMap = (HashMap) msg.obj;
+                        List<IndicatorResponseEntity> list = (List<IndicatorResponseEntity>) hashMap.get("list");
+                        String rawText = (String) hashMap.get("rawText");
+                        handler.callback.onMultiHandle(list, rawText);
                         break;
                 }
             }

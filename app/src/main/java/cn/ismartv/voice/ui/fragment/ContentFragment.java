@@ -128,7 +128,6 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
 
         @Override
         public void onBindViewHolder(MyViewHolder myViewHolder, int postion) {
-            Log.i(TAG, "position: " + postion);
             myViewHolder.textView.setText(datas.get(postion).getTitle());
             String postUrl = datas.get(postion).getPoster_url();
             String verticalUrl = datas.get(postion).getVertical_url();

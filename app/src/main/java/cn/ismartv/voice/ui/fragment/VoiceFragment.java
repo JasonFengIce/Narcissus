@@ -355,7 +355,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
     }
 
     @Override
-    public void onMultiHandle(List<IndicatorResponseEntity> list) {
+    public void onMultiHandle(List<IndicatorResponseEntity> list, String rawText) {
         int totalSize = 0;
         int videoListSize = 0;
         int appListSize = 0;
@@ -373,7 +373,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
         }
 
         if (totalSize == 0) {
-            showNoVideoResultFragment("");
+            showNoVideoResultFragment(rawText);
         } else {
             for (IndicatorResponseEntity entity : list) {
                 switch (entity.getType()) {
