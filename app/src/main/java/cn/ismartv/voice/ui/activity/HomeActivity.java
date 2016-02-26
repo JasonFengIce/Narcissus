@@ -306,7 +306,7 @@ public class HomeActivity extends BaseActivity {
             entity.setContent_type(contentType);
         }
         entity.setPage_on(1);
-        entity.setPage_count(30);
+        entity.setPage_count(300);
 
         Retrofit retrofit = HttpManager.getInstance().resetAdapter_QIANGUANGZHAO;
         retrofit.create(HttpAPI.SemanticSearch.class).doRequest(entity).enqueue(new Callback<SemanticSearchResponseEntity>() {
