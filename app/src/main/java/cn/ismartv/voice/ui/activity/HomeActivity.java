@@ -160,9 +160,6 @@ public class HomeActivity extends BaseActivity {
                 showLeftFragment(voiceFragment);
                 voiceFragment.startSpeek();
             }
-
-            Log.e(TAG, "long down: " + keyCode + " event: " + event.getAction());
-
             return true;
         }
 
