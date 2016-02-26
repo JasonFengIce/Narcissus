@@ -73,6 +73,7 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
         recyclerView.setOnFocusChangeListener(this);
     }
 
+
     public void notifyDataChanged(SemanticSearchResponseEntity responseEntity, String data) {
         String rawTextValue = getString(R.string.search_title);
         String rawText = new JsonParser().parse(data).getAsJsonObject().get("raw_text").toString();
@@ -80,6 +81,7 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
         recyclerView.setAdapter(new RecyclerAdapter(responseEntity.getFacet().get(0).getObjects()));
         //first item request focus
     }
+
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
