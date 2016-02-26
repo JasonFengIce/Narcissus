@@ -38,8 +38,8 @@
 <dimen name="voice_fragment_icon_bg_height">210.67dp</dimen>
 <dimen name="voice_fragment_icon_bg_width">210.67dp</dimen>
 <dimen name="voice_fragment_icon_margin_top">61.33dp</dimen>
-<dimen name="voice_fragment_icon_mic_height">50.00dp</dimen>
-<dimen name="voice_fragment_icon_mic_width">51.33dp</dimen>
+<dimen name="voice_fragment_icon_mic_height">105.33dp</dimen>
+<dimen name="voice_fragment_icon_mic_width">44.67dp</dimen>
 <dimen name="voice_fragment_icon_progress_height">184.00dp</dimen>
 <dimen name="voice_fragment_icon_progress_width">184.00dp</dimen>
 <dimen name="voice_fragment_icon_vol_height">105.33dp</dimen>
@@ -65,7 +65,7 @@
 
 <dimen name="content_fragment_indicator_item_height">44.00dp</dimen>
 <dimen name="content_fragment_indicator_item_width">239.33dp</dimen>
-<dimen name="indicator_fragment_slide_width">24.67dp</dimen>
+<dimen name="indicator_fragment_slide_width">50.00dp</dimen>
 
 <dimen name="item_app_search_width">169.33dp</dimen>
 

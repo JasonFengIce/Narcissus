@@ -125,6 +125,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
         voiceMicImg = (ImageView) view.findViewById(R.id.voice_mic);
 
         slideMenu = (ImageView) view.findViewById(R.id.indicator_right_slide_menu);
+        slideMenu.bringToFront();
         slideMenu.setOnClickListener(this);
         voiceProgressImg.setOnTouchListener(this);
 

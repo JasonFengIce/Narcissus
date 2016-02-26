@@ -50,6 +50,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
         appContentLayout = (LinearLayout) view.findViewById(R.id.app_content);
 
         slideMenu = (ImageView) view.findViewById(R.id.indicator_slide_menu);
+        slideMenu.bringToFront();
         slideMenu.setOnClickListener(this);
     }
 
@@ -69,6 +70,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
             linearLayout.setTag(hashMap);
             linearLayout.setOnClickListener(this);
             linearLayout.setOnFocusChangeListener(this);
+            linearLayout.setNextFocusLeftId(R.id.indicator_slide_menu);
             videoContentLayout.addView(linearLayout);
         }
 
