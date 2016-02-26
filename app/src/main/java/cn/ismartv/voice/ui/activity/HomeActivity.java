@@ -71,7 +71,6 @@ public class HomeActivity extends BaseActivity {
     private List<BaseFragment> leftFragmentList;
 
     private boolean voiceBtnIsDown = false;
-
     private View contentView;
 
     public void hideNavigationBar() {
