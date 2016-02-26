@@ -154,6 +154,7 @@ public class HomeActivity extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_F12) {
+
             if (!voiceBtnIsDown) {
                 voiceBtnIsDown = true;
                 showLeftFragment(voiceFragment);
@@ -330,6 +331,7 @@ public class HomeActivity extends BaseActivity {
     }
 
     public void backToVoiceFragment() {
+        voiceFragment.backToVoice();
         showLeftFragment(voiceFragment);
     }
 

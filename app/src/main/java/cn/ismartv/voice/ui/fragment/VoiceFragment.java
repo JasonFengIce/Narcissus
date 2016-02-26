@@ -132,16 +132,21 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
 
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden) {
-            if (searchKeyWordFragment.isVisible()) {
-                slideMenu.setVisibility(View.VISIBLE);
-            } else {
-                slideMenu.setVisibility(View.GONE);
-            }
-        }
+//    @Override
+//    public void onHiddenChanged(boolean hidden) {
+//        super.onHiddenChanged(hidden);
+//        if (!hidden) {
+//            if (searchKeyWordFragment.isVisible()) {
+//                slideMenu.setVisibility(View.VISIBLE);
+//            } else {
+//                slideMenu.setVisibility(View.GONE);
+//            }
+//        }
+//    }
+
+    public void backToVoice(){
+        slideMenu.setVisibility(View.VISIBLE);
+        showFragment(searchTipFragment);
     }
 
     @Override
@@ -206,7 +211,13 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
 
     public void stopSpeek() {
         loopAnim(voiceProgressImg, false);
-        voiceMicImg.setImageResource(R.drawable.voice_mic);
+        voiceMicImg.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                voiceMicImg.setImageResource(R.drawable.voice_mic);
+            }
+        }, 1000);
+
 //                        ((HomeActivity) getActivity()).handleVoice();
         voiceRecognitionClient.speakFinish();
     }
