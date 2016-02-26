@@ -34,6 +34,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
 
     private View selectedView;
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,11 +45,11 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         videoTypeLayout = (LinearLayout) view.findViewById(R.id.video_type_layout);
         appTypeLayout = (LinearLayout) view.findViewById(R.id.app_type_layout);
         videoContentLayout = (LinearLayout) view.findViewById(R.id.video_content);
         appContentLayout = (LinearLayout) view.findViewById(R.id.app_content);
-
         slideMenu = (ImageView) view.findViewById(R.id.indicator_slide_menu);
         slideMenu.bringToFront();
         slideMenu.setOnClickListener(this);
@@ -58,6 +59,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
     public void initIndicator(SemanticSearchResponseEntity entity, String data) {
         videoTypeLayout.setVisibility(View.VISIBLE);
         videoContentLayout.removeAllViews();
+        int i = 0;
         for (SemanticSearchResponseEntity.Facet facet : entity.getFacet()) {
             LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.item_indicator, null);
             linearLayout.setBackgroundResource(R.drawable.seletor_indicator_item);
@@ -68,10 +70,29 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
             hashMap.put("type", facet.getContent_type());
             hashMap.put("data", data);
             linearLayout.setTag(hashMap);
-            linearLayout.setOnClickListener(this);
+            linearLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (selectedView != null) {
+                        TextView textView = (TextView) selectedView.findViewById(R.id.title);
+                        textView.setTextColor(getResources().getColor(R.color._a6a6a6));
+                    } else {
+                        TextView textView = (TextView) v.findViewById(R.id.title);
+                        textView.setTextColor(getResources().getColor(R.color._ffffff));
+                    }
+                    selectedView = v;
+                    HashMap<String, String> tag = (HashMap<String, String>) v.getTag();
+                    String type = tag.get("type");
+                    String data = tag.get("data");
+                    ((HomeActivity) getActivity()).handleIndicatorClick(type, data);
+                }
+            });
+            linearLayout.setId(R.id.indicator_list_item + i);
             linearLayout.setOnFocusChangeListener(this);
             linearLayout.setNextFocusLeftId(R.id.indicator_slide_menu);
+
             videoContentLayout.addView(linearLayout);
+            i = i + 1;
         }
 
         if (videoContentLayout.getChildCount() != 0) {
@@ -95,7 +116,13 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
 
         String rawText = new JsonParser().parse(data).getAsJsonObject().get("raw_text").toString();
         linearLayout.setTag(rawText);
-        linearLayout.setOnClickListener(this);
+        linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String rawText = (String) v.getTag();
+                ((HomeActivity) getActivity()).handleAppIndicatorClick(rawText);
+            }
+        });
         linearLayout.setOnFocusChangeListener(this);
         appContentLayout.addView(linearLayout);
 
@@ -107,8 +134,6 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
             }
             ((HomeActivity) getActivity()).handleAppIndicatorClick(rawText);
         }
-
-
     }
 
     @Override
@@ -117,23 +142,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
             case R.id.indicator_slide_menu:
                 ((HomeActivity) getActivity()).backToVoiceFragment();
                 break;
-            case R.id.all_app_type:
-                String rawText = (String) v.getTag();
-                ((HomeActivity) getActivity()).handleAppIndicatorClick(rawText);
-                break;
             default:
-                if (selectedView != null) {
-                    TextView textView = (TextView) selectedView.findViewById(R.id.title);
-                    textView.setTextColor(getResources().getColor(R.color._a6a6a6));
-                } else {
-                    TextView textView = (TextView) v.findViewById(R.id.title);
-                    textView.setTextColor(getResources().getColor(R.color._ffffff));
-                }
-                selectedView = v;
-                HashMap<String, String> tag = (HashMap<String, String>) v.getTag();
-                String type = tag.get("type");
-                String data = tag.get("data");
-                ((HomeActivity) getActivity()).handleIndicatorClick(type, data);
                 break;
         }
 
@@ -147,25 +156,29 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-        TextView textView = (TextView) v.findViewById(R.id.title);
-        if (hasFocus) {
-            if (selectedView == v) {
-                textView.setTextColor(getResources().getColor(R.color._ffffff));
-                ViewScaleUtil.scaleToLarge(v, 1.3f);
-            } else {
-                textView.setTextColor(getResources().getColor(R.color._ff9c3c));
-                ViewScaleUtil.scaleToLarge(v, 1.3f);
-            }
+        switch (v.getId()) {
+            default:
+                TextView textView = (TextView) v.findViewById(R.id.title);
+                if (hasFocus) {
+                    if (selectedView == v) {
+                        textView.setTextColor(getResources().getColor(R.color._ffffff));
+                        ViewScaleUtil.scaleToLarge(v, 1.3f);
+                    } else {
+                        textView.setTextColor(getResources().getColor(R.color._ff9c3c));
+                        ViewScaleUtil.scaleToLarge(v, 1.3f);
+                    }
 
-        } else {
-            if (selectedView == v) {
-                textView.setTextColor(getResources().getColor(R.color._ffffff));
-                ViewScaleUtil.scaleToNormal(v, 1.3f);
-            } else {
-                textView.setTextColor(getResources().getColor(R.color._a6a6a6));
-                ViewScaleUtil.scaleToNormal(v, 1.3f);
-            }
-
+                } else {
+                    if (selectedView == v) {
+                        textView.setTextColor(getResources().getColor(R.color._ffffff));
+                        ViewScaleUtil.scaleToNormal(v, 1.3f);
+                    } else {
+                        textView.setTextColor(getResources().getColor(R.color._a6a6a6));
+                        ViewScaleUtil.scaleToNormal(v, 1.3f);
+                    }
+                    slideMenu.setNextFocusRightId(v.getId());
+                }
+                break;
         }
     }
 }
