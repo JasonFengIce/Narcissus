@@ -30,8 +30,6 @@
             android:layout_marginLeft="@dimen/arrow_margin"
             android:background="@drawable/selector_star_arrow_left"
             android:clickable="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             />
 
         <HorizontalScrollView
@@ -61,8 +59,6 @@
             android:layout_marginRight="@dimen/arrow_margin"
             android:background="@drawable/selector_star_arrow_right"
             android:clickable="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:padding="10dp"/>
 
     </LinearLayout>

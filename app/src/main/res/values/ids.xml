@@ -3,6 +3,7 @@
     <item name="all_app_type" type="id"/>
 
     <item name="indicator_list_item" type="id"/>
+    <item name="filmstar_indicator_list_item" type="id"/>
 
     <item name="content_list_item" type="id"/>
 </resources>
