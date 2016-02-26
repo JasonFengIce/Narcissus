@@ -12,6 +12,15 @@ public class SemantichObjectEntity {
     private String content_model;
     private AttributesEntity attributes;
     private String description;
+    private String focus;
+
+    public String getFocus() {
+        return focus;
+    }
+
+    public void setFocus(String focus) {
+        this.focus = focus;
+    }
 
     public String getDescription() {
         return description;

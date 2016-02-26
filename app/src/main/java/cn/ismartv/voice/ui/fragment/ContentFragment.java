@@ -132,12 +132,17 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
             myViewHolder.textView.setText(datas.get(postion).getTitle());
             String postUrl = datas.get(postion).getPoster_url();
             String verticalUrl = datas.get(postion).getVertical_url();
+            String focusString = datas.get(postion).getFocus();
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("url", datas.get(postion).getUrl());
             hashMap.put("content_model", datas.get(postion).getContent_model());
             hashMap.put("pk", datas.get(postion).getPk());
             hashMap.put("title", datas.get(postion).getTitle());
+            if (focusString.length() > 10) {
+                focusString = focusString.subSequence(0, 10).toString();
+            }
 
+            myViewHolder.imageView.setFoucsText(focusString);
             if (!TextUtils.isEmpty(verticalUrl)) {
                 hashMap.put("orientation", "vertical");
                 myViewHolder.imageView.setIsHorizontal(false);

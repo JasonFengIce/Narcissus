@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clickable="true"
                 android:focusable="true"
-                android:gravity="center"
                 android:focusableInTouchMode="true"
+                android:gravity="center"
 
     >
 
@@ -16,6 +17,9 @@
         android:layout_centerHorizontal="true"
         android:background="@drawable/selector_item"
         android:scaleType="fitXY"
+        app:focus_title_background="#b2000000"
+        app:focus_title_height="@dimen/focus_text_height"
+        app:focus_title_textSize="@dimen/textSize_24sp"
         />
 
     <TextView
