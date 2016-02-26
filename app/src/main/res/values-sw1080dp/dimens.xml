@@ -67,7 +67,7 @@
     <dimen name="content_fragment_indicator_item_width">359dp</dimen>
     <dimen name="indicator_fragment_slide_width">75dp</dimen>
 
-    <dimen name="item_app_search_width">254dp</dimen>
+    <dimen name="item_app_search_width">220dp</dimen>
 
     <dimen name="loading_layout_width">1100dp</dimen>
     <dimen name="loading_layout_height">160dp</dimen>
@@ -131,6 +131,8 @@
     <dimen name="left_search_loading_icon_margin_top">185dp</dimen>
     <dimen name="keyword_icon_margin_top">54dp</dimen>
     <dimen name="keyword_margin_top">90dp</dimen>
-
+    <dimen name="app_search_recycler_height">700dp</dimen>
+    <dimen name="item_text_margin_top">-20dp</dimen>
+    <dimen name="app_fragment_recycler_margin_top">-70.0dp</dimen>
 
 </resources>

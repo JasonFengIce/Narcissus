@@ -21,6 +21,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import cn.ismartv.imagereflection.RelectionImageView;
 import cn.ismartv.injectdb.library.query.Select;
 import cn.ismartv.recyclerview.widget.GridLayoutManager;
 import cn.ismartv.recyclerview.widget.RecyclerView;
@@ -136,7 +137,8 @@ public class AppSearchFragment extends BaseFragment implements View.OnFocusChang
                 }
 //                Picasso.with(getContext()).load().error(R.drawable.horizontal_preview_bg).into(myViewHolder.imageView);
             } else {
-                Picasso.with(getContext()).load(datas.get(postion).getAdlet_url()).memoryPolicy(MemoryPolicy.NO_STORE).error(R.drawable.horizontal_preview_bg).into(myViewHolder.imageView);
+                Picasso.with(getContext()).load(datas.get(postion).getAdlet_url()).memoryPolicy(MemoryPolicy.NO_STORE)
+                        .into(myViewHolder.imageView);
             }
 
             myViewHolder.mItemView.setTag(datas.get(postion));
@@ -196,13 +198,13 @@ public class AppSearchFragment extends BaseFragment implements View.OnFocusChang
 
     private class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView textView;
-        private ImageView imageView;
+        private RelectionImageView imageView;
         private View mItemView;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.id_number);
-            imageView = (ImageView) itemView.findViewById(R.id.image);
+            imageView = (RelectionImageView) itemView.findViewById(R.id.image);
             this.mItemView = itemView;
         }
     }

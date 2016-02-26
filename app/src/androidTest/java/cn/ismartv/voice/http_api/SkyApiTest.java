@@ -58,14 +58,14 @@ public class SkyApiTest extends AndroidTestCase {
 
 
     public void testAppSearch() {
-        Retrofit retrofit = HttpManager.getInstance().resetAdapter_QIANGUANGZHAO;
-        try {
-            Response<AppSearchResponseEntity> response = retrofit.create(HttpAPI.AppSearch.class).doRequest("三国", 1, 30).execute();
-            String s = new Gson().toJson(response.body());
-            Log.i(TAG, s);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        Retrofit retrofit = HttpManager.getInstance().resetAdapter_QIANGUANGZHAO;
+//        try {
+//            Response<AppSearchResponseEntity> response = retrofit.create(HttpAPI.AppSearch.class).doRequest("三国", 1, 30).execute();
+//            String s = new Gson().toJson(response.body());
+//            Log.i(TAG, s);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     public void testWeatherSearch() {
@@ -103,12 +103,12 @@ public class SkyApiTest extends AndroidTestCase {
 
     public void testRecommandApp() {
         Retrofit retrofit = HttpManager.getInstance().resetAdapter_WUGUOJUN;
-        try {
-            Response<List<RecommandAppEntity>> response = retrofit.create(HttpAPI.RecommandApp.class).doRequest(8).execute();
-            String s = new Gson().toJson(response.body());
-            Log.i(TAG, s);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Response<List<RecommandAppEntity>> response = retrofit.create(HttpAPI.RecommandApp.class).doRequest(8).execute();
+//            String s = new Gson().toJson(response.body());
+//            Log.i(TAG, s);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 }

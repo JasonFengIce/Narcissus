@@ -26,6 +26,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/app_fragment_recycler_margin_top"
         android:clipChildren="false"
         android:clipToPadding="false"
         >
@@ -45,11 +46,13 @@
         <cn.ismartv.recyclerview.widget.RecyclerView
             android:id="@+id/app_search_list"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_gravity="center"
+            android:layout_height="@dimen/app_search_recycler_height"
+            android:layout_centerInParent="true"
             android:layout_marginLeft="@dimen/content_fragment_recycler_margin_lr"
             android:layout_marginRight="@dimen/content_fragment_recycler_margin_lr"
-            android:layout_marginTop="@dimen/content_fragment_recycler_margin_top"
+
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:descendantFocusability="afterDescendants"
             />
 
