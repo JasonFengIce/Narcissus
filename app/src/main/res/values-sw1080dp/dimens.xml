@@ -132,7 +132,7 @@
     <dimen name="keyword_icon_margin_top">54dp</dimen>
     <dimen name="keyword_margin_top">90dp</dimen>
     <dimen name="app_search_recycler_height">700dp</dimen>
-    <dimen name="item_text_margin_top">-20dp</dimen>
+    <dimen name="item_text_margin_top">-30dp</dimen>
     <dimen name="app_fragment_recycler_margin_top">-70.0dp</dimen>
     <dimen name="focus_text_height">37dp</dimen>
     <dimen name="pop_cursor_margin_left">170dp</dimen>
