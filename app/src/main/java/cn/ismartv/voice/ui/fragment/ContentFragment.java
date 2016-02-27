@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -137,7 +136,8 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
             hashMap.put("content_model", datas.get(postion).getContent_model());
             hashMap.put("pk", datas.get(postion).getPk());
             hashMap.put("title", datas.get(postion).getTitle());
-            if (focusString.length() > 10) {
+
+            if (!TextUtils.isEmpty(focusString) && focusString.length() > 10) {
                 focusString = focusString.subSequence(0, 10).toString();
             }
 

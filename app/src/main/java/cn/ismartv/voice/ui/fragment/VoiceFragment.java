@@ -210,12 +210,6 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
 
     public void stopSpeek() {
         loopAnim(voiceProgressImg, false);
-        voiceMicImg.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                voiceMicImg.setImageResource(R.drawable.voice_mic);
-            }
-        }, 1000);
 
 //                        ((HomeActivity) getActivity()).handleVoice();
         voiceRecognitionClient.speakFinish();
@@ -282,6 +276,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
             // 语音识别完成，显示obj中的结果
             case VoiceRecognitionClient.CLIENT_STATUS_FINISH:
                 isRecognition = false;
+                voiceMicImg.setImageResource(R.drawable.voice_mic);
                 VoiceResultEntity[] voiceResultEntity = new Gson().fromJson(o.toString(), VoiceResultEntity[].class);
                 if (voiceResultEntity.length == 0) {
                     showRecognizeErrorFragment();
@@ -300,6 +295,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
             // 用户取消
             case VoiceRecognitionClient.CLIENT_STATUS_USER_CANCELED:
                 isRecognition = false;
+                voiceMicImg.setImageResource(R.drawable.voice_mic);
                 break;
             default:
                 break;
