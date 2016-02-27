@@ -16,14 +16,35 @@ import cn.ismartv.voice.R;
 public class SearchLoadingFragment extends BaseFragment {
 
     private ImageView progressView;
+    private View contentView;
+    private boolean hasBackground;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_search_loading, null);
-        return view;
+        contentView = inflater.inflate(R.layout.fragment_search_loading, null);
+        return contentView;
     }
 
+    public boolean isHasBackground() {
+        return hasBackground;
+    }
+
+    public void setHasBackground(boolean hasBackground) {
+        this.hasBackground = hasBackground;
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (contentView != null && !hidden) {
+            if (hasBackground) {
+                contentView.setBackgroundDrawable(getResources().getDrawable(R.drawable.pop_bg));
+            } else {
+                contentView.setBackgroundDrawable(getResources().getDrawable(R.drawable.pop_bg));
+            }
+        }
+    }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

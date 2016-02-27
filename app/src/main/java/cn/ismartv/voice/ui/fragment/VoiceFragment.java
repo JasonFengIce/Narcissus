@@ -24,10 +24,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.ismartv.voice.R;
+import cn.ismartv.voice.core.event.AnswerAvailableEvent;
 import cn.ismartv.voice.core.handler.AppHandleCallback;
 import cn.ismartv.voice.core.handler.HandleCallback;
 import cn.ismartv.voice.core.handler.JsonDomainHandler;
@@ -318,6 +321,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
                 showRecognizeErrorFragment();
                 break;
             case VoiceRecognitionClient.ERROR_NETWORK:
+                EventBus.getDefault().post(new AnswerAvailableEvent());
                 break;
         }
 

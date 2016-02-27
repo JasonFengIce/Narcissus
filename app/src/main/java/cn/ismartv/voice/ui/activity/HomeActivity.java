@@ -94,7 +94,7 @@ public class HomeActivity extends BaseActivity {
         leftFragmentList.add(voiceFragment);
         leftFragmentList.add(indicatorFragment);
 
-        AppUpdateUtilsV2.getInstance(this).checkAppUpdate();
+//        AppUpdateUtilsV2.getInstance(this).checkAppUpdate();
 
         if (savedInstanceState != null) {
 
@@ -289,7 +289,18 @@ public class HomeActivity extends BaseActivity {
         appSearchFragment.fetchRecommendApp();
     }
 
+    public void showSearchLoading(boolean hasBackground) {
+        if (hasBackground) {
+            searchLoadingFragment.setHasBackground(true);
+        } else {
+            searchLoadingFragment.setHasBackground(false);
+        }
+        showMyFragment(searchLoadingFragment);
+    }
+
     public void showSearchLoading() {
+
+        searchLoadingFragment.setHasBackground(false);
         showMyFragment(searchLoadingFragment);
     }
 
