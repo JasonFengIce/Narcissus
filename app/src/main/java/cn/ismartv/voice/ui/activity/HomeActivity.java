@@ -21,7 +21,6 @@ import java.util.List;
 
 import cn.ismartv.voice.R;
 import cn.ismartv.voice.core.event.AnswerAvailableEvent;
-import cn.ismartv.voice.core.update.AppUpdateUtilsV2;
 import cn.ismartv.voice.data.http.AppSearchObjectEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.data.table.CityTable;
@@ -31,6 +30,7 @@ import cn.ismartv.voice.ui.fragment.ContentFragment;
 import cn.ismartv.voice.ui.fragment.IndicatorFragment;
 import cn.ismartv.voice.ui.fragment.RecognizeErrorFragment;
 import cn.ismartv.voice.ui.fragment.SearchLoadingFragment;
+import cn.ismartv.voice.ui.fragment.SearchLoadingWithBGFragment;
 import cn.ismartv.voice.ui.fragment.VoiceFragment;
 import cn.ismartv.voice.ui.fragment.WeatherFragment;
 import cn.ismartv.voice.ui.widget.MessagePopWindow;
@@ -48,6 +48,7 @@ public class HomeActivity extends BaseActivity {
     private static final String SEARCH_LOADING_FRAGMENT = "search_loading_fragment_tag";
     private static final String WEATHER_FRAGMENT_TAG = "weather_fragment_tag";
     private static final String RECOGNIZE_ERROR_FRAGMENT_TAG = "recognize_error_fragment_tag";
+    private static final String SEARCH_LOADING_BG_FRAGMENT = "search_loading_bg_fragment_tag";
 
 
     private VoiceFragment voiceFragment;
@@ -57,6 +58,7 @@ public class HomeActivity extends BaseActivity {
     private SearchLoadingFragment searchLoadingFragment;
     private WeatherFragment weatherFragment;
     private RecognizeErrorFragment recognizeErrorFragment;
+    private SearchLoadingWithBGFragment searchLoadingWithBGFragment;
 
     private List<BaseFragment> fragmentList;
     private List<BaseFragment> leftFragmentList;
@@ -83,12 +85,14 @@ public class HomeActivity extends BaseActivity {
         searchLoadingFragment = new SearchLoadingFragment();
         weatherFragment = new WeatherFragment();
         recognizeErrorFragment = new RecognizeErrorFragment();
+        searchLoadingWithBGFragment = new SearchLoadingWithBGFragment();
         fragmentList = new ArrayList<>();
         fragmentList.add(contentFragment);
         fragmentList.add(appSearchFragment);
         fragmentList.add(searchLoadingFragment);
         fragmentList.add(weatherFragment);
         fragmentList.add(recognizeErrorFragment);
+        fragmentList.add(searchLoadingWithBGFragment);
 
         leftFragmentList = new ArrayList<>();
         leftFragmentList.add(voiceFragment);
@@ -107,11 +111,13 @@ public class HomeActivity extends BaseActivity {
             transaction.add(R.id.right_fragment, searchLoadingFragment, SEARCH_LOADING_FRAGMENT);
             transaction.add(R.id.right_fragment, weatherFragment, WEATHER_FRAGMENT_TAG);
             transaction.add(R.id.right_fragment, recognizeErrorFragment, RECOGNIZE_ERROR_FRAGMENT_TAG);
+            transaction.add(R.id.right_fragment, searchLoadingWithBGFragment, SEARCH_LOADING_BG_FRAGMENT);
             transaction.hide(searchLoadingFragment);
             transaction.hide(indicatorFragment);
             transaction.hide(appSearchFragment);
             transaction.hide(weatherFragment);
             transaction.hide(recognizeErrorFragment);
+            transaction.hide(searchLoadingWithBGFragment);
 //            transaction.hide(contentFragment);
             transaction.commit();
         }
@@ -289,19 +295,15 @@ public class HomeActivity extends BaseActivity {
         appSearchFragment.fetchRecommendApp();
     }
 
-    public void showSearchLoading(boolean hasBackground) {
-        if (hasBackground) {
-            searchLoadingFragment.setHasBackground(true);
-        } else {
-            searchLoadingFragment.setHasBackground(false);
-        }
-        showMyFragment(searchLoadingFragment);
-    }
 
     public void showSearchLoading() {
 
-        searchLoadingFragment.setHasBackground(false);
         showMyFragment(searchLoadingFragment);
+    }
+
+    public void showSearchLoadingWithBG() {
+
+        showMyFragment(searchLoadingWithBGFragment);
     }
 
     public void showWeatherNoRegion(CityTable cityTable) {

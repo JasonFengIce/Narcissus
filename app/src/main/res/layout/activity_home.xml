@@ -16,7 +16,8 @@
         android:id="@+id/right_fragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="4">
+        android:layout_weight="4"
+        android:background="#405185">
     </FrameLayout>
 
 </LinearLayout>

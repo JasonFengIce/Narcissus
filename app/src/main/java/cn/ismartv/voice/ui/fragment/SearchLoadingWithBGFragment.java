@@ -13,7 +13,7 @@ import cn.ismartv.voice.R;
 /**
  * Created by huaijie on 1/29/16.
  */
-public class SearchLoadingFragment extends BaseFragment {
+public class SearchLoadingWithBGFragment extends BaseFragment {
 
     private ImageView progressView;
     private View contentView;
@@ -21,7 +21,7 @@ public class SearchLoadingFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        contentView = inflater.inflate(R.layout.fragment_search_loading, null);
+        contentView = inflater.inflate(R.layout.fragment_search_loading_with_bg, null);
         return contentView;
     }
 

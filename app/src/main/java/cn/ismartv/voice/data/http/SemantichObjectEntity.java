@@ -13,6 +13,15 @@ public class SemantichObjectEntity {
     private AttributesEntity attributes;
     private String description;
     private String focus;
+    private String bean_score;
+
+    public String getBean_score() {
+        return bean_score;
+    }
+
+    public void setBean_score(String bean_score) {
+        this.bean_score = bean_score;
+    }
 
     public String getFocus() {
         return focus;

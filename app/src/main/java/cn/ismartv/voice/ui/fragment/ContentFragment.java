@@ -31,7 +31,6 @@ import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.data.http.SemantichObjectEntity;
 import cn.ismartv.voice.data.http.SharpHotWordsEntity;
 import cn.ismartv.voice.ui.SpaceItemDecoration;
-import cn.ismartv.voice.ui.activity.FilmStarActivity;
 import cn.ismartv.voice.util.ViewScaleUtil;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -145,6 +144,10 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
                 focusString = focusString.subSequence(0, 10).toString();
             }
 
+            String score = datas.get(postion).getBean_score();
+            if (!TextUtils.isEmpty(score)) {
+                myViewHolder.imageView.setScore(score);
+            }
             myViewHolder.imageView.setFoucsText(focusString);
             if (!TextUtils.isEmpty(verticalUrl)) {
                 hashMap.put("orientation", "vertical");
