@@ -183,6 +183,8 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
             }
         }, 100);
 
+
+
     }
 
     public void layoutCursorView(final View view, final int xPosition) {
