@@ -1,15 +1,15 @@
 package cn.ismartv.voice.core.handler;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import org.greenrobot.eventbus.EventBus;
+
+import cn.ismartv.voice.core.event.AnswerAvailableEvent;
 import cn.ismartv.voice.core.http.HttpAPI;
 import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.data.http.SemanticSearchRequestEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
-import cn.ismartv.voice.ui.activity.BaseActivity;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -35,12 +35,13 @@ public class DefaultHandler {
                 if (response.errorBody() == null) {
                     callback.onHandleSuccess(response.body(), new Gson().toJson(jsonObject));
                 } else {
+                    EventBus.getDefault().post(new AnswerAvailableEvent());
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-                Log.e(TAG, t.getMessage());
+                EventBus.getDefault().post(new AnswerAvailableEvent());
             }
         });
     }

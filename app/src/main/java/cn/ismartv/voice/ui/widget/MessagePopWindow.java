@@ -31,20 +31,31 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
     private Context mContext;
 
     private ImageView cursorImageView;
+    private int popCursorLeft;
+    private int popCursorRight;
+    private int popCursorMiddle;
+
 //    private int tmpX = 0;
+
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
 
 //        int x1 = (int) (mContext.getResources().getDimension(R.dimen.pop_confirm_cursor_x));
 //        int x2 = (int) (mContext.getResources().getDimension(R.dimen.pop_cancel_cursor_x));
-        int popCursorSpace = (int) (mContext.getResources().getDimension(R.dimen.pop_cursor_space));
+
+
         switch (v.getId()) {
             case R.id.confirm_btn:
                 if (hasFocus) {
                     ((Button) v).setTextColor(mContext.getResources().getColor(R.color._ff9c3c));
 //                    slideview(cursorImageView, 0, x1 - v.getX());
-                    layoutCursorView(cursorImageView, -popCursorSpace);
+                    if (confirmListener != null && cancleListener != null) {
+                        layoutCursorView(cursorImageView, popCursorLeft);
+                    } else {
+                        layoutCursorView(cursorImageView, popCursorMiddle);
+                    }
+
                 } else {
                     ((Button) v).setTextColor(mContext.getResources().getColor(R.color._ffffff));
 
@@ -53,8 +64,13 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
             case R.id.cancel_btn:
                 if (hasFocus) {
                     ((Button) v).setTextColor(mContext.getResources().getColor(R.color._ff9c3c));
+                    if (confirmListener != null && cancleListener != null) {
+                        layoutCursorView(cursorImageView, popCursorRight);
+                    } else {
+                        layoutCursorView(cursorImageView, popCursorMiddle);
+                    }
 //                    slideview(cursorImageView, 0, x2 - v.getX());
-                    layoutCursorView(cursorImageView, popCursorSpace);
+
                 } else {
                     ((Button) v).setTextColor(mContext.getResources().getColor(R.color._ffffff));
                 }
@@ -78,6 +94,9 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
         mSecondLineMessage = line2Message;
         mContext = context;
         WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+        popCursorLeft = (int) mContext.getResources().getDimension(R.dimen.pop_cursor_left);
+        popCursorMiddle = (int) mContext.getResources().getDimension(R.dimen.pop_cursor_middle);
+        popCursorRight = (int) mContext.getResources().getDimension(R.dimen.pop_cursor_right);
         int screenWidth = wm.getDefaultDisplay().getWidth();
         int screenHeight = wm.getDefaultDisplay().getHeight();
 
@@ -142,7 +161,7 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
     }
 
 
-    public void showAtLocation(View parent, int gravity, ConfirmListener confirmListener, CancelListener cancleListener) {
+    public void showAtLocation(View parent, int gravity, final ConfirmListener confirmListener, final CancelListener cancleListener) {
         if (confirmListener == null) {
             confirmBtn.setVisibility(View.GONE);
         }
@@ -153,12 +172,23 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
         this.confirmListener = confirmListener;
         this.cancleListener = cancleListener;
         super.showAtLocation(parent, gravity, 0, 0);
+        getContentView().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (confirmListener != null && cancleListener != null) {
+                    layoutCursorView(cursorImageView, popCursorLeft);
+                } else {
+                    layoutCursorView(cursorImageView, popCursorMiddle);
+                }
+            }
+        }, 100);
+
     }
 
     public void layoutCursorView(final View view, final int xPosition) {
         int width = view.getWidth();
         int height = view.getHeight();
-        int left = view.getLeft() + xPosition;
+        int left = xPosition;
         int top = view.getTop();
         view.layout(left, top, left + width, top + height);
     }

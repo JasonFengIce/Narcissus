@@ -9,6 +9,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -19,6 +21,7 @@ import java.net.URLConnection;
 
 import cn.ismartv.voice.AppConstant;
 import cn.ismartv.voice.MainApplication;
+import cn.ismartv.voice.core.event.AnswerAvailableEvent;
 import cn.ismartv.voice.core.http.HttpAPI;
 import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.util.DeviceUtil;
@@ -66,14 +69,19 @@ public class AppUpdateUtilsV2 extends Handler {
         HttpManager.getInstance().resetAdapter_APP_UPDATE.create(HttpAPI.CheckAppUpdate.class).doRequest(sn, manu, app, model, location, ver).enqueue(new retrofit2.Callback<VersionInfoV2Entity>() {
             @Override
             public void onResponse(Response<VersionInfoV2Entity> response) {
-                VersionInfoV2Entity versionInfoV2Entity = response.body();
-                if (versionInfoV2Entity != null) {
-                    updateProcess(versionInfoV2Entity);
+                if (response.errorBody() == null) {
+                    VersionInfoV2Entity versionInfoV2Entity = response.body();
+                    if (versionInfoV2Entity != null) {
+                        updateProcess(versionInfoV2Entity);
+                    }
+                } else {
+                    EventBus.getDefault().post(new AnswerAvailableEvent());
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
+                EventBus.getDefault().post(new AnswerAvailableEvent());
             }
         });
 

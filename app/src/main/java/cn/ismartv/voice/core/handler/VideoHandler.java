@@ -5,6 +5,9 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import org.greenrobot.eventbus.EventBus;
+
+import cn.ismartv.voice.core.event.AnswerAvailableEvent;
 import cn.ismartv.voice.core.http.HttpAPI;
 import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.data.http.SemanticSearchRequestEntity;
@@ -35,13 +38,13 @@ public class VideoHandler {
                 if (response.errorBody() == null) {
                     callback.onHandleSuccess(response.body(), new Gson().toJson(jsonObject));
                 } else {
-
+                    EventBus.getDefault().post(new AnswerAvailableEvent());
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-                Log.e(TAG, t.getMessage());
+                EventBus.getDefault().post(new AnswerAvailableEvent());
             }
         });
     }

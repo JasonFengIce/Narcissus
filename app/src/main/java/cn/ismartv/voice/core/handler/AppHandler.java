@@ -8,11 +8,14 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.ismartv.injectdb.library.query.Select;
 import cn.ismartv.voice.MainApplication;
+import cn.ismartv.voice.core.event.AnswerAvailableEvent;
 import cn.ismartv.voice.core.http.HttpAPI;
 import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.data.http.AppSearchObjectEntity;
@@ -82,12 +85,13 @@ public class AppHandler {
 
                 } else {
                     //error
+                    EventBus.getDefault().post(new AnswerAvailableEvent());
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-
+                EventBus.getDefault().post(new AnswerAvailableEvent());
             }
         });
     }

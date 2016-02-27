@@ -19,6 +19,8 @@ import android.widget.Toast;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import cn.ismartv.imagereflection.RelectionImageView;
@@ -27,6 +29,7 @@ import cn.ismartv.recyclerview.widget.GridLayoutManager;
 import cn.ismartv.recyclerview.widget.RecyclerView;
 import cn.ismartv.voice.MainApplication;
 import cn.ismartv.voice.R;
+import cn.ismartv.voice.core.event.AnswerAvailableEvent;
 import cn.ismartv.voice.core.http.HttpAPI;
 import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.data.http.AppSearchObjectEntity;
@@ -214,13 +217,18 @@ public class AppSearchFragment extends BaseFragment implements View.OnFocusChang
         retrofit.create(HttpAPI.RecommandApp.class).doRequest(8).enqueue(new Callback<List<AppSearchObjectEntity>>() {
             @Override
             public void onResponse(Response<List<AppSearchObjectEntity>> response) {
-                List<AppSearchObjectEntity> entities = response.body();
-                recyclerView.setAdapter(new RecyclerAdapter(entities));
+                if (response.errorBody() != null) {
+                    EventBus.getDefault().post(new AnswerAvailableEvent());
+                } else {
+
+                    List<AppSearchObjectEntity> entities = response.body();
+                    recyclerView.setAdapter(new RecyclerAdapter(entities));
+                }
             }
 
             @Override
             public void onFailure(Throwable t) {
-
+                EventBus.getDefault().post(new AnswerAvailableEvent());
             }
         });
     }

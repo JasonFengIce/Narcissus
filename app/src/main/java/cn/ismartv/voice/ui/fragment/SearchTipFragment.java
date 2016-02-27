@@ -13,9 +13,12 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import cn.ismartv.voice.R;
+import cn.ismartv.voice.core.event.AnswerAvailableEvent;
 import cn.ismartv.voice.core.filter.FilterUtil;
 import cn.ismartv.voice.core.filter.WordFilterResult;
 import cn.ismartv.voice.core.http.HttpAPI;
@@ -29,6 +32,7 @@ import retrofit2.Retrofit;
  * Created by huaijie on 1/29/16.
  */
 public class SearchTipFragment extends BaseFragment {
+    private static final String TAG = "SearchTipFragment";
     private LinearLayout tipListView;
     private Call wordsCall;
 
@@ -78,13 +82,13 @@ public class SearchTipFragment extends BaseFragment {
                         tipListView.addView(textView, layoutParams);
                     }
                 } else {
-
+                    EventBus.getDefault().post(new AnswerAvailableEvent());
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-
+                EventBus.getDefault().post(new AnswerAvailableEvent());
             }
         });
 

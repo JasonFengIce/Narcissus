@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -20,6 +22,7 @@ import java.util.GregorianCalendar;
 
 import cn.ismartv.voice.MainApplication;
 import cn.ismartv.voice.R;
+import cn.ismartv.voice.core.event.AnswerAvailableEvent;
 import cn.ismartv.voice.core.handler.WeatherXmlParser;
 import cn.ismartv.voice.core.http.HttpAPI;
 import cn.ismartv.voice.core.http.HttpManager;
@@ -82,7 +85,7 @@ public class WeatherFragment extends BaseFragment implements View.OnClickListene
             @Override
             public void onResponse(Response<ResponseBody> response) {
                 if (response.errorBody() != null) {
-
+                    EventBus.getDefault().post(new AnswerAvailableEvent());
                 } else {
                     try {
                         String result = response.body().string();
@@ -126,7 +129,7 @@ public class WeatherFragment extends BaseFragment implements View.OnClickListene
 
             @Override
             public void onFailure(Throwable t) {
-
+                EventBus.getDefault().post(new AnswerAvailableEvent());
             }
         });
     }

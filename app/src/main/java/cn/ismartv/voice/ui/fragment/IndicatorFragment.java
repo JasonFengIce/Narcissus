@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.google.gson.JsonParser;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +21,7 @@ import java.util.List;
 import cn.ismartv.injectdb.library.query.Select;
 import cn.ismartv.voice.AppConstant;
 import cn.ismartv.voice.R;
+import cn.ismartv.voice.core.event.AnswerAvailableEvent;
 import cn.ismartv.voice.core.http.HttpAPI;
 import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.data.http.AppSearchObjectEntity;
@@ -215,12 +218,13 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
                     ((HomeActivity) getActivity()).refreshContentFragment(response.body(), rawText);
                 } else {
                     //error
+                    EventBus.getDefault().post(new AnswerAvailableEvent());
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-
+                EventBus.getDefault().post(new AnswerAvailableEvent());
             }
         });
     }
@@ -274,12 +278,13 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
                     ((HomeActivity) getActivity()).refreshAppSearchFragment(appList, appName);
                 } else {
                     //error
+                    EventBus.getDefault().post(new AnswerAvailableEvent());
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-
+                EventBus.getDefault().post(new AnswerAvailableEvent());
             }
         });
     }

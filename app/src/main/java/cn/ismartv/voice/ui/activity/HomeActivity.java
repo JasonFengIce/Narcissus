@@ -13,10 +13,14 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.ismartv.voice.R;
+import cn.ismartv.voice.core.event.AnswerAvailableEvent;
 import cn.ismartv.voice.core.update.AppUpdateUtilsV2;
 import cn.ismartv.voice.data.http.AppSearchObjectEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
@@ -59,6 +63,7 @@ public class HomeActivity extends BaseActivity {
 
     private boolean voiceBtnIsDown = false;
     private View contentView;
+    private MessagePopWindow networkEorrorPopupWindow;
 
     public void hideNavigationBar() {
         int uiFlags = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
@@ -68,6 +73,7 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        networkEorrorPopupWindow = new MessagePopWindow(this, "网络异常，请检查网络", null);
         contentView = LayoutInflater.from(this).inflate(R.layout.activity_home, null);
         setContentView(contentView);
         voiceFragment = new VoiceFragment();
@@ -136,6 +142,19 @@ public class HomeActivity extends BaseActivity {
 //        }
 //        return super.onKeyLongPress(keyCode, event);
 //    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onPause() {
+        EventBus.getDefault().unregister(this);
+        super.onPause();
+    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -302,5 +321,37 @@ public class HomeActivity extends BaseActivity {
 
     public void showIndicatorFragment() {
         showLeftFragment(indicatorFragment);
+    }
+
+    public void showNetworkErrorPop() {
+
+        networkEorrorPopupWindow = new MessagePopWindow(this, "网络异常，请检查网络", null);
+        contentView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (!networkEorrorPopupWindow.isShowing()) {
+                    networkEorrorPopupWindow.showAtLocation(contentView, Gravity.CENTER, new MessagePopWindow.ConfirmListener() {
+                                @Override
+                                public void confirmClick(View view) {
+                                    networkEorrorPopupWindow.dismiss();
+                                }
+                            },
+                            null
+                    );
+                }
+            }
+        }, 2000);
+    }
+
+
+    @Subscribe
+    public void answerAvailable(AnswerAvailableEvent event) {
+        showNetworkErrorPop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        networkEorrorPopupWindow = null;
+        super.onDestroy();
     }
 }

@@ -12,11 +12,10 @@ import java.util.List;
 
 import cn.ismartv.voice.core.http.HttpAPI;
 import cn.ismartv.voice.core.http.HttpManager;
-import cn.ismartv.voice.data.http.AppSearchResponseEntity;
-import cn.ismartv.voice.data.http.RecommandAppEntity;
 import cn.ismartv.voice.data.http.SemanticSearchRequestEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import okhttp3.ResponseBody;
+import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
@@ -38,7 +37,7 @@ public class SkyApiTest extends AndroidTestCase {
                 "            \"name\": \"非诚勿扰\"\n" +
                 "        }\n" +
                 "    }";
-        JsonObject j =  new JsonParser().parse(data).getAsJsonObject();
+        JsonObject j = new JsonParser().parse(data).getAsJsonObject();
         SemanticSearchRequestEntity entity = new SemanticSearchRequestEntity();
         entity.setSemantic(j);
         entity.setContent_type("movie");
@@ -47,13 +46,24 @@ public class SkyApiTest extends AndroidTestCase {
 
         Retrofit retrofit = HttpManager.getInstance().resetAdapter_QIANGUANGZHAO;
 
-        try {
-            Response<SemanticSearchResponseEntity> response = retrofit.create(HttpAPI.SemanticSearch.class).doRequest(entity).execute();
-            String s = new Gson().toJson(response.body());
-            Log.i(TAG, s);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+        retrofit.create(HttpAPI.SemanticSearch.class).doRequest(entity).enqueue(new Callback<SemanticSearchResponseEntity>() {
+            @Override
+            public void onResponse(Response<SemanticSearchResponseEntity> response) {
+
+                Log.i("sta", "dafd");
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e("sta", "dafd");
+            }
+        });
+//            String s = new Gson().toJson(response.body());
+//            Log.i(TAG, s);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
 

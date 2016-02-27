@@ -15,6 +15,8 @@ import com.google.gson.JsonParser;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -22,6 +24,7 @@ import cn.ismartv.imagereflection.RelectionImageView;
 import cn.ismartv.recyclerview.widget.GridLayoutManager;
 import cn.ismartv.recyclerview.widget.RecyclerView;
 import cn.ismartv.voice.R;
+import cn.ismartv.voice.core.event.AnswerAvailableEvent;
 import cn.ismartv.voice.core.http.HttpAPI;
 import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
@@ -279,14 +282,14 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
                 if (response.errorBody() == null) {
                     recyclerView.setAdapter(new RecyclerAdapter(response.body().getObjects()));
                 } else {
-
+                    EventBus.getDefault().post(new AnswerAvailableEvent());
                 }
 
             }
 
             @Override
             public void onFailure(Throwable t) {
-
+                EventBus.getDefault().post(new AnswerAvailableEvent());
             }
         });
 

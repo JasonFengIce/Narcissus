@@ -8,6 +8,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ import java.util.List;
 
 import cn.ismartv.injectdb.library.query.Select;
 import cn.ismartv.voice.AppConstant;
+import cn.ismartv.voice.core.event.AnswerAvailableEvent;
 import cn.ismartv.voice.core.http.HttpAPI;
 import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.data.http.AppSearchObjectEntity;
@@ -106,7 +109,7 @@ public class MultiHandler extends Thread {
 
 
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        EventBus.getDefault().post(new AnswerAvailableEvent());
                     }
                     break;
                 case "video":
@@ -125,7 +128,7 @@ public class MultiHandler extends Thread {
                         entity.setSemantic(new Gson().toJson(jsonObject));
                         indicatorList.add(0, entity);
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        EventBus.getDefault().post(new AnswerAvailableEvent());
                     }
                     break;
             }

@@ -3,6 +3,8 @@ package cn.ismartv.voice.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
@@ -15,6 +17,9 @@ import com.google.gson.Gson;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -22,6 +27,7 @@ import cn.ismartv.imagereflection.RelectionImageView;
 import cn.ismartv.recyclerview.widget.LinearLayoutManager;
 import cn.ismartv.recyclerview.widget.RecyclerView;
 import cn.ismartv.voice.R;
+import cn.ismartv.voice.core.event.AnswerAvailableEvent;
 import cn.ismartv.voice.core.http.HttpAPI;
 import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.data.http.ActorRelateRequestParams;
@@ -29,6 +35,7 @@ import cn.ismartv.voice.data.http.AttributesEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.data.http.SemantichObjectEntity;
 import cn.ismartv.voice.ui.StarSpaceItemDecoration;
+import cn.ismartv.voice.ui.widget.MessagePopWindow;
 import cn.ismartv.voice.util.ViewScaleUtil;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -56,11 +63,16 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
 
     private View lostFocusView;
 
+    private MessagePopWindow networkEorrorPopupWindow;
+    private View contentView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_filmstar);
+        networkEorrorPopupWindow = new MessagePopWindow(this, "网络异常，请检查网络", null);
+        contentView = LayoutInflater.from(this).inflate(R.layout.activity_filmstar, null);
+        setContentView(contentView);
         initViews();
         Intent intent = getIntent();
         pk = intent.getLongExtra("pk", 0);
@@ -70,6 +82,24 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
         filmStartitle.setText(title);
         fetchActorRelate(pk);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onPause() {
+        EventBus.getDefault().unregister(this);
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        networkEorrorPopupWindow = null;
+        super.onDestroy();
     }
 
     private void initViews() {
@@ -131,13 +161,13 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                     }
                     fetchActorRelateByType(pk, entity.getFacet().get(0).getContent_type());
                 } else {
-
+                    EventBus.getDefault().post(new AnswerAvailableEvent());
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-
+                EventBus.getDefault().post(new AnswerAvailableEvent());
             }
         });
     }
@@ -156,13 +186,13 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                     SemanticSearchResponseEntity entity = response.body();
                     recyclerView.setAdapter(new RecyclerAdapter(entity.getFacet().get(0).getObjects()));
                 } else {
-
+                    EventBus.getDefault().post(new AnswerAvailableEvent());
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-
+                EventBus.getDefault().post(new AnswerAvailableEvent());
             }
         });
     }
@@ -400,5 +430,32 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
 
         }
     }
+
+    public void showNetworkErrorPop() {
+
+        networkEorrorPopupWindow = new MessagePopWindow(this, "网络异常，请检查网络", null);
+        contentView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (!networkEorrorPopupWindow.isShowing()) {
+                    networkEorrorPopupWindow.showAtLocation(contentView, Gravity.CENTER, new MessagePopWindow.ConfirmListener() {
+                                @Override
+                                public void confirmClick(View view) {
+                                    networkEorrorPopupWindow.dismiss();
+                                }
+                            },
+                            null
+                    );
+                }
+            }
+        }, 2000);
+    }
+
+
+    @Subscribe
+    public void answerAvailable(AnswerAvailableEvent event) {
+        showNetworkErrorPop();
+    }
+
 
 }

@@ -138,4 +138,9 @@
     <dimen name="pop_cursor_margin_left">170dp</dimen>
     <dimen name="pop_cursor_space">300dp</dimen>
 
+
+    <dimen name="pop_cursor_left">170dp</dimen>
+    <dimen name="pop_cursor_middle">320dp</dimen>
+    <dimen name="pop_cursor_right">470dp</dimen>
+
 </resources>
