@@ -214,7 +214,7 @@ public class HomeActivity extends BaseActivity {
                             List<AppTable> tables = new Select().from(AppTable.class).where("app_package = ?", entity.getCaption()).execute();
                             if (appTables.size() == 0) {
                                 appList.add(entity);
-                            }else {
+                            } else {
                                 for (AppTable table : tables) {
                                     AppSearchObjectEntity appSearchObjectEntity = new AppSearchObjectEntity();
                                     appSearchObjectEntity.setTitle(table.app_name);
@@ -359,9 +359,9 @@ public class HomeActivity extends BaseActivity {
 
 
     public void recommendVideo() {
-        showMyFragment(contentFragment);
         contentFragment.setSearchTitle();
         contentFragment.fetchSharpHotWords();
+        showMyFragment(contentFragment);
     }
 
     public void recommendApp() {

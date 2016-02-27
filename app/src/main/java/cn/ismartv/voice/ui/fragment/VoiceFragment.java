@@ -398,8 +398,8 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
 
 
     private void showNoVideoResultFragment(String rawText) {
-        showFragment(searchNoResultFragment);
         searchNoResultFragment.recognizeNoResult(rawText);
+        showFragment(searchNoResultFragment);
         ((HomeActivity) getActivity()).recommendVideo();
     }
 
