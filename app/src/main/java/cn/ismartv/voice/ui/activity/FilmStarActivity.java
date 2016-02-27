@@ -3,7 +3,6 @@ package cn.ismartv.voice.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -271,6 +270,13 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
             hashMap.put("title", datas.get(postion).getTitle());
             hashMap.put("attr", new Gson().toJson(datas.get(postion).getAttributes()));
             hashMap.put("description", datas.get(postion).getDescription());
+
+            String focusString = datas.get(postion).getFocus();
+            if (!TextUtils.isEmpty(focusString) && focusString.length() > 10) {
+                focusString = focusString.subSequence(0, 10).toString();
+            }
+
+            myViewHolder.imageView.setFoucsText(focusString);
 
             if (!TextUtils.isEmpty(verticalUrl)) {
                 hashMap.put("orientation", "vertical");
