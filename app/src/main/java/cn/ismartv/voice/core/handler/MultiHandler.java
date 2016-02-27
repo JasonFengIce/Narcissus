@@ -49,11 +49,11 @@ public class MultiHandler extends Thread {
         List<IndicatorResponseEntity> indicatorList = new ArrayList<>();
         for (int i = 0; i < jsonArray.size(); i++) {
             JsonObject jsonObject = jsonArray.get(i).getAsJsonObject();
-            jsonObject.addProperty("raw_text", rawText);
             String domain = jsonObject.get("domain").getAsString();
             switch (domain) {
                 case "app":
                     String appName = jsonObject.get("object").getAsJsonObject().get("appname").toString().replace("\"", "");
+                    jsonObject.addProperty("raw_text", appName);
                     final List<AppTable> appTables = new Select().from(AppTable.class).where("app_name like ?", "%" + appName + "%").execute();
                     try {
                         AppSearchRequestParams params = new AppSearchRequestParams();
@@ -111,6 +111,7 @@ public class MultiHandler extends Thread {
                     break;
                 case "video":
                 case "tv_show":
+                    jsonObject.addProperty("raw_text", rawText);
                     SemanticSearchRequestEntity requestEntity = new SemanticSearchRequestEntity();
                     requestEntity.setSemantic(jsonObject);
                     requestEntity.setPage_on(AppConstant.DEFAULT_PAGE_NO);

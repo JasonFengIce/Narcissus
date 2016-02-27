@@ -378,7 +378,9 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
             for (IndicatorResponseEntity entity : list) {
                 switch (entity.getType()) {
                     case "video":
-                        ((HomeActivity) getActivity()).showIndicatorFragment((SemanticSearchResponseEntity) entity.getSearchData(), entity.getSemantic());
+                        if (videoListSize != 0) {
+                            ((HomeActivity) getActivity()).showIndicatorFragment((SemanticSearchResponseEntity) entity.getSearchData(), entity.getSemantic());
+                        }
                         break;
                     case "app":
                         if (appListSize != 0) {
