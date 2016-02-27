@@ -2,6 +2,7 @@ package cn.ismartv.voice.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +12,26 @@ import android.widget.TextView;
 
 import com.google.gson.JsonParser;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import cn.ismartv.injectdb.library.query.Select;
+import cn.ismartv.voice.AppConstant;
 import cn.ismartv.voice.R;
+import cn.ismartv.voice.core.http.HttpAPI;
+import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.data.http.AppSearchObjectEntity;
+import cn.ismartv.voice.data.http.AppSearchRequestParams;
+import cn.ismartv.voice.data.http.AppSearchResponseEntity;
+import cn.ismartv.voice.data.http.SemanticSearchRequestEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
+import cn.ismartv.voice.data.table.AppTable;
 import cn.ismartv.voice.ui.activity.HomeActivity;
 import cn.ismartv.voice.util.ViewScaleUtil;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * Created by huaijie on 1/18/16.
@@ -56,7 +69,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
     }
 
 
-    public void initIndicator(SemanticSearchResponseEntity entity, String data) {
+    public void initVodIndicator(SemanticSearchResponseEntity entity, String data, boolean isFirstTime) {
         videoTypeLayout.setVisibility(View.VISIBLE);
         videoContentLayout.removeAllViews();
         int i = 0;
@@ -84,7 +97,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
                     HashMap<String, String> tag = (HashMap<String, String>) v.getTag();
                     String type = tag.get("type");
                     String data = tag.get("data");
-                    ((HomeActivity) getActivity()).handleIndicatorClick(type, data);
+                    searchVod(type, data, false);
                 }
             });
             linearLayout.setId(R.id.indicator_list_item + i);
@@ -102,11 +115,11 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
         }
 
 
-        ((HomeActivity) getActivity()).handleIndicatorClick(entity.getFacet().get(0).getContent_type(), data);
+        searchVod(entity.getFacet().get(0).getContent_type(), data, true);
     }
 
 
-    public void initAppIndicator(List<AppSearchObjectEntity> entitys, String data) {
+    public void initAppIndicator(List<AppSearchObjectEntity> entitys, String data, boolean isFirstTime) {
         appTypeLayout.setVisibility(View.VISIBLE);
         appContentLayout.removeAllViews();
         LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.item_indicator, null);
@@ -120,7 +133,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 String rawText = (String) v.getTag();
-                ((HomeActivity) getActivity()).handleAppIndicatorClick(rawText);
+                searchApp(rawText, false);
             }
         });
         linearLayout.setOnFocusChangeListener(this);
@@ -132,7 +145,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
                 TextView textView = (TextView) selectedView.findViewById(R.id.title);
                 textView.setTextColor(getResources().getColor(R.color._ffffff));
             }
-            ((HomeActivity) getActivity()).handleAppIndicatorClick(rawText);
+            searchApp(rawText, true);
         }
     }
 
@@ -180,5 +193,94 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
                 }
                 break;
         }
+    }
+
+    private void searchVod(final String contentType, final String rawText, final boolean isFirstTime) {
+        SemanticSearchRequestEntity entity = new SemanticSearchRequestEntity();
+        entity.setSemantic(new JsonParser().parse(rawText).getAsJsonObject());
+        if (!TextUtils.isEmpty(contentType)) {
+            entity.setContent_type(contentType);
+        }
+        entity.setPage_on(1);
+        entity.setPage_count(300);
+
+        Retrofit retrofit = HttpManager.getInstance().resetAdapter_QIANGUANGZHAO;
+        retrofit.create(HttpAPI.SemanticSearch.class).doRequest(entity).enqueue(new Callback<SemanticSearchResponseEntity>() {
+            @Override
+            public void onResponse(Response<SemanticSearchResponseEntity> response) {
+                if (response.errorBody() == null) {
+                    if (isFirstTime) {
+                        ((HomeActivity) getActivity()).showIndicatorFragment();
+                    }
+                    ((HomeActivity) getActivity()).refreshContentFragment(response.body(), rawText);
+                } else {
+                    //error
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+    }
+
+    private void searchApp(final String appName, final boolean isFirstTime) {
+        final List<AppTable> appTables = new Select().from(AppTable.class).where("app_name like ?", "%" + appName.replace("\"", "") + "%").execute();
+        Retrofit retrofit = HttpManager.getInstance().resetAdapter_QIANGUANGZHAO;
+        AppSearchRequestParams params = new AppSearchRequestParams();
+        params.setKeyword(appName);
+        params.setPage_count(AppConstant.DEFAULT_PAGE_COUNT);
+        params.setPage_no(1);
+        params.setContent_type("app");
+        retrofit.create(HttpAPI.AppSearch.class).doRequest(params).enqueue(new Callback<AppSearchResponseEntity>() {
+            @Override
+            public void onResponse(Response<AppSearchResponseEntity> response) {
+                if (response.errorBody() == null) {
+
+                    AppSearchResponseEntity appSearchResponseEntity = response.body();
+                    List<AppSearchObjectEntity> appList = new ArrayList<>();
+                    for (AppTable appTable : appTables) {
+
+                        AppSearchObjectEntity appSearchObjectEntity = new AppSearchObjectEntity();
+                        appSearchObjectEntity.setTitle(appTable.app_name);
+                        appSearchObjectEntity.setCaption(appTable.app_package);
+                        appSearchObjectEntity.setIsLocal(true);
+                        appList.add(appSearchObjectEntity);
+                    }
+                    AppSearchResponseEntity.Facet facet[] = appSearchResponseEntity.getFacet();
+                    if (facet != null) {
+                        List<AppSearchObjectEntity> serverAppList = facet[0].getObjects();
+                        for (AppSearchObjectEntity entity : serverAppList) {
+                            List<AppTable> tables = new Select().from(AppTable.class).where("app_package = ?", entity.getCaption()).execute();
+                            if (appTables.size() == 0) {
+                                appList.add(entity);
+                            } else {
+                                for (AppTable table : tables) {
+                                    AppSearchObjectEntity appSearchObjectEntity = new AppSearchObjectEntity();
+                                    appSearchObjectEntity.setTitle(table.app_name);
+                                    appSearchObjectEntity.setCaption(table.app_package);
+                                    appSearchObjectEntity.setIsLocal(true);
+                                    appList.add(appSearchObjectEntity);
+                                }
+                            }
+                        }
+                        appSearchResponseEntity.getFacet()[0].setObjects(appList);
+                        appSearchResponseEntity.getFacet()[0].setTotal_count(appList.size());
+                    }
+                    if (isFirstTime) {
+                        ((HomeActivity) getActivity()).showIndicatorFragment();
+                    }
+                    ((HomeActivity) getActivity()).refreshAppSearchFragment(appList, appName);
+                } else {
+                    //error
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
     }
 }

@@ -7,29 +7,19 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.google.gson.JsonParser;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.ismartv.injectdb.library.query.Select;
 import cn.ismartv.voice.R;
-import cn.ismartv.voice.core.http.HttpAPI;
-import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.core.update.AppUpdateUtilsV2;
 import cn.ismartv.voice.data.http.AppSearchObjectEntity;
-import cn.ismartv.voice.data.http.AppSearchRequestParams;
-import cn.ismartv.voice.data.http.AppSearchResponseEntity;
-import cn.ismartv.voice.data.http.SemanticSearchRequestEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
-import cn.ismartv.voice.data.table.AppTable;
 import cn.ismartv.voice.data.table.CityTable;
 import cn.ismartv.voice.ui.fragment.AppSearchFragment;
 import cn.ismartv.voice.ui.fragment.BaseFragment;
@@ -40,9 +30,6 @@ import cn.ismartv.voice.ui.fragment.SearchLoadingFragment;
 import cn.ismartv.voice.ui.fragment.VoiceFragment;
 import cn.ismartv.voice.ui.fragment.WeatherFragment;
 import cn.ismartv.voice.ui.widget.MessagePopWindow;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
  * Created by huaijie on 1/18/16.
@@ -135,10 +122,10 @@ public class HomeActivity extends BaseActivity {
 //    public void handleVoice() {
 //        searchVod(null);
 //    }
-
-    public void handleIndicatorClick(String contentType, String rawText) {
-        searchVod(contentType, rawText);
-    }
+//
+//    public void handleIndicatorClick(String contentType, String rawText) {
+//        searchVod(contentType, rawText);
+//    }
 
 //    @Override
 //    public boolean onKeyLongPress(int keyCode, KeyEvent event) {
@@ -179,94 +166,34 @@ public class HomeActivity extends BaseActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
-
-    public void handleAppIndicatorClick(String rawText) {
-        searchApp(rawText);
-    }
-
-    private void searchApp(final String appName) {
-        final List<AppTable> appTables = new Select().from(AppTable.class).where("app_name like ?", "%" + appName.replace("\"", "") + "%").execute();
-        Retrofit retrofit = HttpManager.getInstance().resetAdapter_QIANGUANGZHAO;
-        AppSearchRequestParams params = new AppSearchRequestParams();
-        params.setKeyword(appName);
-        params.setPage_count(30);
-        params.setPage_no(1);
-        params.setContent_type("app");
-        retrofit.create(HttpAPI.AppSearch.class).doRequest(params).enqueue(new Callback<AppSearchResponseEntity>() {
-            @Override
-            public void onResponse(Response<AppSearchResponseEntity> response) {
-                if (response.errorBody() == null) {
-
-                    AppSearchResponseEntity appSearchResponseEntity = response.body();
-                    List<AppSearchObjectEntity> appList = new ArrayList<>();
-                    for (AppTable appTable : appTables) {
-
-                        AppSearchObjectEntity appSearchObjectEntity = new AppSearchObjectEntity();
-                        appSearchObjectEntity.setTitle(appTable.app_name);
-                        appSearchObjectEntity.setCaption(appTable.app_package);
-                        appSearchObjectEntity.setIsLocal(true);
-                        appList.add(appSearchObjectEntity);
-                    }
-                    AppSearchResponseEntity.Facet facet[] = appSearchResponseEntity.getFacet();
-                    if (facet != null) {
-                        List<AppSearchObjectEntity> serverAppList = facet[0].getObjects();
-                        for (AppSearchObjectEntity entity : serverAppList) {
-                            List<AppTable> tables = new Select().from(AppTable.class).where("app_package = ?", entity.getCaption()).execute();
-                            if (appTables.size() == 0) {
-                                appList.add(entity);
-                            } else {
-                                for (AppTable table : tables) {
-                                    AppSearchObjectEntity appSearchObjectEntity = new AppSearchObjectEntity();
-                                    appSearchObjectEntity.setTitle(table.app_name);
-                                    appSearchObjectEntity.setCaption(table.app_package);
-                                    appSearchObjectEntity.setIsLocal(true);
-                                    appList.add(appSearchObjectEntity);
-                                }
-                            }
-                        }
-                        appSearchResponseEntity.getFacet()[0].setObjects(appList);
-                        appSearchResponseEntity.getFacet()[0].setTotal_count(appList.size());
-                    }
-
-                    refreshAppSearchFragment(appList, appName);
-                } else {
-                    //error
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
-    }
+//
+//    public void handleAppIndicatorClick(String rawText) {
+//        searchApp(rawText);
+//    }
 
 
     public void showIndicatorFragment(SemanticSearchResponseEntity entity, String rawText) {
-        showLeftFragment(indicatorFragment);
         indicatorFragment.clearLayout();
-        indicatorFragment.initIndicator(entity, rawText);
+        indicatorFragment.initVodIndicator(entity, rawText, true);
     }
 
 
     public void showAppIndicatorFragment(List<AppSearchObjectEntity> entity, String data) {
-        showLeftFragment(indicatorFragment);
         indicatorFragment.clearLayout();
-        indicatorFragment.initAppIndicator(entity, data);
+        indicatorFragment.initAppIndicator(entity, data, true);
     }
 
     public void showAppIndicatorFragmentNoClear(List<AppSearchObjectEntity> entity, String data) {
-        showLeftFragment(indicatorFragment);
-        indicatorFragment.initAppIndicator(entity, data);
+        indicatorFragment.initAppIndicator(entity, data, true);
     }
 
 
-    private void refreshContentFragment(SemanticSearchResponseEntity entity, String rawText) {
+    public void refreshContentFragment(SemanticSearchResponseEntity entity, String rawText) {
         showMyFragment(contentFragment);
         contentFragment.notifyDataChanged(entity, rawText);
     }
 
-    private void refreshAppSearchFragment(final List<AppSearchObjectEntity> list, String rawText) {
+    public void refreshAppSearchFragment(final List<AppSearchObjectEntity> list, String rawText) {
         showMyFragment(appSearchFragment);
         appSearchFragment.notifyDataChanged(list, rawText);
 
@@ -306,33 +233,6 @@ public class HomeActivity extends BaseActivity {
         mContext.startActivity(intent);
     }
 
-
-    private void searchVod(final String contentType, final String rawText) {
-        SemanticSearchRequestEntity entity = new SemanticSearchRequestEntity();
-        entity.setSemantic(new JsonParser().parse(rawText).getAsJsonObject());
-        if (!TextUtils.isEmpty(contentType)) {
-            entity.setContent_type(contentType);
-        }
-        entity.setPage_on(1);
-        entity.setPage_count(300);
-
-        Retrofit retrofit = HttpManager.getInstance().resetAdapter_QIANGUANGZHAO;
-        retrofit.create(HttpAPI.SemanticSearch.class).doRequest(entity).enqueue(new Callback<SemanticSearchResponseEntity>() {
-            @Override
-            public void onResponse(Response<SemanticSearchResponseEntity> response) {
-                if (response.errorBody() == null) {
-                    refreshContentFragment(response.body(), rawText);
-                } else {
-                    //error
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
-    }
 
     public void backToVoiceFragment() {
         voiceFragment.backToVoice();
