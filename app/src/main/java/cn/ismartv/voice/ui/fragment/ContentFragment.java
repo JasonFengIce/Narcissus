@@ -31,6 +31,7 @@ import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.data.http.SemantichObjectEntity;
 import cn.ismartv.voice.data.http.SharpHotWordsEntity;
 import cn.ismartv.voice.ui.SpaceItemDecoration;
+import cn.ismartv.voice.ui.activity.FilmStarActivity;
 import cn.ismartv.voice.util.ViewScaleUtil;
 import retrofit2.Callback;
 import retrofit2.Response;

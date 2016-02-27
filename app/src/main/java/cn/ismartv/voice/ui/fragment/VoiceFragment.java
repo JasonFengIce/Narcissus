@@ -309,6 +309,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
 
     @Override
     public void onError(int errorType, int errorCode) {
+        voiceMicImg.setImageResource(R.drawable.voice_mic);
         isRecognition = false;
         switch (errorType) {
             case VoiceRecognitionClient.ERROR_CLIENT:
