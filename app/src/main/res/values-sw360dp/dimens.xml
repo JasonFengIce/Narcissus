@@ -135,5 +135,7 @@
 <dimen name="item_text_margin_top">-6.67dp</dimen>
 <dimen name="app_fragment_recycler_margin_top">-23.33dp</dimen>
 <dimen name="focus_text_height">12.33dp</dimen>
+<dimen name="pop_cursor_margin_left">56.67dp</dimen>
+<dimen name="pop_cursor_space">100.00dp</dimen>
 
 </resources>

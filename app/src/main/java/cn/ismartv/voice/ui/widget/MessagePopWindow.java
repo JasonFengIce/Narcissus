@@ -5,9 +5,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.OvershootInterpolator;
-import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -15,7 +12,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import cn.ismartv.voice.R;
-import cn.ismartv.voice.ui.activity.BaseActivity;
 
 
 /**
@@ -35,19 +31,20 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
     private Context mContext;
 
     private ImageView cursorImageView;
-    private float rate;
 //    private int tmpX = 0;
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
 
-        int x1 = (int) (mContext.getResources().getDimension(R.dimen.pop_confirm_cursor_x) / rate);
-        int x2 = (int) (mContext.getResources().getDimension(R.dimen.pop_cancel_cursor_x) / rate);
+//        int x1 = (int) (mContext.getResources().getDimension(R.dimen.pop_confirm_cursor_x));
+//        int x2 = (int) (mContext.getResources().getDimension(R.dimen.pop_cancel_cursor_x));
+        int popCursorSpace = (int) (mContext.getResources().getDimension(R.dimen.pop_cursor_space));
         switch (v.getId()) {
             case R.id.confirm_btn:
                 if (hasFocus) {
                     ((Button) v).setTextColor(mContext.getResources().getColor(R.color._ff9c3c));
-                    slideview(cursorImageView, 0, x1 - v.getX());
+//                    slideview(cursorImageView, 0, x1 - v.getX());
+                    layoutCursorView(cursorImageView, -popCursorSpace);
                 } else {
                     ((Button) v).setTextColor(mContext.getResources().getColor(R.color._ffffff));
 
@@ -56,7 +53,8 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
             case R.id.cancel_btn:
                 if (hasFocus) {
                     ((Button) v).setTextColor(mContext.getResources().getColor(R.color._ff9c3c));
-                    slideview(cursorImageView, 0, x2 - v.getX());
+//                    slideview(cursorImageView, 0, x2 - v.getX());
+                    layoutCursorView(cursorImageView, popCursorSpace);
                 } else {
                     ((Button) v).setTextColor(mContext.getResources().getColor(R.color._ffffff));
                 }
@@ -75,7 +73,7 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
 
 
     public MessagePopWindow(Context context, String line1Message, String line2Message) {
-        rate = ((BaseActivity) context).getDensityRate();
+        setBackgroundDrawable(context.getResources().getDrawable(R.drawable.pop_bg));
         mFirstLineMessage = line1Message;
         mSecondLineMessage = line2Message;
         mContext = context;
@@ -84,8 +82,8 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
         int screenHeight = wm.getDefaultDisplay().getHeight();
 
 
-        int width = (int) (context.getResources().getDimension(R.dimen.message_pop_width) / ((BaseActivity) context).getDensityRate());
-        int height = (int) (context.getResources().getDimension(R.dimen.message_pop_height) / ((BaseActivity) context).getDensityRate());
+        int width = (int) (context.getResources().getDimension(R.dimen.message_pop_width));
+        int height = (int) (context.getResources().getDimension(R.dimen.message_pop_height));
 
         setWidth(screenWidth);
         setHeight(screenHeight);
@@ -157,32 +155,41 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
         super.showAtLocation(parent, gravity, 0, 0);
     }
 
-    public void slideview(final View view, final float xFrom, final float xTo) {
-        TranslateAnimation animation = new TranslateAnimation(xFrom, xTo, 0, 0);
-        animation.setInterpolator(new OvershootInterpolator());
-        animation.setDuration(500);
-//        animation.setStartOffset(delayMillis);
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                int left = view.getLeft() + (int) (xTo - xFrom);
-                int top = view.getTop();
-                int width = view.getWidth();
-                int height = view.getHeight();
-                view.clearAnimation();
-                view.layout(left, top, left + width, top + height);
-            }
-        });
-
-        view.startAnimation(animation);
+    public void layoutCursorView(final View view, final int xPosition) {
+        int width = view.getWidth();
+        int height = view.getHeight();
+        int left = view.getLeft() + xPosition;
+        int top = view.getTop();
+        view.layout(left, top, left + width, top + height);
     }
+
+//    public void slideview(final View view, final float xPosition,) {
+//        TranslateAnimation animation = new TranslateAnimation(xFrom, xTo, 0, 0);
+//        animation.setInterpolator(new OvershootInterpolator());
+//        animation.setDuration(500);
+////        animation.setStartOffset(delayMillis);
+//        animation.setAnimationListener(new Animation.AnimationListener() {
+//            @Override
+//            public void onAnimationStart(Animation animation) {
+//            }
+//
+//            @Override
+//            public void onAnimationRepeat(Animation animation) {
+//            }
+//
+//            @Override
+//            public void onAnimationEnd(Animation animation) {
+//                int left = view.getLeft() + (int) (xTo - xFrom);
+//                int top = view.getTop();
+//                int width = view.getWidth();
+//                int height = view.getHeight();
+//                view.clearAnimation();
+//                view.layout(left, top, left + width, top + height);
+//            }
+//        });
+
+
+//        view.startAnimation(animation);
+//}
 
 }

@@ -39,7 +39,7 @@ public class AppHandler {
         AppSearchRequestParams params = new AppSearchRequestParams();
         params.setKeyword(appName);
         params.setContent_type("app");
-        params.setPage_count(30);
+        params.setPage_count(300);
         params.setPage_no(1);
         retrofit.create(HttpAPI.AppSearch.class).doRequest(params).enqueue(new Callback<AppSearchResponseEntity>() {
             @Override
@@ -62,9 +62,17 @@ public class AppHandler {
                     if (facet != null) {
                         List<AppSearchObjectEntity> serverAppList = facet[0].getObjects();
                         for (AppSearchObjectEntity entity : serverAppList) {
-                            List<AppTable> appTables = new Select().from(AppTable.class).where("app_package = ?", entity.getCaption()).execute();
-                            if (appTables.size() == 0) {
+                            List<AppTable> tables = new Select().from(AppTable.class).where("app_package = ?", entity.getCaption()).execute();
+                            if (tables.size() == 0) {
                                 appList.add(entity);
+                            }else {
+                                for (AppTable table : tables) {
+                                    AppSearchObjectEntity appSearchObjectEntity = new AppSearchObjectEntity();
+                                    appSearchObjectEntity.setTitle(table.app_name);
+                                    appSearchObjectEntity.setCaption(table.app_package);
+                                    appSearchObjectEntity.setIsLocal(true);
+                                    appList.add(appSearchObjectEntity);
+                                }
                             }
                         }
                         appSearchResponseEntity.getFacet()[0].setObjects(appList);

@@ -4,4 +4,5 @@
     <color name="_ffffff">#ffffff</color>
     <color name="_a6a6a6">#a6a6a6</color>
     <color name="_00000000">#00000000</color>
+    <drawable name="pop_bg">#b2000000</drawable>
 </resources>

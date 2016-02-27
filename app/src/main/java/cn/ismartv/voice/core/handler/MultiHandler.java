@@ -59,7 +59,7 @@ public class MultiHandler extends Thread {
                         AppSearchRequestParams params = new AppSearchRequestParams();
                         params.setKeyword(appName);
                         params.setContent_type("app");
-                        params.setPage_count(30);
+                        params.setPage_count(300);
                         params.setPage_no(1);
                         Response<AppSearchResponseEntity> response = HttpManager.getInstance().resetAdapter_QIANGUANGZHAO.create(HttpAPI.AppSearch.class)
                                 .doRequest(params)
@@ -85,6 +85,14 @@ public class MultiHandler extends Thread {
                                 List<AppTable> tables = new Select().from(AppTable.class).where("app_package = ?", entity.getCaption()).execute();
                                 if (tables.size() == 0) {
                                     appList.add(entity);
+                                } else {
+                                    for (AppTable table : tables) {
+                                        AppSearchObjectEntity appSearchObjectEntity = new AppSearchObjectEntity();
+                                        appSearchObjectEntity.setTitle(table.app_name);
+                                        appSearchObjectEntity.setCaption(table.app_package);
+                                        appSearchObjectEntity.setIsLocal(true);
+                                        appList.add(appSearchObjectEntity);
+                                    }
                                 }
                             }
                         }

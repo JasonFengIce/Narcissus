@@ -128,7 +128,7 @@ public class HomeActivity extends BaseActivity {
 //            public void run() {
 //                showAppUpdatePop();
 //            }
-//        }, 3000);
+//        }, 1000);
     }
 
 //
@@ -211,9 +211,17 @@ public class HomeActivity extends BaseActivity {
                     if (facet != null) {
                         List<AppSearchObjectEntity> serverAppList = facet[0].getObjects();
                         for (AppSearchObjectEntity entity : serverAppList) {
-                            List<AppTable> appTables = new Select().from(AppTable.class).where("app_package = ?", entity.getCaption()).execute();
+                            List<AppTable> tables = new Select().from(AppTable.class).where("app_package = ?", entity.getCaption()).execute();
                             if (appTables.size() == 0) {
                                 appList.add(entity);
+                            }else {
+                                for (AppTable table : tables) {
+                                    AppSearchObjectEntity appSearchObjectEntity = new AppSearchObjectEntity();
+                                    appSearchObjectEntity.setTitle(table.app_name);
+                                    appSearchObjectEntity.setCaption(table.app_package);
+                                    appSearchObjectEntity.setIsLocal(true);
+                                    appList.add(appSearchObjectEntity);
+                                }
                             }
                         }
                         appSearchResponseEntity.getFacet()[0].setObjects(appList);
@@ -348,6 +356,7 @@ public class HomeActivity extends BaseActivity {
                 }
         );
     }
+
 
     public void recommendVideo() {
         showMyFragment(contentFragment);
