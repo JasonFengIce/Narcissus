@@ -318,9 +318,9 @@ public class HomeActivity extends BaseActivity {
 
     private void showMyFragment(BaseFragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(
-                R.anim.push_left_in,
-                R.anim.push_left_out);
+//        transaction.setCustomAnimations(
+//                R.anim.push_left_in,
+//                R.anim.push_left_out);
 
         for (BaseFragment f : fragmentList) {
             if (fragment != f && f.isVisible())
