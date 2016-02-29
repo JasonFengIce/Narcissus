@@ -114,6 +114,10 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
             linearLayout.setOnFocusChangeListener(this);
             linearLayout.setNextFocusLeftId(R.id.indicator_slide_menu);
 
+            if (i == 0){
+                lostFocusView = linearLayout;
+            }
+
             videoContentLayout.addView(linearLayout);
             i = i + 1;
         }
