@@ -22,8 +22,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
+        android:layout_marginRight="@dimen/transfer_line_width"
         android:orientation="vertical">
 
 
@@ -64,6 +63,7 @@
             android:id="@+id/app_type_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/transfer_line_width"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:visibility="gone"
@@ -94,6 +94,14 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/transfer_line"
+        android:layout_width="@dimen/transfer_line_width"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:background="#00000000"
+        />
 
 
 </RelativeLayout>

@@ -143,4 +143,6 @@
 <dimen name="pop_cursor_middle">118.52dp</dimen>
 <dimen name="pop_cursor_right">174.07dp</dimen>
 
+<dimen name="transfer_line_width">7.41dp</dimen>
+
 </resources>

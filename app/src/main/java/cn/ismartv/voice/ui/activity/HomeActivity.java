@@ -317,11 +317,16 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void showMyFragment(BaseFragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(
+                R.anim.push_left_in,
+                R.anim.push_left_out);
+
         for (BaseFragment f : fragmentList) {
             if (fragment != f && f.isVisible())
-                getSupportFragmentManager().beginTransaction().hide(f).commit();
+                transaction.hide(f);
         }
-        getSupportFragmentManager().beginTransaction().show(fragment).commit();
+        transaction.show(fragment).commit();
     }
 
     private void showLeftFragment(BaseFragment fragment) {

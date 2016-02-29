@@ -49,6 +49,8 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
     private ImageView slideMenu;
 
     private View selectedView;
+    private ImageView transferLine;
+    private View lostFocusView;
 
 
     @Nullable
@@ -67,12 +69,16 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
         videoContentLayout = (LinearLayout) view.findViewById(R.id.video_content);
         appContentLayout = (LinearLayout) view.findViewById(R.id.app_content);
         slideMenu = (ImageView) view.findViewById(R.id.indicator_slide_menu);
+        transferLine = (ImageView) view.findViewById(R.id.transfer_line);
+        transferLine.setOnFocusChangeListener(this);
         slideMenu.bringToFront();
         slideMenu.setOnClickListener(this);
     }
 
 
     public void initVodIndicator(SemanticSearchResponseEntity entity, String data, boolean isFirstTime) {
+        lostFocusView = null;
+        selectedView = null;
         videoTypeLayout.setVisibility(View.VISIBLE);
         videoContentLayout.removeAllViews();
         int i = 0;
@@ -124,6 +130,8 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
 
 
     public void initAppIndicator(List<AppSearchObjectEntity> entitys, String data, boolean isFirstTime) {
+        lostFocusView = null;
+        selectedView = null;
         appTypeLayout.setVisibility(View.VISIBLE);
         appContentLayout.removeAllViews();
         LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.item_indicator, null);
@@ -175,9 +183,17 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         switch (v.getId()) {
+            case R.id.transfer_line:
+                if (lostFocusView != null) {
+                    lostFocusView.requestFocus();
+                    lostFocusView.requestFocusFromTouch();
+                }
+                break;
             default:
                 TextView textView = (TextView) v.findViewById(R.id.title);
                 if (hasFocus) {
+                    transferLine.setFocusable(false);
+                    transferLine.setFocusableInTouchMode(false);
                     if (selectedView == v) {
                         textView.setTextColor(getResources().getColor(R.color._ffffff));
                         ViewScaleUtil.scaleToLarge(v, 1.3f);
@@ -187,6 +203,8 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
                     }
 
                 } else {
+                    transferLine.setFocusable(true);
+                    transferLine.setFocusableInTouchMode(true);
                     if (selectedView == v) {
                         textView.setTextColor(getResources().getColor(R.color._ffffff));
                         ViewScaleUtil.scaleToNormal(v, 1.3f);
@@ -195,6 +213,8 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
                         ViewScaleUtil.scaleToNormal(v, 1.3f);
                     }
                     slideMenu.setNextFocusRightId(v.getId());
+                    lostFocusView = v;
+
                 }
                 break;
         }
