@@ -352,6 +352,7 @@ public class HomeActivity extends BaseActivity {
                                 @Override
                                 public void confirmClick(View view) {
                                     networkEorrorPopupWindow.dismiss();
+                                    System.exit(0);
                                 }
                             },
                             null
