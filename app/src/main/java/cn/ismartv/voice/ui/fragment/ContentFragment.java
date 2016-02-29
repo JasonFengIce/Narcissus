@@ -134,19 +134,31 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
             String postUrl = datas.get(postion).getPoster_url();
             String verticalUrl = datas.get(postion).getVertical_url();
 
+
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("url", datas.get(postion).getUrl());
             hashMap.put("content_model", datas.get(postion).getContent_model());
             hashMap.put("pk", datas.get(postion).getPk());
             hashMap.put("title", datas.get(postion).getTitle());
             String focusString = datas.get(postion).getFocus();
+
+            float price = 0;
             if (!TextUtils.isEmpty(focusString) && focusString.length() > 10) {
                 focusString = focusString.subSequence(0, 10).toString();
             }
 
             String score = datas.get(postion).getBean_score();
+            SemantichObjectEntity.Expense expense = datas.get(postion).getExpense();
+            if (expense != null) {
+                price = expense.getPrice();
+            }
+
             if (!TextUtils.isEmpty(score)) {
                 myViewHolder.imageView.setScore(score);
+            }
+
+            if (price != 0) {
+                myViewHolder.imageView.setPrice("￥" + price);
             }
             myViewHolder.imageView.setFoucsText(focusString);
             if (!TextUtils.isEmpty(verticalUrl)) {

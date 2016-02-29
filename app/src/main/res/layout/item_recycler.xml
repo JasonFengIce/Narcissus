@@ -20,6 +20,10 @@
         app:focus_title_background="#b2000000"
         app:focus_title_height="@dimen/focus_text_height"
         app:focus_title_textSize="@dimen/textSize_24sp"
+        app:left_top_mark_textSize="@dimen/textSize_30sp"
+        app:left_top_mark_width="@dimen/left_top_mark_width"
+        app:right_top_mark_textSize="@dimen/textSize_24sp"
+        app:right_top_mark_width="@dimen/right_top_mark_width"
         />
 
     <TextView

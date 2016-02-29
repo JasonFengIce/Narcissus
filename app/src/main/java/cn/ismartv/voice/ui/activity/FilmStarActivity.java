@@ -280,8 +280,24 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
             hashMap.put("description", datas.get(postion).getDescription());
 
             String focusString = datas.get(postion).getFocus();
+
+            float price = 0;
             if (!TextUtils.isEmpty(focusString) && focusString.length() > 10) {
                 focusString = focusString.subSequence(0, 10).toString();
+            }
+
+            String score = datas.get(postion).getBean_score();
+            SemantichObjectEntity.Expense expense = datas.get(postion).getExpense();
+            if (expense != null) {
+                price = expense.getPrice();
+            }
+
+            if (!TextUtils.isEmpty(score)) {
+                myViewHolder.imageView.setScore(score);
+            }
+
+            if (price != 0) {
+                myViewHolder.imageView.setPrice("￥" + price);
             }
 
             myViewHolder.imageView.setFoucsText(focusString);

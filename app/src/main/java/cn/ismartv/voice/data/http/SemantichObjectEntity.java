@@ -14,6 +14,15 @@ public class SemantichObjectEntity {
     private String description;
     private String focus;
     private String bean_score;
+    private Expense expense;
+
+    public Expense getExpense() {
+        return expense;
+    }
+
+    public void setExpense(Expense expense) {
+        this.expense = expense;
+    }
 
     public String getBean_score() {
         return bean_score;
@@ -95,4 +104,16 @@ public class SemantichObjectEntity {
         this.pk = pk;
     }
 
+
+    public class Expense {
+        private float price;
+
+        public float getPrice() {
+            return price;
+        }
+
+        public void setPrice(float price) {
+            this.price = price;
+        }
+    }
 }
