@@ -38,6 +38,8 @@
             android:layout_height="wrap_content"
             android:clipChildren="false"
             android:clipToPadding="false"
+            android:descendantFocusability="afterDescendants"
+            android:scrollbars="none"
             >
 
             <LinearLayout
@@ -46,6 +48,7 @@
                 android:layout_height="wrap_content"
                 android:clipChildren="false"
                 android:clipToPadding="false"
+                android:descendantFocusability="afterDescendants"
                 android:orientation="horizontal">
 
             </LinearLayout>

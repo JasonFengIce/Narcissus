@@ -60,7 +60,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
     private ImageView indicatorArrowLeft;
     private ImageView indicatorArrowRight;
 
-    private View lostFocusView;
+    private View lostFocusItemView;
 
     private MessagePopWindow networkEorrorPopupWindow;
     private View contentView;
@@ -151,9 +151,12 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                         layoutParams.setMargins(marginLeft, 0, 0, 0);
                         itemView.setTag(facet.getContent_type());
                         if (i == 0) {
+                            itemView.setNextFocusLeftId(itemView.getId());
                             indicatorListLayout.addView(itemView);
                         } else {
-
+                            if (i == entity.getFacet().size() - 1) {
+                                itemView.setNextFocusRightId(itemView.getId());
+                            }
                             indicatorListLayout.addView(itemView, layoutParams);
                         }
                         i = i + 1;
@@ -221,6 +224,11 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                     ViewScaleUtil.scaleToLarge(v, 1.3f);
                 } else {
                     ViewScaleUtil.scaleToNormal(v, 1.3f);
+                }
+                break;
+            case R.id.recyclerview:
+                if (lostFocusItemView != null) {
+                    lostFocusItemView.requestFocus();
                 }
                 break;
         }
@@ -311,8 +319,21 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
             myViewHolder.mItemView.setOnClickListener(this);
             myViewHolder.mItemView.setOnFocusChangeListener(this);
             if (postion == 0) {
+                lostFocusItemView = myViewHolder.mItemView;
                 myViewHolder.mItemView.requestFocusFromTouch();
                 myViewHolder.mItemView.requestFocus();
+            }
+
+            if (postion >= 5) {
+                contentArrowLeft.setVisibility(View.VISIBLE);
+            } else {
+                contentArrowLeft.setVisibility(View.GONE);
+            }
+
+            if (postion == datas.size() - 1) {
+                contentArrowRight.setVisibility(View.GONE);
+            } else {
+                contentArrowRight.setVisibility(View.VISIBLE);
             }
         }
 
@@ -372,6 +393,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                 imageView.setBackgroundResource(R.drawable.item_focus);
                 ViewScaleUtil.scaleToLarge(v, 1.15f);
             } else {
+                lostFocusItemView = v;
                 textView.setSelected(false);
                 imageView.setBackgroundDrawable(null);
                 ViewScaleUtil.scaleToNormal(v, 1.15f);
@@ -435,6 +457,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
 //            imageView.setLrPaddingFlag(1);
 
         }
+
     }
 
     public void showNetworkErrorPop() {
