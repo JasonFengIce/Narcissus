@@ -14,12 +14,14 @@ import android.widget.TextView;
 import com.google.gson.JsonParser;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.List;
 
+import cn.ismartv.imagereflection.ReflectionTransformationBuilder;
 import cn.ismartv.imagereflection.RelectionImageView;
 import cn.ismartv.recyclerview.widget.GridLayoutManager;
 import cn.ismartv.recyclerview.widget.RecyclerView;
@@ -174,10 +176,15 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
             } else if (!TextUtils.isEmpty(postUrl)) {
                 hashMap.put("orientation", "horizontal");
                 myViewHolder.imageView.setIsHorizontal(true);
+                Transformation mTransformation = new ReflectionTransformationBuilder()
+                        .setIsHorizontal(true)
+                        .build();
+
                 Picasso.with(getContext()).load(postUrl)
                         .memoryPolicy(MemoryPolicy.NO_STORE)
-                        .error(R.drawable.horizontal_preview_bg)
-                        .placeholder(R.drawable.horizontal_preview_bg)
+                        .error(R.drawable.vertical_preview_bg)
+                        .placeholder(R.drawable.vertical_preview_bg)
+                        .transform(mTransformation)
                         .into(myViewHolder.imageView);
 
             } else {
