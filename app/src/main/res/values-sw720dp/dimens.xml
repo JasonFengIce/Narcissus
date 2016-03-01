@@ -139,9 +139,9 @@
 <dimen name="pop_cursor_space">200.00dp</dimen>
 
 
-<dimen name="pop_cursor_left">173.33dp</dimen>
-<dimen name="pop_cursor_middle">250.00dp</dimen>
-<dimen name="pop_cursor_right">323.33dp</dimen>
+<dimen name="pop_cursor_left">166.67dp</dimen>
+<dimen name="pop_cursor_middle">243.33dp</dimen>
+<dimen name="pop_cursor_right">316.67dp</dimen>
 
 <dimen name="transfer_line_width">13.33dp</dimen>
 <dimen name="left_top_mark_width">36.67dp</dimen>

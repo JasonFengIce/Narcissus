@@ -75,7 +75,6 @@
             android:layout_width="@dimen/pop_cursor_width"
             android:layout_height="@dimen/pop_cursor_height"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="@dimen/pop_cursor_margin_left"
             android:src="@drawable/message_pop_cursor"/>
 
     </RelativeLayout>

@@ -132,6 +132,14 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
             secondMessage.setText(mSecondLineMessage);
         }
 
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams((int) context.getResources().getDimension(R.dimen.pop_cursor_width), (int) context.getResources().getDimension(R.dimen.pop_cursor_height));
+        if (confirmListener != null && cancleListener != null) {
+            params.setMargins(popCursorMiddle, 0, 0, 0);
+        } else {
+            params.setMargins(popCursorLeft, 0, 0, 0);
+        }
+
+        cursorImageView.setLayoutParams(params);
 
         frameLayout.addView(contentView, layoutParams);
         setContentView(frameLayout);
@@ -172,19 +180,19 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
         this.confirmListener = confirmListener;
         this.cancleListener = cancleListener;
         super.showAtLocation(parent, gravity, 0, 0);
-        getContentView().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (confirmListener != null && cancleListener != null) {
-                    layoutCursorView(cursorImageView, popCursorLeft);
-                } else {
-                    layoutCursorView(cursorImageView, popCursorMiddle);
-                }
-            }
-        }, 200);
-
-
+//        getContentView().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                if (confirmListener != null && cancleListener != null) {
+//                    layoutCursorView(cursorImageView, popCursorLeft);
+//
+//                } else {
+//                    layoutCursorView(cursorImageView, popCursorMiddle);
+//                }
+//            }
+//        }, 200);
     }
+
 
     public void layoutCursorView(final View view, final int xPosition) {
         int width = view.getWidth();
