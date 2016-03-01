@@ -70,8 +70,8 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 4, GridLayoutManager.VERTICAL, false);
 
-        int verticalSpacingInPixels = (int) (getResources().getDimensionPixelSize(R.dimen.content_fragment_item_vertical_space) / getDensityRate());
-        int horizontalSpacingInPixels = (int) (getResources().getDimensionPixelSize(R.dimen.content_fragment_item_horizontal_space) / getDensityRate());
+        int verticalSpacingInPixels = (int) (getResources().getDimension(R.dimen.content_fragment_item_vertical_space) - getResources().getDimension(R.dimen.item_margin_bottom) * 1.55);
+        int horizontalSpacingInPixels = (int) (getResources().getDimension(R.dimen.content_fragment_item_horizontal_space));
         recyclerView.addItemDecoration(new SpaceItemDecoration(verticalSpacingInPixels, horizontalSpacingInPixels));
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setOnFocusChangeListener(this);
