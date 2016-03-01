@@ -153,6 +153,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
                 searchApp(rawText, false);
             }
         });
+        linearLayout.setNextFocusLeftId(R.id.indicator_slide_menu);
         linearLayout.setOnFocusChangeListener(this);
         appContentLayout.addView(linearLayout);
 
