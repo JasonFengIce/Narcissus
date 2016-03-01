@@ -241,6 +241,7 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
                     intent.putExtra("title", title);
                     intent.setAction("cn.ismartv.voice.film_star");
                     startActivity(intent);
+
                     break;
                 default:
                     if (!TextUtils.isEmpty(url)) {
