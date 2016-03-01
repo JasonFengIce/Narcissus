@@ -122,12 +122,12 @@ public class HomeActivity extends BaseActivity {
             transaction.commit();
         }
 
-//        contentView.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                showAppUpdatePop();
-//            }
-//        }, 1000);
+        contentView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showAppUpdatePop();
+            }
+        }, 1000);
     }
 
 //
