@@ -150,8 +150,8 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                         itemView.setOnFocusChangeListener(FilmStarActivity.this);
                         itemView.setOnClickListener(FilmStarActivity.this);
                         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                        int marginLeft = (int) (getResources().getDimension(R.dimen.filmStar_indicatorLayout_item_marginLeft));
-                        layoutParams.setMargins(marginLeft, 0, 0, 0);
+//                        int marginLeft = (int) (getResources().getDimension(R.dimen.filmStar_indicatorLayout_item_marginLeft));
+//                        layoutParams.setMargins(marginLeft, 0, 0, 0);
                         itemView.setTag(facet.getContent_type());
                         if (i == 0) {
                             indicatorSelectedView = itemView;

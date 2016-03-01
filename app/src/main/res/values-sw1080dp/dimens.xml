@@ -103,7 +103,7 @@
 
     <dimen name="film_star_indicator_width">39dp</dimen>
     <dimen name="film_star_indicator_height">36dp</dimen>
-    <dimen name="film_star_indicator_bg_width">526dp</dimen>
+    <dimen name="film_star_indicator_bg_width">275dp</dimen>
     <dimen name="film_star_indicator_bg_height">26dp</dimen>
 
     <dimen name="filmStar_contentArrow_width">35dp</dimen>
