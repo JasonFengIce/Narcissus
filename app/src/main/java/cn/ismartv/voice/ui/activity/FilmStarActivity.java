@@ -66,6 +66,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
 
     private MessagePopWindow networkEorrorPopupWindow;
     private View contentView;
+    private View indicatorSelectedView;
 
 
     @Override
@@ -153,6 +154,8 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                         layoutParams.setMargins(marginLeft, 0, 0, 0);
                         itemView.setTag(facet.getContent_type());
                         if (i == 0) {
+                            indicatorSelectedView = itemView;
+                            indicatorTitle.setTextColor(getResources().getColor(R.color._ffffff));
                             itemView.setNextFocusLeftId(itemView.getId());
                             indicatorListLayout.addView(itemView);
                         } else {
@@ -181,7 +184,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
         ActorRelateRequestParams params = new ActorRelateRequestParams();
         params.setActor_id(pk);
         params.setPage_no(1);
-        params.setPage_count(100);
+        params.setPage_count(300);
         params.setContent_type(type);
         HttpManager.getInstance().resetAdapter_SKY.create(HttpAPI.ActorRelate.class).doRequest(params).enqueue(new Callback<SemanticSearchResponseEntity>() {
             @Override
@@ -209,11 +212,21 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                 TextView textView = (TextView) v.findViewById(R.id.title);
 
                 if (hasFocus) {
-                    textView.setTextColor(getResources().getColor(R.color._ff9c3c));
+                    if (indicatorSelectedView == v) {
+                        textView.setTextColor(getResources().getColor(R.color._ffffff));
+                    } else {
+                        textView.setTextColor(getResources().getColor(R.color._ff9c3c));
+                    }
+
                     bg.setVisibility(View.VISIBLE);
                     ViewScaleUtil.scaleToLarge(v, 1.3f);
                 } else {
-                    textView.setTextColor(getResources().getColor(R.color._a6a6a6));
+                    if (indicatorSelectedView == v) {
+                        textView.setTextColor(getResources().getColor(R.color._ffffff));
+                    } else {
+                        textView.setTextColor(getResources().getColor(R.color._a6a6a6));
+                    }
+
                     bg.setVisibility(View.INVISIBLE);
                     ViewScaleUtil.scaleToNormal(v, 1.3f);
                 }
@@ -240,6 +253,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.filmStar_indicator_item:
+                indicatorSelectedView = v;
                 String type = (String) v.getTag();
                 fetchActorRelateByType(pk, type);
                 break;
