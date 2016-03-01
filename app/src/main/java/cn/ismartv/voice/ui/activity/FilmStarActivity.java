@@ -253,6 +253,13 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.filmStar_indicator_item:
+                if (indicatorSelectedView != null) {
+                    TextView textView = (TextView) indicatorSelectedView.findViewById(R.id.title);
+                    textView.setTextColor(getResources().getColor(R.color._a6a6a6));
+                } else {
+                    TextView textView = (TextView) v.findViewById(R.id.title);
+                    textView.setTextColor(getResources().getColor(R.color._ffffff));
+                }
                 indicatorSelectedView = v;
                 String type = (String) v.getTag();
                 fetchActorRelateByType(pk, type);
