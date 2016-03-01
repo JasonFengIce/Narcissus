@@ -3,7 +3,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="@dimen/message_pop_width"
               android:layout_height="@dimen/message_pop_height"
-              android:background="@drawable/item_focus"
               android:orientation="vertical"
     >
 
@@ -51,8 +50,8 @@
 
             <Button
                 android:id="@+id/confirm_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/pop_cursor_btn_width"
+                android:layout_height="@dimen/pop_cursor_btn_height"
                 android:background="@drawable/pop_btn_bg"
                 android:text="@string/confirm_text"
                 android:textColor="@android:color/white"
@@ -61,8 +60,8 @@
 
             <Button
                 android:id="@+id/cancel_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/pop_cursor_btn_width"
+                android:layout_height="@dimen/pop_cursor_btn_height"
                 android:layout_marginLeft="@dimen/pop_btn_margin_lr"
                 android:background="@drawable/pop_btn_bg"
                 android:text="@string/cancel_text"
@@ -73,8 +72,9 @@
 
         <ImageView
             android:id="@+id/pop_cursor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/pop_cursor_width"
+            android:layout_height="@dimen/pop_cursor_height"
+            android:layout_alignParentTop="true"
             android:layout_marginLeft="@dimen/pop_cursor_margin_left"
             android:src="@drawable/message_pop_cursor"/>
 

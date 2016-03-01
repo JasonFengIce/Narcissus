@@ -181,8 +181,7 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
                     layoutCursorView(cursorImageView, popCursorMiddle);
                 }
             }
-        }, 100);
-
+        }, 200);
 
 
     }

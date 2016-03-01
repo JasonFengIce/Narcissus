@@ -139,12 +139,16 @@
     <dimen name="pop_cursor_space">300dp</dimen>
 
 
-    <dimen name="pop_cursor_left">170dp</dimen>
-    <dimen name="pop_cursor_middle">320dp</dimen>
-    <dimen name="pop_cursor_right">470dp</dimen>
+    <dimen name="pop_cursor_left">260dp</dimen>
+    <dimen name="pop_cursor_middle">375dp</dimen>
+    <dimen name="pop_cursor_right">485dp</dimen>
 
     <dimen name="transfer_line_width">20dp</dimen>
     <dimen name="left_top_mark_width">55dp</dimen>
     <dimen name="right_top_mark_width">70dp</dimen>
+    <dimen name="pop_cursor_width">40dp</dimen>
+    <dimen name="pop_cursor_height">20dp</dimen>
+    <dimen name="pop_cursor_btn_height">50dp</dimen>
+    <dimen name="pop_cursor_btn_width">165dp</dimen>
 
 </resources>
