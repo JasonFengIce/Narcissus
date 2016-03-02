@@ -308,7 +308,7 @@ public class ContentFragment2 extends BaseFragment implements OnFocusChangeListe
                 break;
             default:
                 if (!TextUtils.isEmpty(url)) {
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     intent.putExtra("url", url);
                     if (!TextUtils.isEmpty(verticalUrl)) {
                         intent.setAction("tv.ismar.daisy.PFileItem");
