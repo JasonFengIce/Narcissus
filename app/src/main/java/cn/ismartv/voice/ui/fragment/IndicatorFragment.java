@@ -99,10 +99,9 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
                     if (selectedView != null) {
                         TextView textView = (TextView) selectedView.findViewById(R.id.title);
                         textView.setTextColor(getResources().getColor(R.color._a6a6a6));
-                    } else {
-                        TextView textView = (TextView) v.findViewById(R.id.title);
-                        textView.setTextColor(getResources().getColor(R.color._ffffff));
                     }
+                    TextView textView = (TextView) v.findViewById(R.id.title);
+                    textView.setTextColor(getResources().getColor(R.color._ffffff));
                     selectedView = v;
                     HashMap<String, String> tag = (HashMap<String, String>) v.getTag();
                     String type = tag.get("type");
@@ -114,7 +113,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
             linearLayout.setOnFocusChangeListener(this);
             linearLayout.setNextFocusLeftId(R.id.indicator_slide_menu);
 
-            if (i == 0){
+            if (i == 0) {
                 lostFocusView = linearLayout;
             }
 
