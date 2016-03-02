@@ -114,19 +114,15 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
             linearLayout.setNextFocusLeftId(R.id.indicator_slide_menu);
 
             if (i == 0) {
+                selectedView = linearLayout;
                 lostFocusView = linearLayout;
+                TextView textView = (TextView) linearLayout.findViewById(R.id.title);
+                textView.setTextColor(getResources().getColor(R.color._ffffff));
             }
 
             videoContentLayout.addView(linearLayout);
             i = i + 1;
         }
-
-        if (videoContentLayout.getChildCount() != 0) {
-            selectedView = videoContentLayout.getChildAt(0);
-            TextView textView = (TextView) selectedView.findViewById(R.id.title);
-            textView.setTextColor(getResources().getColor(R.color._ffffff));
-        }
-
 
         searchVod(entity.getFacet().get(0).getContent_type(), data, true);
     }
@@ -158,13 +154,12 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
         appContentLayout.addView(linearLayout);
 
         if (videoTypeLayout.getVisibility() == View.GONE) {
-            if (appContentLayout.getChildCount() != 0) {
-                selectedView = appContentLayout.getChildAt(0);
-                TextView textView = (TextView) selectedView.findViewById(R.id.title);
-                textView.setTextColor(getResources().getColor(R.color._ffffff));
-            }
-            searchApp(rawText, true);
+            selectedView = linearLayout;
+            lostFocusView = linearLayout;
+            TextView textView = (TextView) linearLayout.findViewById(R.id.title);
+            textView.setTextColor(getResources().getColor(R.color._ffffff));
         }
+        searchApp(rawText, true);
     }
 
     @Override
