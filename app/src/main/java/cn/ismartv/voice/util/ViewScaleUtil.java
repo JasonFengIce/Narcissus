@@ -31,15 +31,30 @@ public class ViewScaleUtil {
     }
 
 
-    public static void scaleOut1(View view){
+    public static void scaleOut1(View view) {
 
-        Animator animator= AnimatorInflater.loadAnimator(view.getContext(), R.animator.scaleout_poster);
+        Animator animator = AnimatorInflater.loadAnimator(view.getContext(), R.animator.scaleout_poster);
         animator.setTarget(view);
         animator.start();
     }
-    public static void scaleIn1(View view){
 
-        Animator animator= AnimatorInflater.loadAnimator(view.getContext(), R.animator.scalein_poster);
+    public static void scaleIn1(View view) {
+
+        Animator animator = AnimatorInflater.loadAnimator(view.getContext(), R.animator.scalein_poster);
+        animator.setTarget(view);
+        animator.start();
+    }
+
+    public static void scaleLarge_1_3_(View view) {
+
+        Animator animator = AnimatorInflater.loadAnimator(view.getContext(), R.animator.scaleout_hotword);
+        animator.setTarget(view);
+        animator.start();
+    }
+
+    public static void scaleNormal_1_3(View view) {
+
+        Animator animator = AnimatorInflater.loadAnimator(view.getContext(), R.animator.scalein_hotword);
         animator.setTarget(view);
         animator.start();
     }

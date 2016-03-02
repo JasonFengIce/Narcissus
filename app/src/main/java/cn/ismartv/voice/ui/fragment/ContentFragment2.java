@@ -261,27 +261,6 @@ public class ContentFragment2 extends BaseFragment implements OnFocusChangeListe
                         .error(R.drawable.vertical_preview_bg)
                         .into(myViewHolder.imageView);
             }
-
-
-            if (position == 0) {
-                recyclerView.setSelection(0);
-//                lostFocusItemView = convertView;
-//                convertView.setSelected(true);
-//                ViewScaleUtil.scaleToLarge(convertView, 1.15f);
-            }
-
-            if (position >= 8) {
-                arrowUp.setVisibility(View.VISIBLE);
-            } else {
-                arrowUp.setVisibility(View.GONE);
-            }
-
-            if (position == datas.size() - 1) {
-                arrowDown.setVisibility(View.GONE);
-            } else {
-                arrowDown.setVisibility(View.VISIBLE);
-            }
-
             return convertView;
         }
 

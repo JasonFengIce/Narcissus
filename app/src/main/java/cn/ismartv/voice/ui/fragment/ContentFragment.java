@@ -50,6 +50,12 @@
 //    private ImageView arrowUp;
 //    private ImageView arrowDown;
 //
+//    private boolean isRecommend = true;
+//
+//    public boolean isRecommend() {
+//        return isRecommend;
+//    }
+//
 //    @Nullable
 //    @Override
 //    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -79,6 +85,7 @@
 //
 //
 //    public void notifyDataChanged(SemanticSearchResponseEntity responseEntity, String data) {
+//        isRecommend = false;
 //        String rawTextValue = getString(R.string.search_title);
 //        String rawText = new JsonParser().parse(data).getAsJsonObject().get("raw_text").toString();
 //        searchTitle.setText(String.format(rawTextValue, rawText));
@@ -300,6 +307,7 @@
 //    }
 //
 //    public void fetchSharpHotWords() {
+//        isRecommend = true;
 //        Retrofit retrofit = HttpManager.getInstance().resetAdapter_WUGUOJUN;
 //        retrofit.create(HttpAPI.SharpHotWords.class).doRequest(8).enqueue(new Callback<SharpHotWordsEntity>() {
 //            @Override

@@ -158,8 +158,8 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
             lostFocusView = linearLayout;
             TextView textView = (TextView) linearLayout.findViewById(R.id.title);
             textView.setTextColor(getResources().getColor(R.color._ffffff));
+            searchApp(rawText, true);
         }
-        searchApp(rawText, true);
     }
 
     @Override
@@ -196,10 +196,10 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
                     transferLine.setFocusableInTouchMode(false);
                     if (selectedView == v) {
                         textView.setTextColor(getResources().getColor(R.color._ffffff));
-                        ViewScaleUtil.scaleToLarge(v, 1.3f);
+                        ViewScaleUtil.scaleLarge_1_3_(v);
                     } else {
                         textView.setTextColor(getResources().getColor(R.color._ff9c3c));
-                        ViewScaleUtil.scaleToLarge(v, 1.3f);
+                        ViewScaleUtil.scaleLarge_1_3_(v);
                     }
 
                 } else {
@@ -207,10 +207,10 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
                     transferLine.setFocusableInTouchMode(true);
                     if (selectedView == v) {
                         textView.setTextColor(getResources().getColor(R.color._ffffff));
-                        ViewScaleUtil.scaleToNormal(v, 1.3f);
+                        ViewScaleUtil.scaleNormal_1_3(v);
                     } else {
                         textView.setTextColor(getResources().getColor(R.color._a6a6a6));
-                        ViewScaleUtil.scaleToNormal(v, 1.3f);
+                        ViewScaleUtil.scaleNormal_1_3(v);
                     }
                     slideMenu.setNextFocusRightId(v.getId());
                     lostFocusView = v;
