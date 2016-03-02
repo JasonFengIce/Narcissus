@@ -138,6 +138,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
         appTypeLayout.setVisibility(View.VISIBLE);
         appContentLayout.removeAllViews();
         LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.item_indicator, null);
+        linearLayout.setBackgroundResource(R.drawable.seletor_indicator_item);
         TextView title = (TextView) linearLayout.findViewById(R.id.title);
         linearLayout.setId(R.id.all_app_type);
         title.setText("全部应用" + "  ( " + entitys.size() + " )");
