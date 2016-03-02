@@ -50,7 +50,6 @@ public class ContentFragment2 extends BaseFragment implements OnFocusChangeListe
     private GridView recyclerView;
     private TextView searchTitle;
 
-    private View lostFocusItemView;
     private ImageView arrowUp;
     private ImageView arrowDown;
     private View lastItemFocusView;
@@ -98,25 +97,27 @@ public class ContentFragment2 extends BaseFragment implements OnFocusChangeListe
     public void onFocusChange(View v, boolean hasFocus) {
         switch (v.getId()) {
             case R.id.recyclerview:
-                if (!hasFocus) {
+                Log.e(TAG, "grid view focus: " + hasFocus);
+                if (hasFocus) {
+                    recyclerView.setSelection(-1);
+                    View currentFocusView = recyclerView.getChildAt(0);
+                    if (currentFocusView != null) {
+                        ImageView imageView = (ImageView) currentFocusView.findViewById(R.id.image);
+                        TextView textView = (TextView) currentFocusView.findViewById(R.id.id_number);
+                        textView.setSelected(true);
+                        imageView.setSelected(true);
+                        ViewScaleUtil.scaleOut1(currentFocusView);
+                        lastItemFocusView = currentFocusView;
+                    }
+
+                } else {
                     if (lastItemFocusView != null) {
                         ImageView imageView = (ImageView) lastItemFocusView.findViewById(R.id.image);
                         TextView textView = (TextView) lastItemFocusView.findViewById(R.id.id_number);
                         textView.setSelected(false);
                         imageView.setSelected(false);
-                        ViewScaleUtil.scaleToNormal(lastItemFocusView, 1.15f);
+                        ViewScaleUtil.scaleIn1(lastItemFocusView);
                     }
-                } else {
-                    recyclerView.setSelection(0);
-//                    View currentFocusView = recyclerView.getChildAt(0);
-//                    if (currentFocusView != null) {
-//                        ImageView imageView = (ImageView) currentFocusView.findViewById(R.id.image);
-//                        TextView textView = (TextView) currentFocusView.findViewById(R.id.id_number);
-//                        textView.setSelected(true);
-//                        imageView.setSelected(true);
-//                        ViewScaleUtil.scaleToLarge(currentFocusView, 1.15f);
-//                        lastItemFocusView = currentFocusView;
-//                    }
                 }
                 break;
         }
@@ -341,7 +342,7 @@ public class ContentFragment2 extends BaseFragment implements OnFocusChangeListe
             TextView textView = (TextView) lastItemFocusView.findViewById(R.id.id_number);
             textView.setSelected(false);
             imageView.setSelected(false);
-            ViewScaleUtil.scaleToNormal(lastItemFocusView, 1.15f);
+            ViewScaleUtil.scaleIn1(lastItemFocusView);
         }
 
         if (currentFocusView != null) {
@@ -349,7 +350,7 @@ public class ContentFragment2 extends BaseFragment implements OnFocusChangeListe
             TextView textView = (TextView) currentFocusView.findViewById(R.id.id_number);
             textView.setSelected(true);
             imageView.setSelected(true);
-            ViewScaleUtil.scaleToLarge(currentFocusView, 1.15f);
+            ViewScaleUtil.scaleOut1(currentFocusView);
         }
         lastItemFocusView = currentFocusView;
     }

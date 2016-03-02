@@ -1,7 +1,11 @@
 package cn.ismartv.voice.util;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
 import android.animation.ObjectAnimator;
 import android.view.View;
+
+import cn.ismartv.voice.R;
 
 /**
  * Created by huaijie on 1/31/16.
@@ -24,5 +28,19 @@ public class ViewScaleUtil {
         ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(view, View.SCALE_Y, new float[]{rate, 1.0F});
         objectAnimatorY.setDuration(100L);
         objectAnimatorY.start();
+    }
+
+
+    public static void scaleOut1(View view){
+
+        Animator animator= AnimatorInflater.loadAnimator(view.getContext(), R.animator.scaleout_poster);
+        animator.setTarget(view);
+        animator.start();
+    }
+    public static void scaleIn1(View view){
+
+        Animator animator= AnimatorInflater.loadAnimator(view.getContext(), R.animator.scalein_poster);
+        animator.setTarget(view);
+        animator.start();
     }
 }
