@@ -155,15 +155,16 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
                 price = expense.getPrice();
             }
 
-            if (!TextUtils.isEmpty(score)) {
-                myViewHolder.imageView.setScore(score);
-            }
-
-            if (price != 0) {
-                myViewHolder.imageView.setPrice("￥" + price);
-            }
             myViewHolder.imageView.setFoucsText(focusString);
             if (!TextUtils.isEmpty(verticalUrl)) {
+                if (!TextUtils.isEmpty(score)) {
+                    myViewHolder.imageView.setScore(score);
+                }
+
+                if (price != 0) {
+                    myViewHolder.imageView.setPrice("￥" + price);
+                }
+
                 hashMap.put("orientation", "vertical");
                 myViewHolder.imageView.setIsHorizontal(false);
                 Picasso.with(getContext())
