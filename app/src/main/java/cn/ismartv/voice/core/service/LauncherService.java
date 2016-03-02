@@ -23,7 +23,7 @@ public class LauncherService extends Service {
         Log.i(TAG, "start service");
         Intent i = new Intent();
         i.setAction("cn.ismartv.voice.home");
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
         return super.onStartCommand(intent, flags, startId);
     }

@@ -55,6 +55,11 @@ public class ContentFragment2 extends BaseFragment implements OnFocusChangeListe
     private ImageView arrowDown;
     private View lastItemFocusView;
 
+    private boolean isRecommend = true;
+
+    public boolean isRecommend() {
+        return isRecommend;
+    }
 
     @Nullable
     @Override
@@ -80,6 +85,7 @@ public class ContentFragment2 extends BaseFragment implements OnFocusChangeListe
 
 
     public void notifyDataChanged(SemanticSearchResponseEntity responseEntity, String data) {
+        isRecommend = false;
         String rawTextValue = getString(R.string.search_title);
         String rawText = new JsonParser().parse(data).getAsJsonObject().get("raw_text").toString();
         searchTitle.setText(String.format(rawTextValue, rawText));
@@ -134,6 +140,7 @@ public class ContentFragment2 extends BaseFragment implements OnFocusChangeListe
     }
 
     public void fetchSharpHotWords() {
+        isRecommend = true;
         Retrofit retrofit = HttpManager.getInstance().resetAdapter_WUGUOJUN;
         retrofit.create(HttpAPI.SharpHotWords.class).doRequest(8).enqueue(new Callback<SharpHotWordsEntity>() {
             @Override

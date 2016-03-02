@@ -175,7 +175,13 @@ public class HomeActivity extends BaseActivity {
         }
 
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            onBackPressed();
+            if (contentFragment.isRecommend()) {
+                onBackPressed();
+            } else {
+                voiceFragment.showTipFragment();
+                showLeftFragment(voiceFragment);
+                contentFragment.fetchSharpHotWords();
+            }
             return true;
         }
         return super.onKeyDown(keyCode, event);

@@ -455,4 +455,8 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
         }
         getChildFragmentManager().beginTransaction().show(fragment).commit();
     }
+
+    public void showTipFragment(){
+        showFragment(searchTipFragment);
+    }
 }
