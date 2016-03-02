@@ -26,7 +26,7 @@ import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.data.table.CityTable;
 import cn.ismartv.voice.ui.fragment.AppSearchFragment;
 import cn.ismartv.voice.ui.fragment.BaseFragment;
-import cn.ismartv.voice.ui.fragment.ContentFragment;
+import cn.ismartv.voice.ui.fragment.ContentFragment2;
 import cn.ismartv.voice.ui.fragment.IndicatorFragment;
 import cn.ismartv.voice.ui.fragment.RecognizeErrorFragment;
 import cn.ismartv.voice.ui.fragment.SearchLoadingFragment;
@@ -52,7 +52,7 @@ public class HomeActivity extends BaseActivity {
 
 
     private VoiceFragment voiceFragment;
-    private ContentFragment contentFragment;
+    private ContentFragment2 contentFragment;
     private IndicatorFragment indicatorFragment;
     private AppSearchFragment appSearchFragment;
     private SearchLoadingFragment searchLoadingFragment;
@@ -79,7 +79,7 @@ public class HomeActivity extends BaseActivity {
         contentView = LayoutInflater.from(this).inflate(R.layout.activity_home, null);
         setContentView(contentView);
         voiceFragment = new VoiceFragment();
-        contentFragment = new ContentFragment();
+        contentFragment = new ContentFragment2();
         indicatorFragment = new IndicatorFragment();
         appSearchFragment = new AppSearchFragment();
         searchLoadingFragment = new SearchLoadingFragment();
@@ -105,7 +105,6 @@ public class HomeActivity extends BaseActivity {
         } else {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.add(R.id.left_fragment, voiceFragment, VOICE_FRAGMENT_TAG);
-            transaction.add(R.id.right_fragment, contentFragment, CONTENT_FRAGMENT_TAG);
             transaction.add(R.id.left_fragment, indicatorFragment, INDICATOR_FRAGMENT_TAG);
             transaction.add(R.id.right_fragment, appSearchFragment, APP_SEARCH_FRAGMENT_TAG);
             transaction.add(R.id.right_fragment, searchLoadingFragment, SEARCH_LOADING_FRAGMENT);
@@ -118,6 +117,7 @@ public class HomeActivity extends BaseActivity {
             transaction.hide(weatherFragment);
             transaction.hide(recognizeErrorFragment);
             transaction.hide(searchLoadingWithBGFragment);
+            transaction.add(R.id.right_fragment, contentFragment, CONTENT_FRAGMENT_TAG);
 //            transaction.hide(contentFragment);
             transaction.commit();
         }

@@ -151,6 +151,6 @@
 <dimen name="pop_cursor_btn_height">18.52dp</dimen>
 <dimen name="pop_cursor_btn_width">61.11dp</dimen>
 
-<dimen name="item_margin_bottom">12.96dp</dimen>
+<dimen name="item_margin_bottom">6.67dp</dimen>
 
 </resources>
