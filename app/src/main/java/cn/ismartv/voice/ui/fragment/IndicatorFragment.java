@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 
 import org.greenrobot.eventbus.EventBus;
@@ -30,7 +31,7 @@ import cn.ismartv.voice.data.http.AppSearchResponseEntity;
 import cn.ismartv.voice.data.http.SemanticSearchRequestEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.data.table.AppTable;
-import cn.ismartv.voice.ui.activity.HomeActivity;
+import cn.ismartv.voice.ui.activity.SearchResultActivity;
 import cn.ismartv.voice.util.ViewScaleUtil;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,7 +52,42 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
     private View selectedView;
     private ImageView transferLine;
     private View lostFocusView;
+    private String type;
+    private String data;
+    private String raw;
 
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    public void setRaw(String raw) {
+        this.raw = raw;
+    }
+
+    private String appData;
+    private String videoData;
+    private String appRaw;
+    private String videoRaw;
+
+    public void setAppData(String appData) {
+        this.appData = appData;
+    }
+
+    public void setVideoData(String videoData) {
+        this.videoData = videoData;
+    }
+
+    public void setAppRaw(String appRaw) {
+        this.appRaw = appRaw;
+    }
+
+    public void setVideoRaw(String videoRaw) {
+        this.videoRaw = videoRaw;
+    }
 
     @Nullable
     @Override
@@ -73,10 +109,28 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
         transferLine.setOnFocusChangeListener(this);
         slideMenu.bringToFront();
         slideMenu.setOnClickListener(this);
+
+        switch (type) {
+            case "video":
+                SemanticSearchResponseEntity entity = new Gson().fromJson(data, SemanticSearchResponseEntity.class);
+                initVodIndicator(entity, raw);
+                break;
+            case "app":
+                AppSearchResponseEntity appSearchResponseEntity = new Gson().fromJson(data, AppSearchResponseEntity.class);
+                initAppIndicator(appSearchResponseEntity.getFacet()[0].getObjects(), raw);
+                break;
+            case "multi":
+                SemanticSearchResponseEntity videoEntity = new Gson().fromJson(videoData, SemanticSearchResponseEntity.class);
+                initVodIndicator(videoEntity, videoRaw);
+
+                List<AppSearchObjectEntity> appEntity = new Gson().fromJson(appData, List.class);
+                initAppIndicator(appEntity, appRaw);
+                break;
+        }
     }
 
 
-    public void initVodIndicator(SemanticSearchResponseEntity entity, String data, boolean isFirstTime) {
+    private void initVodIndicator(SemanticSearchResponseEntity entity, String data) {
         lostFocusView = null;
         selectedView = null;
         videoTypeLayout.setVisibility(View.VISIBLE);
@@ -95,7 +149,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
             linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((HomeActivity) getActivity()).showSearchLoadingWithBG();
+//                    ((HomeActivity) getActivity()).showSearchLoadingWithBG();
                     if (selectedView != null) {
                         TextView textView = (TextView) selectedView.findViewById(R.id.title);
                         textView.setTextColor(getResources().getColor(R.color._a6a6a6));
@@ -128,7 +182,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
     }
 
 
-    public void initAppIndicator(List<AppSearchObjectEntity> entitys, String data, boolean isFirstTime) {
+    private void initAppIndicator(List<AppSearchObjectEntity> entitys, String raw) {
         appTypeLayout.setVisibility(View.VISIBLE);
         appContentLayout.removeAllViews();
         LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.item_indicator, null);
@@ -137,12 +191,12 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
         linearLayout.setId(R.id.all_app_type);
         title.setText("全部应用" + "  ( " + entitys.size() + " )");
 
-        String rawText = new JsonParser().parse(data).getAsJsonObject().get("raw_text").toString();
+        String rawText = new JsonParser().parse(raw).getAsJsonObject().get("raw_text").toString();
         linearLayout.setTag(rawText);
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((HomeActivity) getActivity()).showSearchLoadingWithBG();
+//                ((HomeActivity) getActivity()).showSearchLoadingWithBG();
                 String rawText = (String) v.getTag();
                 searchApp(rawText, false);
             }
@@ -166,7 +220,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.indicator_slide_menu:
-                ((HomeActivity) getActivity()).backToVoiceFragment();
+//                ((HomeActivity) getActivity()).backToVoiceFragment();
                 break;
             default:
                 break;
@@ -175,10 +229,10 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
     }
 
 
-    public void clearLayout() {
-        videoTypeLayout.setVisibility(View.GONE);
-        appTypeLayout.setVisibility(View.GONE);
-    }
+//    public void clearLayout() {
+//        videoTypeLayout.setVisibility(View.GONE);
+//        appTypeLayout.setVisibility(View.GONE);
+//    }
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
@@ -235,9 +289,10 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
             public void onResponse(Response<SemanticSearchResponseEntity> response) {
                 if (response.errorBody() == null) {
                     if (isFirstTime) {
-                        ((HomeActivity) getActivity()).showIndicatorFragment();
+                        ((SearchResultActivity) getActivity()).firstTimeVod(response.body(), rawText);
+                    } else {
+                        ((SearchResultActivity) getActivity()).refreshContent(response.body(), rawText);
                     }
-                    ((HomeActivity) getActivity()).refreshContentFragment(response.body(), rawText);
                 } else {
                     //error
                     EventBus.getDefault().post(new AnswerAvailableEvent());
@@ -295,9 +350,10 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
                         appSearchResponseEntity.getFacet()[0].setTotal_count(appList.size());
                     }
                     if (isFirstTime) {
-                        ((HomeActivity) getActivity()).showIndicatorFragment();
+                        ((SearchResultActivity) getActivity()).firstTimeApp(appList, appName);
+                    } else {
+                        ((SearchResultActivity) getActivity()).refreshApp(appList, appName);
                     }
-                    ((HomeActivity) getActivity()).refreshAppSearchFragment(appList, appName);
                 } else {
                     //error
                     EventBus.getDefault().post(new AnswerAvailableEvent());

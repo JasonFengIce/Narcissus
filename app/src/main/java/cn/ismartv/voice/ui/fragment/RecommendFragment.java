@@ -11,10 +11,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.gson.JsonParser;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,15 +25,21 @@ import cn.ismartv.imagereflection.RelectionImageView;
 import cn.ismartv.recyclerview.widget.GridLayoutManager;
 import cn.ismartv.recyclerview.widget.RecyclerView;
 import cn.ismartv.voice.R;
-import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
+import cn.ismartv.voice.core.event.AnswerAvailableEvent;
+import cn.ismartv.voice.core.http.HttpAPI;
+import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.data.http.SemantichObjectEntity;
+import cn.ismartv.voice.data.http.SharpHotWordsEntity;
 import cn.ismartv.voice.ui.SpaceItemDecoration;
 import cn.ismartv.voice.util.ViewScaleUtil;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * Created by huaijie on 1/18/16.
  */
-public class ContentFragment extends BaseFragment implements View.OnFocusChangeListener, OnClickListener {
+public class RecommendFragment extends BaseFragment implements View.OnFocusChangeListener, OnClickListener {
     private static final String TAG = "ContentFragment";
     private RecyclerView recyclerView;
     private TextView searchTitle;
@@ -40,13 +47,6 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
     private View lostFocusItemView;
     private ImageView arrowUp;
     private ImageView arrowDown;
-
-
-    private List<SemantichObjectEntity> objectEntities;
-
-    public void setObjectEntities(List<SemantichObjectEntity> objectEntities) {
-        this.objectEntities = objectEntities;
-    }
 
     @Nullable
     @Override
@@ -64,7 +64,7 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
         arrowUp.setOnClickListener(this);
         arrowDown.setOnClickListener(this);
         arrowUp.bringToFront();
-//        fetchSharpHotWords();
+        fetchSharpHotWords();
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 4, GridLayoutManager.VERTICAL, false);
 
@@ -74,16 +74,6 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setOnFocusChangeListener(this);
 
-        recyclerView.setAdapter(new RecyclerAdapter(objectEntities));
-    }
-
-
-    public void notifyDataChanged(SemanticSearchResponseEntity responseEntity, String data) {
-        String rawTextValue = getString(R.string.search_title);
-        String rawText = new JsonParser().parse(data).getAsJsonObject().get("raw_text").toString();
-        searchTitle.setText(String.format(rawTextValue, rawText));
-        recyclerView.setAdapter(new RecyclerAdapter(responseEntity.getFacet().get(0).getObjects()));
-        //first item request focus
     }
 
 
@@ -293,5 +283,30 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
             imageView = (RelectionImageView) itemView.findViewById(R.id.image);
 
         }
+    }
+
+    public void setSearchTitle() {
+        searchTitle.setText(getString(R.string.recommend_content_title));
+    }
+
+    public void fetchSharpHotWords() {
+        Retrofit retrofit = HttpManager.getInstance().resetAdapter_WUGUOJUN;
+        retrofit.create(HttpAPI.SharpHotWords.class).doRequest(8).enqueue(new Callback<SharpHotWordsEntity>() {
+            @Override
+            public void onResponse(Response<SharpHotWordsEntity> response) {
+                if (response.errorBody() == null) {
+                    recyclerView.setAdapter(new RecyclerAdapter(response.body().getObjects()));
+                } else {
+                    EventBus.getDefault().post(new AnswerAvailableEvent());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                EventBus.getDefault().post(new AnswerAvailableEvent());
+            }
+        });
+
     }
 }

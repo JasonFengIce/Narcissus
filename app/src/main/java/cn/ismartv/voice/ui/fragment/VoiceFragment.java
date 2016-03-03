@@ -1,5 +1,6 @@
 package cn.ismartv.voice.ui.fragment;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -44,7 +45,7 @@ import cn.ismartv.voice.data.http.JsonRes;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.data.http.VoiceResultEntity;
 import cn.ismartv.voice.data.table.CityTable;
-import cn.ismartv.voice.ui.activity.HomeActivity;
+import cn.ismartv.voice.ui.activity.SearchResultActivity;
 
 import static com.baidu.voicerecognition.android.VoiceRecognitionClient.getInstance;
 
@@ -155,7 +156,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.indicator_right_slide_menu:
-                ((HomeActivity) getActivity()).showIndicatorFragment();
+//                ((HomeActivity) getActivity()).showIndicatorFragment();
                 break;
         }
 //                ((HomeActivity) getActivity()).handleVoice();
@@ -274,7 +275,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
             // 已经检测到语音终点，等待网络返回
             case VoiceRecognitionClient.CLIENT_STATUS_SPEECH_END:
                 showFragment(leftSearchLoadingFragment);
-                ((HomeActivity) getActivity()).showSearchLoading();
+//                ((HomeActivity) getActivity()).showSearchLoading();
                 break;
             // 语音识别完成，显示obj中的结果
             case VoiceRecognitionClient.CLIENT_STATUS_FINISH:
@@ -282,12 +283,12 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
                 voiceMicImg.setImageResource(R.drawable.voice_mic);
                 VoiceResultEntity[] voiceResultEntity = new Gson().fromJson(o.toString(), VoiceResultEntity[].class);
                 if (voiceResultEntity.length == 0) {
-                    showRecognizeErrorFragment();
+//                    showRecognizeErrorFragment();
                 } else {
                     JsonElement jsonElement = new JsonParser().parse(voiceResultEntity[0].getJson_res());
                     JsonRes jsonRes = new Gson().fromJson(jsonElement, JsonRes.class);
                     String rawText = jsonRes.getRaw_text();
-                    showSearchKeyWordFragment(rawText);
+//                    showSearchKeyWordFragment(rawText);
                     new JsonDomainHandler(o.toString(), this, this, this, this);
                 }
 //                Log.i(TAG, o.toString());
@@ -318,7 +319,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
             case VoiceRecognitionClient.ERROR_CLIENT:
             case VoiceRecognitionClient.ERROR_RECORDER:
             case VoiceRecognitionClient.ERROR_SERVER:
-                showRecognizeErrorFragment();
+//                showRecognizeErrorFragment();
                 break;
             case VoiceRecognitionClient.ERROR_NETWORK:
                 EventBus.getDefault().post(new AnswerAvailableEvent());
@@ -330,16 +331,11 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
 
     @Override
     public void onHandleSuccess(SemanticSearchResponseEntity entity, String jsonData) {
-
         if (entity.getFacet().size() == 0) {
-
-//        if (true) {
             String rawText = new JsonParser().parse(jsonData).getAsJsonObject().get("raw_text").toString();
             showNoVideoResultFragment(rawText);
-
-
         } else {
-            ((HomeActivity) getActivity()).showIndicatorFragment(entity, jsonData);
+            showSearchResult("video", new Gson().toJson(entity), jsonData);
         }
 
     }
@@ -347,11 +343,10 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
     @Override
     public void onAppHandleSuccess(AppSearchResponseEntity entity, String data) {
         if (entity.getFacet() == null || entity.getFacet()[0].getObjects().size() == 0) {
-//        if (true) {
             String rawText = new JsonParser().parse(data).getAsJsonObject().get("raw_text").toString();
             showNoAppResultFragment(rawText);
         } else {
-            ((HomeActivity) getActivity()).showAppIndicatorFragment(entity.getFacet()[0].getObjects(), data);
+            showSearchResult("app", new Gson().toJson(entity), data);
         }
     }
 
@@ -376,50 +371,59 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
         if (totalSize == 0) {
             showNoVideoResultFragment(rawText);
         } else {
+            Intent intent = new Intent();
+            intent.setClass(getContext(), SearchResultActivity.class);
+            intent.putExtra("type", "multi");
             for (IndicatorResponseEntity entity : list) {
                 switch (entity.getType()) {
                     case "video":
                         if (videoListSize != 0) {
-                            ((HomeActivity) getActivity()).showIndicatorFragment((SemanticSearchResponseEntity) entity.getSearchData(), entity.getSemantic());
+                            intent.putExtra("video_data", new Gson().toJson(entity.getSearchData()));
+                            intent.putExtra("video_raw", entity.getSemantic());
                         }
                         break;
                     case "app":
                         if (appListSize != 0) {
-                            if (videoListSize == 0) {
-                                ((HomeActivity) getActivity()).showAppIndicatorFragment((List<AppSearchObjectEntity>) entity.getSearchData(), entity.getSemantic());
-                            } else {
-                                ((HomeActivity) getActivity()).showAppIndicatorFragmentNoClear((List<AppSearchObjectEntity>) entity.getSearchData(), entity.getSemantic());
-                            }
+                            intent.putExtra("app_data", new Gson().toJson(entity.getSearchData()));
+                            intent.putExtra("app_raw", entity.getSemantic());
+//                            if (videoListSize == 0) {
+////                                ((HomeActivity) getActivity()).showAppIndicatorFragment((List<AppSearchObjectEntity>) entity.getSearchData(), entity.getSemantic());
+//                            } else {
+////                                ((HomeActivity) getActivity()).showAppIndicatorFragmentNoClear((List<AppSearchObjectEntity>) entity.getSearchData(), entity.getSemantic());
+//                            }
                         }
                         break;
                 }
             }
+            startActivity(intent);
         }
+
+
     }
 
 
     private void showNoVideoResultFragment(String rawText) {
         searchNoResultFragment.recognizeNoResult(rawText);
         showFragment(searchNoResultFragment);
-        ((HomeActivity) getActivity()).recommendVideo();
+//        ((HomeActivity) getActivity()).recommendVideo();
     }
 
     private void showNoAppResultFragment(String rawText) {
         showFragment(searchNoResultFragment);
         searchNoResultFragment.recognizeNoResult(rawText);
-        ((HomeActivity) getActivity()).recommendApp();
+//        ((HomeActivity) getActivity()).recommendApp();
     }
-
-    private void showRecognizeErrorFragment() {
-        showFragment(searchNoResultFragment);
-        searchNoResultFragment.recognizeError();
-        ((HomeActivity) getActivity()).showRecognizeError();
-    }
-
-    private void showSearchKeyWordFragment(String rawText) {
-        searchKeyWordFragment.setSearchKeyWord(rawText);
-        showFragment(searchKeyWordFragment);
-    }
+//
+//    private void showRecognizeErrorFragment() {
+//        showFragment(searchNoResultFragment);
+//        searchNoResultFragment.recognizeError();
+//        ((HomeActivity) getActivity()).showRecognizeError();
+//    }
+//
+//    private void showSearchKeyWordFragment(String rawText) {
+//        searchKeyWordFragment.setSearchKeyWord(rawText);
+//        showFragment(searchKeyWordFragment);
+//    }
 
     private void volumeChange(int vol) {
         if (vol <= 30) {
@@ -445,7 +449,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
 
     @Override
     public void onWeatherHandle(CityTable table) {
-        ((HomeActivity) getActivity()).showWeatherNoRegion(table);
+//        ((HomeActivity) getActivity()).showWeatherNoRegion(table);
     }
 
     private void showFragment(BaseFragment fragment) {
@@ -456,7 +460,16 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
         getChildFragmentManager().beginTransaction().show(fragment).commit();
     }
 
-    public void showTipFragment(){
+    public void showTipFragment() {
         showFragment(searchTipFragment);
+    }
+
+    private void showSearchResult(String type, String data, String rawText) {
+        Intent intent = new Intent();
+        intent.putExtra("type", type);
+        intent.putExtra("data", data);
+        intent.putExtra("raw", rawText);
+        intent.setClass(getContext(), SearchResultActivity.class);
+        startActivity(intent);
     }
 }

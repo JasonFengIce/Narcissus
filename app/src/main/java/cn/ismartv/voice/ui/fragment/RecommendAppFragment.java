@@ -44,7 +44,7 @@ import retrofit2.Retrofit;
 /**
  * Created by huaijie on 1/28/16.
  */
-public class AppSearchFragment extends BaseFragment implements View.OnFocusChangeListener {
+public class RecommendAppFragment extends BaseFragment implements View.OnFocusChangeListener {
     private View contentView;
 
     private RecyclerView recyclerView;
@@ -56,12 +56,6 @@ public class AppSearchFragment extends BaseFragment implements View.OnFocusChang
     private View firstItemView;
 
     private List<AppSearchObjectEntity> appSearchObjectEntities;
-
-    private String raw;
-
-    public void setRaw(String raw) {
-        this.raw = raw;
-    }
 
     public void setAppSearchObjectEntities(List<AppSearchObjectEntity> appSearchObjectEntities) {
         this.appSearchObjectEntities = appSearchObjectEntities;
@@ -90,8 +84,8 @@ public class AppSearchFragment extends BaseFragment implements View.OnFocusChang
         recyclerView.addItemDecoration(new SpaceItemDecoration(verticalSpacingInPixels, horizontalSpacingInPixels));
         recyclerView.setLayoutManager(gridLayoutManager);
 
+        fetchRecommendApp();
 
-        notifyDataChanged(appSearchObjectEntities, raw);
     }
 
 
@@ -101,6 +95,9 @@ public class AppSearchFragment extends BaseFragment implements View.OnFocusChang
         recyclerView.setAdapter(new RecyclerAdapter(objectEntities));
     }
 
+    public void setSearchTitle() {
+        searchTitle.setText(getString(R.string.recommend_content_title));
+    }
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {

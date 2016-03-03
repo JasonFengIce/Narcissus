@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Gravity;
@@ -21,18 +20,9 @@ import java.util.List;
 
 import cn.ismartv.voice.R;
 import cn.ismartv.voice.core.event.AnswerAvailableEvent;
-import cn.ismartv.voice.data.http.AppSearchObjectEntity;
-import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
-import cn.ismartv.voice.data.table.CityTable;
-import cn.ismartv.voice.ui.fragment.AppSearchFragment;
 import cn.ismartv.voice.ui.fragment.BaseFragment;
-import cn.ismartv.voice.ui.fragment.ContentFragment;
-import cn.ismartv.voice.ui.fragment.IndicatorFragment;
-import cn.ismartv.voice.ui.fragment.RecognizeErrorFragment;
-import cn.ismartv.voice.ui.fragment.SearchLoadingFragment;
-import cn.ismartv.voice.ui.fragment.SearchLoadingWithBGFragment;
+import cn.ismartv.voice.ui.fragment.RecommendFragment;
 import cn.ismartv.voice.ui.fragment.VoiceFragment;
-import cn.ismartv.voice.ui.fragment.WeatherFragment;
 import cn.ismartv.voice.ui.widget.MessagePopWindow;
 
 /**
@@ -52,13 +42,13 @@ public class HomeActivity extends BaseActivity {
 
 
     private VoiceFragment voiceFragment;
-    private ContentFragment contentFragment;
-    private IndicatorFragment indicatorFragment;
-    private AppSearchFragment appSearchFragment;
-    private SearchLoadingFragment searchLoadingFragment;
-    private WeatherFragment weatherFragment;
-    private RecognizeErrorFragment recognizeErrorFragment;
-    private SearchLoadingWithBGFragment searchLoadingWithBGFragment;
+    private RecommendFragment contentFragment;
+//    private IndicatorFragment indicatorFragment;
+//    private AppSearchFragment appSearchFragment;
+//    private SearchLoadingFragment searchLoadingFragment;
+//    private WeatherFragment weatherFragment;
+//    private RecognizeErrorFragment recognizeErrorFragment;
+//    private SearchLoadingWithBGFragment searchLoadingWithBGFragment;
 
     private List<BaseFragment> fragmentList;
     private List<BaseFragment> leftFragmentList;
@@ -79,24 +69,24 @@ public class HomeActivity extends BaseActivity {
         contentView = LayoutInflater.from(this).inflate(R.layout.activity_home, null);
         setContentView(contentView);
         voiceFragment = new VoiceFragment();
-        contentFragment = new ContentFragment();
-        indicatorFragment = new IndicatorFragment();
-        appSearchFragment = new AppSearchFragment();
-        searchLoadingFragment = new SearchLoadingFragment();
-        weatherFragment = new WeatherFragment();
-        recognizeErrorFragment = new RecognizeErrorFragment();
-        searchLoadingWithBGFragment = new SearchLoadingWithBGFragment();
+        contentFragment = new RecommendFragment();
+//        indicatorFragment = new IndicatorFragment();
+//        appSearchFragment = new AppSearchFragment();
+//        searchLoadingFragment = new SearchLoadingFragment();
+//        weatherFragment = new WeatherFragment();
+//        recognizeErrorFragment = new RecognizeErrorFragment();
+//        searchLoadingWithBGFragment = new SearchLoadingWithBGFragment();
         fragmentList = new ArrayList<>();
         fragmentList.add(contentFragment);
-        fragmentList.add(appSearchFragment);
-        fragmentList.add(searchLoadingFragment);
-        fragmentList.add(weatherFragment);
-        fragmentList.add(recognizeErrorFragment);
-        fragmentList.add(searchLoadingWithBGFragment);
+//        fragmentList.add(appSearchFragment);
+//        fragmentList.add(searchLoadingFragment);
+//        fragmentList.add(weatherFragment);
+//        fragmentList.add(recognizeErrorFragment);
+//        fragmentList.add(searchLoadingWithBGFragment);
 
         leftFragmentList = new ArrayList<>();
         leftFragmentList.add(voiceFragment);
-        leftFragmentList.add(indicatorFragment);
+//        leftFragmentList.add(indicatorFragment);
 
 //        AppUpdateUtilsV2.getInstance(this).checkAppUpdate();
 
@@ -105,21 +95,19 @@ public class HomeActivity extends BaseActivity {
         } else {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.add(R.id.left_fragment, voiceFragment, VOICE_FRAGMENT_TAG);
-            transaction.add(R.id.left_fragment, indicatorFragment, INDICATOR_FRAGMENT_TAG);
-            transaction.add(R.id.right_fragment, appSearchFragment, APP_SEARCH_FRAGMENT_TAG);
-            transaction.add(R.id.right_fragment, searchLoadingFragment, SEARCH_LOADING_FRAGMENT);
-            transaction.add(R.id.right_fragment, weatherFragment, WEATHER_FRAGMENT_TAG);
-            transaction.add(R.id.right_fragment, recognizeErrorFragment, RECOGNIZE_ERROR_FRAGMENT_TAG);
-            transaction.add(R.id.right_fragment, searchLoadingWithBGFragment, SEARCH_LOADING_BG_FRAGMENT);
-            transaction.hide(searchLoadingFragment);
-            transaction.hide(indicatorFragment);
-            transaction.hide(appSearchFragment);
-            transaction.hide(weatherFragment);
-            transaction.hide(recognizeErrorFragment);
-            transaction.hide(searchLoadingWithBGFragment);
+//            transaction.add(R.id.left_fragment, indicatorFragment, INDICATOR_FRAGMENT_TAG);
+//            transaction.add(R.id.right_fragment, appSearchFragment, APP_SEARCH_FRAGMENT_TAG);
+//            transaction.add(R.id.right_fragment, searchLoadingFragment, SEARCH_LOADING_FRAGMENT);
+//            transaction.add(R.id.right_fragment, weatherFragment, WEATHER_FRAGMENT_TAG);
+//            transaction.add(R.id.right_fragment, recognizeErrorFragment, RECOGNIZE_ERROR_FRAGMENT_TAG);
+//            transaction.add(R.id.right_fragment, searchLoadingWithBGFragment, SEARCH_LOADING_BG_FRAGMENT);
+//            transaction.hide(searchLoadingFragment);
+//            transaction.hide(indicatorFragment);
+//            transaction.hide(appSearchFragment);
+//            transaction.hide(weatherFragment);
+//            transaction.hide(recognizeErrorFragment);
+//            transaction.hide(searchLoadingWithBGFragment);
             transaction.add(R.id.right_fragment, contentFragment, CONTENT_FRAGMENT_TAG);
-            transaction.hide(contentFragment);
-            transaction.hide(voiceFragment);
             transaction.commit();
         }
 
@@ -162,10 +150,10 @@ public class HomeActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         EventBus.getDefault().register(this);
-        voiceFragment.showTipFragment();
-        showLeftFragment(voiceFragment);
-        contentFragment.fetchSharpHotWords();
-        showMyFragment(contentFragment);
+//        voiceFragment.showTipFragment();
+////        showLeftFragment(voiceFragment);
+//        contentFragment.fetchSharpHotWords();
+////        showMyFragment(contentFragment);
     }
 
     @Override
@@ -180,32 +168,31 @@ public class HomeActivity extends BaseActivity {
 
             if (!voiceBtnIsDown) {
                 voiceBtnIsDown = true;
-                showLeftFragment(voiceFragment);
+//                showLeftFragment(voiceFragment);
                 voiceFragment.startSpeek();
             }
             return true;
         }
 
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (contentFragment.isRecommend()) {
                 onBackPressed();
-            } else {
-                voiceFragment.showTipFragment();
-                showLeftFragment(voiceFragment);
-                hideFragment(contentFragment);
-
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.setCustomAnimations(
-                        R.anim.push_left_in,
-                        R.anim.push_left_out);
-
-                for (BaseFragment f : fragmentList) {
-                    if (contentFragment != f && f.isVisible())
-                        transaction.hide(f);
-                }
-                transaction.show(contentFragment).commit();
-                contentFragment.fetchSharpHotWords();
-            }
+//            } else {
+//                voiceFragment.showTipFragment();
+////                showLeftFragment(voiceFragment);
+////                hideFragment(contentFragment);
+//
+//                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//                transaction.setCustomAnimations(
+//                        R.anim.push_left_in,
+//                        R.anim.push_left_out);
+//
+//                for (BaseFragment f : fragmentList) {
+//                    if (contentFragment != f && f.isVisible())
+//                        transaction.hide(f);
+//                }
+//                transaction.show(contentFragment).commit();
+//                contentFragment.fetchSharpHotWords();
+//            }
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -227,42 +214,42 @@ public class HomeActivity extends BaseActivity {
 //    }
 
 
-    public void showIndicatorFragment(SemanticSearchResponseEntity entity, String rawText) {
-//        String testJson = "{\"facet\":[{\"content_type\":\"variety\",\"count\":0,\"name\":\"综艺\",\"objects\":[],\"total_count\":2},{\"content_type\":\"entertainment\",\"count\":0,\"name\":\"娱乐\",\"objects\":[],\"total_count\":6},{\"content_type\":\"documentary\",\"count\":0,\"name\":\"纪录片\",\"objects\":[],\"total_count\":1}]}";
-//        String testText = "{\"raw_text\":\"一\"}";
-        indicatorFragment.clearLayout();
-//        indicatorFragment.initVodIndicator(new Gson().fromJson(testJson, SemanticSearchResponseEntity.class), testText, true);
-        indicatorFragment.initVodIndicator(entity, rawText, true);
-    }
+//    public void showIndicatorFragment(SemanticSearchResponseEntity entity, String rawText) {
+////        String testJson = "{\"facet\":[{\"content_type\":\"variety\",\"count\":0,\"name\":\"综艺\",\"objects\":[],\"total_count\":2},{\"content_type\":\"entertainment\",\"count\":0,\"name\":\"娱乐\",\"objects\":[],\"total_count\":6},{\"content_type\":\"documentary\",\"count\":0,\"name\":\"纪录片\",\"objects\":[],\"total_count\":1}]}";
+////        String testText = "{\"raw_text\":\"一\"}";
+//        indicatorFragment.clearLayout();
+////        indicatorFragment.initVodIndicator(new Gson().fromJson(testJson, SemanticSearchResponseEntity.class), testText, true);
+//        indicatorFragment.initVodIndicator(entity, rawText, true);
+//    }
+//
+//
+//    public void showAppIndicatorFragment(List<AppSearchObjectEntity> entity, String data) {
+//        indicatorFragment.clearLayout();
+//        indicatorFragment.initAppIndicator(entity, data, true);
+//    }
+//
+//    public void showAppIndicatorFragmentNoClear(List<AppSearchObjectEntity> entity, String data) {
+//        indicatorFragment.initAppIndicator(entity, data, true);
+//    }
+//
+//
+//    public void refreshContentFragment(SemanticSearchResponseEntity entity, String rawText) {
+//        showMyFragment(contentFragment);
+//        contentFragment.notifyDataChanged(entity, rawText);
+//    }
+//
+//    public void refreshAppSearchFragment(final List<AppSearchObjectEntity> list, String rawText) {
+//        showMyFragment(appSearchFragment);
+//        appSearchFragment.notifyDataChanged(list, rawText);
+//
+//    }
 
 
-    public void showAppIndicatorFragment(List<AppSearchObjectEntity> entity, String data) {
-        indicatorFragment.clearLayout();
-        indicatorFragment.initAppIndicator(entity, data, true);
-    }
-
-    public void showAppIndicatorFragmentNoClear(List<AppSearchObjectEntity> entity, String data) {
-        indicatorFragment.initAppIndicator(entity, data, true);
-    }
-
-
-    public void refreshContentFragment(SemanticSearchResponseEntity entity, String rawText) {
-        showMyFragment(contentFragment);
-        contentFragment.notifyDataChanged(entity, rawText);
-    }
-
-    public void refreshAppSearchFragment(final List<AppSearchObjectEntity> list, String rawText) {
-        showMyFragment(appSearchFragment);
-        appSearchFragment.notifyDataChanged(list, rawText);
-
-    }
-
-
-    private void hideFragment(Fragment fragment) {
-        if (fragment.isVisible()) {
-            getSupportFragmentManager().beginTransaction().hide(fragment).commit();
-        }
-    }
+//    private void hideFragment(Fragment fragment) {
+//        if (fragment.isVisible()) {
+//            getSupportFragmentManager().beginTransaction().hide(fragment).commit();
+//        }
+//    }
 
     /**
      * receive app update broadcast, and show update popup window
@@ -292,85 +279,85 @@ public class HomeActivity extends BaseActivity {
     }
 
 
-    public void backToVoiceFragment() {
-        voiceFragment.backToVoice();
-        showLeftFragment(voiceFragment);
-    }
+//    public void backToVoiceFragment() {
+//        voiceFragment.backToVoice();
+//        showLeftFragment(voiceFragment);
+//    }
+//
+//
+//    private void showAppUpdatePop() {
+//        final MessagePopWindow popupWindow = new MessagePopWindow(this, "是否提交反馈信息?", null);
+//        popupWindow.showAtLocation(contentView, Gravity.CENTER, new MessagePopWindow.ConfirmListener() {
+//                    @Override
+//                    public void confirmClick(View view) {
+//                        popupWindow.dismiss();
+//                    }
+//                },
+//                null
+//        );
+//    }
+//
+//
+//    public void recommendVideo() {
+//        contentFragment.setSearchTitle();
+//        contentFragment.fetchSharpHotWords();
+//        showMyFragment(contentFragment);
+//    }
+//
+//    public void recommendApp() {
+//        showMyFragment(appSearchFragment);
+//        appSearchFragment.setSearchTitle();
+//        appSearchFragment.fetchRecommendApp();
+//    }
+//
+//
+//    public void showSearchLoading() {
+//
+//        showMyFragment(searchLoadingFragment);
+//    }
+//
+//    public void showSearchLoadingWithBG() {
+//
+//        showMyFragment(searchLoadingWithBGFragment);
+//    }
+//
+//    public void showWeatherNoRegion(CityTable cityTable) {
+//        weatherFragment.setLocation(cityTable);
+//        showMyFragment(weatherFragment);
+//    }
 
 
-    private void showAppUpdatePop() {
-        final MessagePopWindow popupWindow = new MessagePopWindow(this, "是否提交反馈信息?", null);
-        popupWindow.showAtLocation(contentView, Gravity.CENTER, new MessagePopWindow.ConfirmListener() {
-                    @Override
-                    public void confirmClick(View view) {
-                        popupWindow.dismiss();
-                    }
-                },
-                null
-        );
-    }
+//    public void showRecognizeError() {
+//        showMyFragment(recognizeErrorFragment);
+//    }
 
-
-    public void recommendVideo() {
-        contentFragment.setSearchTitle();
-        contentFragment.fetchSharpHotWords();
-        showMyFragment(contentFragment);
-    }
-
-    public void recommendApp() {
-        showMyFragment(appSearchFragment);
-        appSearchFragment.setSearchTitle();
-        appSearchFragment.fetchRecommendApp();
-    }
-
-
-    public void showSearchLoading() {
-
-        showMyFragment(searchLoadingFragment);
-    }
-
-    public void showSearchLoadingWithBG() {
-
-        showMyFragment(searchLoadingWithBGFragment);
-    }
-
-    public void showWeatherNoRegion(CityTable cityTable) {
-        weatherFragment.setLocation(cityTable);
-        showMyFragment(weatherFragment);
-    }
-
-
-    public void showRecognizeError() {
-        showMyFragment(recognizeErrorFragment);
-    }
-
-    private void showMyFragment(BaseFragment fragment) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//        transaction.addToBackStack("hello");
-//        transaction.isAddToBackStackAllowed();
-//        transaction.setCustomAnimations(
-//                R.anim.push_left_in,
-//                R.anim.push_left_out);
-
-        for (BaseFragment f : fragmentList) {
-            if (fragment != f && f.isVisible())
-                transaction.hide(f);
-        }
-        transaction.show(fragment).commit();
-    }
-
-    private void showLeftFragment(BaseFragment fragment) {
-        for (BaseFragment f : leftFragmentList) {
-            if (fragment != f && f.isVisible())
-                getSupportFragmentManager().beginTransaction().hide(f).commit();
-        }
-        getSupportFragmentManager().beginTransaction().show(fragment).commit();
-    }
-
-    public void showIndicatorFragment() {
-        showLeftFragment(indicatorFragment);
-    }
-
+    //    private void showMyFragment(BaseFragment fragment) {
+//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+////        transaction.addToBackStack("hello");
+////        transaction.isAddToBackStackAllowed();
+////        transaction.setCustomAnimations(
+////                R.anim.push_left_in,
+////                R.anim.push_left_out);
+//
+//        for (BaseFragment f : fragmentList) {
+//            if (fragment != f && f.isVisible())
+//                transaction.hide(f);
+//        }
+//        transaction.show(fragment).commit();
+//    }
+//
+//    private void showLeftFragment(BaseFragment fragment) {
+//        for (BaseFragment f : leftFragmentList) {
+//            if (fragment != f && f.isVisible())
+//                getSupportFragmentManager().beginTransaction().hide(f).commit();
+//        }
+//        getSupportFragmentManager().beginTransaction().show(fragment).commit();
+//    }
+//
+//    public void showIndicatorFragment() {
+//        showLeftFragment(indicatorFragment);
+//    }
+//
     public void showNetworkErrorPop() {
 
         networkEorrorPopupWindow = new MessagePopWindow(this, "网络异常，请检查网络", null);
