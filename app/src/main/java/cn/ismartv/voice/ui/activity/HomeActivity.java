@@ -334,6 +334,8 @@ public class HomeActivity extends BaseActivity {
 
     private void showMyFragment(BaseFragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        transaction.addToBackStack("hello");
+//        transaction.isAddToBackStackAllowed();
 //        transaction.setCustomAnimations(
 //                R.anim.push_left_in,
 //                R.anim.push_left_out);

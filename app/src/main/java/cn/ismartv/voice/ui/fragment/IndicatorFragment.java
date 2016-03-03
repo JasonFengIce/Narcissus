@@ -129,8 +129,6 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
 
 
     public void initAppIndicator(List<AppSearchObjectEntity> entitys, String data, boolean isFirstTime) {
-        lostFocusView = null;
-        selectedView = null;
         appTypeLayout.setVisibility(View.VISIBLE);
         appContentLayout.removeAllViews();
         LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.item_indicator, null);
@@ -154,6 +152,8 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
         appContentLayout.addView(linearLayout);
 
         if (videoTypeLayout.getVisibility() == View.GONE) {
+            lostFocusView = null;
+            selectedView = null;
             selectedView = linearLayout;
             lostFocusView = linearLayout;
             TextView textView = (TextView) linearLayout.findViewById(R.id.title);
