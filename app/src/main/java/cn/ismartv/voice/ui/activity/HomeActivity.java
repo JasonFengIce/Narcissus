@@ -13,8 +13,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.google.gson.Gson;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -213,10 +211,11 @@ public class HomeActivity extends BaseActivity {
 
 
     public void showIndicatorFragment(SemanticSearchResponseEntity entity, String rawText) {
-        String testJson = "{\"facet\":[{\"content_type\":\"variety\",\"count\":0,\"name\":\"综艺\",\"objects\":[],\"total_count\":2},{\"content_type\":\"entertainment\",\"count\":0,\"name\":\"娱乐\",\"objects\":[],\"total_count\":6},{\"content_type\":\"documentary\",\"count\":0,\"name\":\"纪录片\",\"objects\":[],\"total_count\":1}]}";
-        String testText = "{\"raw_text\":\"一\"}";
+//        String testJson = "{\"facet\":[{\"content_type\":\"variety\",\"count\":0,\"name\":\"综艺\",\"objects\":[],\"total_count\":2},{\"content_type\":\"entertainment\",\"count\":0,\"name\":\"娱乐\",\"objects\":[],\"total_count\":6},{\"content_type\":\"documentary\",\"count\":0,\"name\":\"纪录片\",\"objects\":[],\"total_count\":1}]}";
+//        String testText = "{\"raw_text\":\"一\"}";
         indicatorFragment.clearLayout();
-        indicatorFragment.initVodIndicator(new Gson().fromJson(testJson, SemanticSearchResponseEntity.class), testText, true);
+//        indicatorFragment.initVodIndicator(new Gson().fromJson(testJson, SemanticSearchResponseEntity.class), testText, true);
+        indicatorFragment.initVodIndicator(entity, rawText, true);
     }
 
 
