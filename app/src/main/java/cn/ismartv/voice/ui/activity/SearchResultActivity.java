@@ -71,6 +71,7 @@ public class SearchResultActivity extends BaseActivity {
 
     public void firstTimeVod(SemanticSearchResponseEntity entity, String raw) {
         contentFragment = new ContentFragment();
+        contentFragment.setRaw(raw);
         contentFragment.setObjectEntities(entity.getFacet().get(0).getObjects());
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.right_fragment, contentFragment, CONTENT_FRAGMENT_TAG);
@@ -90,6 +91,7 @@ public class SearchResultActivity extends BaseActivity {
 
     public void refreshContent(SemanticSearchResponseEntity entity, String raw) {
         contentFragment = new ContentFragment();
+        contentFragment.setRaw(raw);
         contentFragment.setObjectEntities(entity.getFacet().get(0).getObjects());
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.right_fragment, contentFragment, CONTENT_FRAGMENT_TAG);

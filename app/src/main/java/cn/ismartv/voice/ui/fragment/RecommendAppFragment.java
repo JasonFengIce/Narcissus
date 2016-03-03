@@ -55,12 +55,11 @@ public class RecommendAppFragment extends BaseFragment implements View.OnFocusCh
     private ImageView arrowDown;
     private View firstItemView;
 
-    private List<AppSearchObjectEntity> appSearchObjectEntities;
+    private boolean isRecommend;
 
-    public void setAppSearchObjectEntities(List<AppSearchObjectEntity> appSearchObjectEntities) {
-        this.appSearchObjectEntities = appSearchObjectEntities;
+    public void setIsRecommend(boolean isRecommend) {
+        this.isRecommend = isRecommend;
     }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -73,6 +72,9 @@ public class RecommendAppFragment extends BaseFragment implements View.OnFocusCh
         super.onViewCreated(view, savedInstanceState);
         recyclerView = (RecyclerView) view.findViewById(R.id.app_search_list);
         searchTitle = (TextView) view.findViewById(R.id.search_title);
+        if (isRecommend){
+            searchTitle.setText(getString(R.string.recommend_content_title));
+        }
 
         arrowUp = (ImageView) view.findViewById(R.id.arrow_up);
         arrowDown = (ImageView) view.findViewById(R.id.arrow_down);
@@ -83,21 +85,11 @@ public class RecommendAppFragment extends BaseFragment implements View.OnFocusCh
         int horizontalSpacingInPixels = (int) (getResources().getDimensionPixelSize(R.dimen.content_fragment_item_horizontal_space) / getDensityRate());
         recyclerView.addItemDecoration(new SpaceItemDecoration(verticalSpacingInPixels, horizontalSpacingInPixels));
         recyclerView.setLayoutManager(gridLayoutManager);
-
         fetchRecommendApp();
-
     }
 
 
-    public void notifyDataChanged(List<AppSearchObjectEntity> objectEntities, String rawText) {
-        String rawTextValue = getString(R.string.search_title);
-        searchTitle.setText(String.format(rawTextValue, rawText));
-        recyclerView.setAdapter(new RecyclerAdapter(objectEntities));
-    }
 
-    public void setSearchTitle() {
-        searchTitle.setText(getString(R.string.recommend_content_title));
-    }
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {

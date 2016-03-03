@@ -7,10 +7,10 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -45,14 +45,16 @@ import cn.ismartv.voice.data.http.JsonRes;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.data.http.VoiceResultEntity;
 import cn.ismartv.voice.data.table.CityTable;
+import cn.ismartv.voice.ui.activity.HomeActivity;
 import cn.ismartv.voice.ui.activity.SearchResultActivity;
+import cn.ismartv.voice.ui.widget.SearchLoadingPopWindow;
 
 import static com.baidu.voicerecognition.android.VoiceRecognitionClient.getInstance;
 
 /**
  * Created by huaijie on 1/18/16.
  */
-public class VoiceFragment extends BaseFragment implements OnClickListener, View.OnTouchListener,
+public class VoiceFragment extends BaseFragment implements View.OnTouchListener,
         VoiceClientStatusChangeListener, HandleCallback, AppHandleCallback, MultiHandlerCallback, WeatherHandlerCallback {
     private static final String TAG = "VoiceFragment";
     /**
@@ -83,8 +85,9 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
     private List<BaseFragment> childFragmentList;
 
     private boolean voiceIsEnable = true;
+    private View fragmentView;
 
-    private ImageView slideMenu;
+    private SearchLoadingPopWindow searchLoadingPopWindow;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -107,13 +110,15 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
         childFragmentList.add(searchNoResultFragment);
         childFragmentList.add(searchKeyWordFragment);
         childFragmentList.add(leftSearchLoadingFragment);
-
-        return inflater.inflate(R.layout.fragment_voice, null);
+        fragmentView = inflater.inflate(R.layout.fragment_voice, null);
+        return fragmentView;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        searchLoadingPopWindow = new SearchLoadingPopWindow(getContext());
+
         FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.search_tip_layout, searchTipFragment, SEARCH_TIP_FRAGMENT_TAG);
         fragmentTransaction.add(R.id.search_tip_layout, searchNoResultFragment, SEARCH_NO_RESULT_FRAGMENT_TAG);
@@ -126,43 +131,8 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
 
         voiceProgressImg = (ImageView) view.findViewById(R.id.voice_progress);
         voiceMicImg = (ImageView) view.findViewById(R.id.voice_mic);
-
-        slideMenu = (ImageView) view.findViewById(R.id.indicator_right_slide_menu);
-        slideMenu.bringToFront();
-        slideMenu.setOnClickListener(this);
         voiceProgressImg.setOnTouchListener(this);
-
-
     }
-
-//    @Override
-//    public void onHiddenChanged(boolean hidden) {
-//        super.onHiddenChanged(hidden);
-//        if (!hidden) {
-//            if (searchKeyWordFragment.isVisible()) {
-//                slideMenu.setVisibility(View.VISIBLE);
-//            } else {
-//                slideMenu.setVisibility(View.GONE);
-//            }
-//        }
-//    }
-
-    public void backToVoice() {
-        slideMenu.setVisibility(View.VISIBLE);
-        showFragment(searchTipFragment);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.indicator_right_slide_menu:
-//                ((HomeActivity) getActivity()).showIndicatorFragment();
-                break;
-        }
-//                ((HomeActivity) getActivity()).handleVoice();
-
-    }
-
 
     private void loopAnim(View imageView, boolean start) {
         Animation operatingAnim = AnimationUtils.loadAnimation(getContext(), R.anim.loop);
@@ -195,7 +165,6 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
 
     public void startSpeek() {
         if (voiceIsEnable) {
-            slideMenu.setVisibility(View.GONE);
             voiceIsEnable = false;
             loopAnim(voiceProgressImg, true);
             voiceMicImg.setImageResource(R.drawable.voice_vol_1);
@@ -226,6 +195,16 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
         super.onStop();
     }
 
+    @Override
+    public void onDestroy() {
+        if (searchLoadingPopWindow != null) {
+            if (searchLoadingPopWindow.isShowing()) {
+                searchLoadingPopWindow.dismiss();
+                searchLoadingPopWindow = null;
+            }
+        }
+        super.onDestroy();
+    }
 
     private void bindParams(VoiceRecognitionConfig config) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -275,20 +254,23 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
             // 已经检测到语音终点，等待网络返回
             case VoiceRecognitionClient.CLIENT_STATUS_SPEECH_END:
                 showFragment(leftSearchLoadingFragment);
+                searchLoadingPopWindow.showAtLocation(fragmentView, Gravity.CENTER, 0, 0);
+
 //                ((HomeActivity) getActivity()).showSearchLoading();
                 break;
             // 语音识别完成，显示obj中的结果
             case VoiceRecognitionClient.CLIENT_STATUS_FINISH:
+                searchLoadingPopWindow.dismiss();
                 isRecognition = false;
                 voiceMicImg.setImageResource(R.drawable.voice_mic);
                 VoiceResultEntity[] voiceResultEntity = new Gson().fromJson(o.toString(), VoiceResultEntity[].class);
                 if (voiceResultEntity.length == 0) {
-//                    showRecognizeErrorFragment();
+                    showRecognizeErrorFragment();
                 } else {
                     JsonElement jsonElement = new JsonParser().parse(voiceResultEntity[0].getJson_res());
                     JsonRes jsonRes = new Gson().fromJson(jsonElement, JsonRes.class);
                     String rawText = jsonRes.getRaw_text();
-//                    showSearchKeyWordFragment(rawText);
+                    showSearchKeyWordFragment(rawText);
                     new JsonDomainHandler(o.toString(), this, this, this, this);
                 }
 //                Log.i(TAG, o.toString());
@@ -298,6 +280,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
                 break;
             // 用户取消
             case VoiceRecognitionClient.CLIENT_STATUS_USER_CANCELED:
+                searchLoadingPopWindow.dismiss();
                 isRecognition = false;
                 voiceMicImg.setImageResource(R.drawable.voice_mic);
                 break;
@@ -313,13 +296,14 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
 
     @Override
     public void onError(int errorType, int errorCode) {
+        searchLoadingPopWindow.dismiss();
         voiceMicImg.setImageResource(R.drawable.voice_mic);
         isRecognition = false;
         switch (errorType) {
             case VoiceRecognitionClient.ERROR_CLIENT:
             case VoiceRecognitionClient.ERROR_RECORDER:
             case VoiceRecognitionClient.ERROR_SERVER:
-//                showRecognizeErrorFragment();
+                showRecognizeErrorFragment();
                 break;
             case VoiceRecognitionClient.ERROR_NETWORK:
                 EventBus.getDefault().post(new AnswerAvailableEvent());
@@ -386,11 +370,6 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
                         if (appListSize != 0) {
                             intent.putExtra("app_data", new Gson().toJson(entity.getSearchData()));
                             intent.putExtra("app_raw", entity.getSemantic());
-//                            if (videoListSize == 0) {
-////                                ((HomeActivity) getActivity()).showAppIndicatorFragment((List<AppSearchObjectEntity>) entity.getSearchData(), entity.getSemantic());
-//                            } else {
-////                                ((HomeActivity) getActivity()).showAppIndicatorFragmentNoClear((List<AppSearchObjectEntity>) entity.getSearchData(), entity.getSemantic());
-//                            }
                         }
                         break;
                 }
@@ -405,25 +384,25 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
     private void showNoVideoResultFragment(String rawText) {
         searchNoResultFragment.recognizeNoResult(rawText);
         showFragment(searchNoResultFragment);
-//        ((HomeActivity) getActivity()).recommendVideo();
+        ((HomeActivity) getActivity()).recommendVideo();
     }
 
     private void showNoAppResultFragment(String rawText) {
         showFragment(searchNoResultFragment);
         searchNoResultFragment.recognizeNoResult(rawText);
-//        ((HomeActivity) getActivity()).recommendApp();
+        ((HomeActivity) getActivity()).recommendApp();
     }
-//
-//    private void showRecognizeErrorFragment() {
-//        showFragment(searchNoResultFragment);
-//        searchNoResultFragment.recognizeError();
-//        ((HomeActivity) getActivity()).showRecognizeError();
-//    }
-//
-//    private void showSearchKeyWordFragment(String rawText) {
-//        searchKeyWordFragment.setSearchKeyWord(rawText);
-//        showFragment(searchKeyWordFragment);
-//    }
+
+    private void showRecognizeErrorFragment() {
+        showFragment(searchNoResultFragment);
+        searchNoResultFragment.recognizeError();
+        ((HomeActivity) getActivity()).showRecognizeError();
+    }
+
+    private void showSearchKeyWordFragment(String rawText) {
+        searchKeyWordFragment.setSearchKeyWord(rawText);
+        showFragment(searchKeyWordFragment);
+    }
 
     private void volumeChange(int vol) {
         if (vol <= 30) {
@@ -449,7 +428,7 @@ public class VoiceFragment extends BaseFragment implements OnClickListener, View
 
     @Override
     public void onWeatherHandle(CityTable table) {
-//        ((HomeActivity) getActivity()).showWeatherNoRegion(table);
+        ((HomeActivity) getActivity()).showWeatherNoRegion(table);
     }
 
     private void showFragment(BaseFragment fragment) {

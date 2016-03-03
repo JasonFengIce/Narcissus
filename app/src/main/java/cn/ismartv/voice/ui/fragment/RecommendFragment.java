@@ -48,6 +48,12 @@ public class RecommendFragment extends BaseFragment implements View.OnFocusChang
     private ImageView arrowUp;
     private ImageView arrowDown;
 
+    private boolean isRecommend;
+
+    public void setIsRecommend(boolean isRecommend) {
+        this.isRecommend = isRecommend;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,6 +65,10 @@ public class RecommendFragment extends BaseFragment implements View.OnFocusChang
         super.onViewCreated(view, savedInstanceState);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
         searchTitle = (TextView) view.findViewById(R.id.search_title);
+
+        if (isRecommend) {
+            searchTitle.setText(getString(R.string.recommend_content_title));
+        }
         arrowUp = (ImageView) view.findViewById(R.id.arrow_up);
         arrowDown = (ImageView) view.findViewById(R.id.arrow_down);
         arrowUp.setOnClickListener(this);
@@ -285,9 +295,6 @@ public class RecommendFragment extends BaseFragment implements View.OnFocusChang
         }
     }
 
-    public void setSearchTitle() {
-        searchTitle.setText(getString(R.string.recommend_content_title));
-    }
 
     public void fetchSharpHotWords() {
         Retrofit retrofit = HttpManager.getInstance().resetAdapter_WUGUOJUN;

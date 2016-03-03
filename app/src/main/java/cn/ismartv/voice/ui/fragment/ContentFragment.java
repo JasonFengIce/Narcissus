@@ -24,7 +24,6 @@ import cn.ismartv.imagereflection.RelectionImageView;
 import cn.ismartv.recyclerview.widget.GridLayoutManager;
 import cn.ismartv.recyclerview.widget.RecyclerView;
 import cn.ismartv.voice.R;
-import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.data.http.SemantichObjectEntity;
 import cn.ismartv.voice.ui.SpaceItemDecoration;
 import cn.ismartv.voice.util.ViewScaleUtil;
@@ -43,9 +42,14 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
 
 
     private List<SemantichObjectEntity> objectEntities;
+    private String raw;
 
     public void setObjectEntities(List<SemantichObjectEntity> objectEntities) {
         this.objectEntities = objectEntities;
+    }
+
+    public void setRaw(String raw) {
+        this.raw = raw;
     }
 
     @Nullable
@@ -64,7 +68,6 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
         arrowUp.setOnClickListener(this);
         arrowDown.setOnClickListener(this);
         arrowUp.bringToFront();
-//        fetchSharpHotWords();
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 4, GridLayoutManager.VERTICAL, false);
 
@@ -74,15 +77,16 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setOnFocusChangeListener(this);
 
-        recyclerView.setAdapter(new RecyclerAdapter(objectEntities));
+        notifyDataChanged(objectEntities, raw);
+
     }
 
 
-    public void notifyDataChanged(SemanticSearchResponseEntity responseEntity, String data) {
+    public void notifyDataChanged(List<SemantichObjectEntity> entities, String data) {
         String rawTextValue = getString(R.string.search_title);
         String rawText = new JsonParser().parse(data).getAsJsonObject().get("raw_text").toString();
         searchTitle.setText(String.format(rawTextValue, rawText));
-        recyclerView.setAdapter(new RecyclerAdapter(responseEntity.getFacet().get(0).getObjects()));
+        recyclerView.setAdapter(new RecyclerAdapter(entities));
         //first item request focus
     }
 
