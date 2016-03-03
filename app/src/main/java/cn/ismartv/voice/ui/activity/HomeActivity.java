@@ -28,7 +28,7 @@ import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.data.table.CityTable;
 import cn.ismartv.voice.ui.fragment.AppSearchFragment;
 import cn.ismartv.voice.ui.fragment.BaseFragment;
-import cn.ismartv.voice.ui.fragment.ContentFragment2;
+import cn.ismartv.voice.ui.fragment.ContentFragment;
 import cn.ismartv.voice.ui.fragment.IndicatorFragment;
 import cn.ismartv.voice.ui.fragment.RecognizeErrorFragment;
 import cn.ismartv.voice.ui.fragment.SearchLoadingFragment;
@@ -54,7 +54,7 @@ public class HomeActivity extends BaseActivity {
 
 
     private VoiceFragment voiceFragment;
-    private ContentFragment2 contentFragment;
+    private ContentFragment contentFragment;
     private IndicatorFragment indicatorFragment;
     private AppSearchFragment appSearchFragment;
     private SearchLoadingFragment searchLoadingFragment;
@@ -81,7 +81,7 @@ public class HomeActivity extends BaseActivity {
         contentView = LayoutInflater.from(this).inflate(R.layout.activity_home, null);
         setContentView(contentView);
         voiceFragment = new VoiceFragment();
-        contentFragment = new ContentFragment2();
+        contentFragment = new ContentFragment();
         indicatorFragment = new IndicatorFragment();
         appSearchFragment = new AppSearchFragment();
         searchLoadingFragment = new SearchLoadingFragment();
@@ -124,12 +124,12 @@ public class HomeActivity extends BaseActivity {
             transaction.commit();
         }
 
-        contentView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                showIndicatorFragment(null, null);
-            }
-        }, 1000);
+//        contentView.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                showIndicatorFragment(null, null);
+//            }
+//        }, 1000);
 
 //        contentView.postDelayed(new Runnable() {
 //            @Override
@@ -290,12 +290,7 @@ public class HomeActivity extends BaseActivity {
                         popupWindow.dismiss();
                     }
                 },
-                new MessagePopWindow.CancelListener() {
-                    @Override
-                    public void cancelClick(View view) {
-                        popupWindow.dismiss();
-                    }
-                }
+                null
         );
     }
 

@@ -134,9 +134,9 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams((int) context.getResources().getDimension(R.dimen.pop_cursor_width), (int) context.getResources().getDimension(R.dimen.pop_cursor_height));
         if (confirmListener != null && cancleListener != null) {
-            params.setMargins(popCursorMiddle, 0, 0, 0);
-        } else {
             params.setMargins(popCursorLeft, 0, 0, 0);
+        } else {
+            params.setMargins(popCursorMiddle, 0, 0, 0);
         }
 
         cursorImageView.setLayoutParams(params);
