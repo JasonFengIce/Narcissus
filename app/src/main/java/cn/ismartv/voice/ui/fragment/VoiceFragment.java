@@ -432,11 +432,12 @@ public class VoiceFragment extends BaseFragment implements View.OnTouchListener,
     }
 
     private void showFragment(BaseFragment fragment) {
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         for (BaseFragment f : childFragmentList) {
             if (fragment != f && f.isVisible())
-                getChildFragmentManager().beginTransaction().hide(f).commit();
+                transaction.hide(f);
         }
-        getChildFragmentManager().beginTransaction().show(fragment).commit();
+        transaction.show(fragment).commit();
     }
 
     public void showTipFragment() {

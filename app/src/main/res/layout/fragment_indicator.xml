@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#455996"
-                android:gravity="center_horizontal"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#455996"
+    android:gravity="center_horizontal">
 
 
     <ImageView
@@ -16,7 +15,7 @@
         android:focusableInTouchMode="true"
         android:scaleType="fitXY"
         android:src="@drawable/selector_indicator_slide"
-        />
+        android:visibility="invisible" />
 
 
     <LinearLayout
@@ -40,22 +39,20 @@
                 android:layout_height="@dimen/indicator_fragment_video_title_height"
                 android:gravity="center"
                 android:text="@string/video_type"
-                android:textSize="@dimen/textSize_48sp"
-                />
+                android:textSize="@dimen/textSize_48sp" />
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/divider_line_height"
                 android:layout_marginLeft="@dimen/indicator_fragment_type_margin_lr"
                 android:layout_marginRight="@dimen/indicator_fragment_type_margin_lr"
-                android:src="@drawable/voice_fragment_divider_line"/>
+                android:src="@drawable/voice_fragment_divider_line" />
 
             <LinearLayout
                 android:id="@+id/video_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                />
+                android:orientation="vertical" />
         </LinearLayout>
 
 
@@ -66,30 +63,27 @@
             android:layout_marginRight="@dimen/transfer_line_width"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:visibility="gone"
-            >
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/indicator_fragment_video_title_height"
                 android:gravity="center"
                 android:text="@string/app_type"
-                android:textSize="@dimen/textSize_48sp"
-                />
+                android:textSize="@dimen/textSize_48sp" />
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/divider_line_height"
                 android:layout_marginLeft="@dimen/indicator_fragment_type_margin_lr"
                 android:layout_marginRight="@dimen/indicator_fragment_type_margin_lr"
-                android:src="@drawable/voice_fragment_divider_line"/>
+                android:src="@drawable/voice_fragment_divider_line" />
 
             <LinearLayout
                 android:id="@+id/app_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                />
+                android:orientation="vertical" />
 
         </LinearLayout>
 
@@ -102,8 +96,7 @@
         android:layout_alignParentRight="true"
         android:background="#00000000"
         android:focusable="true"
-        android:focusableInTouchMode="true"
-        />
+        android:focusableInTouchMode="true" />
 
 
 </RelativeLayout>

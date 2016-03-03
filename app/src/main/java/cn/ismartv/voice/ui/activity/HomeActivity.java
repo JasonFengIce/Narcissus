@@ -31,34 +31,21 @@ import cn.ismartv.voice.ui.widget.MessagePopWindow;
 public class HomeActivity extends BaseActivity {
     private static final String TAG = "HomeActivity";
 
-    //    private static final String VOICE_FRAGMENT_TAG = "voice_fragment_tag";
-//    private static final String CONTENT_FRAGMENT_TAG = "content_fragment_tag";
-//    private static final String APP_SEARCH_FRAGMENT_TAG = "app_search_fragment_tag";
-//    private static final String SEARCH_LOADING_FRAGMENT = "search_loading_fragment_tag";
-//    private static final String WEATHER_FRAGMENT_TAG = "weather_fragment_tag";
-//    private static final String RECOGNIZE_ERROR_FRAGMENT_TAG = "recognize_error_fragment_tag";
-//    private static final String SEARCH_LOADING_BG_FRAGMENT = "search_loading_bg_fragment_tag";
-//
-//
+    private static final String VOICE_FRAGMENT_TAG = "voice_fragment_tag";
+    private static final String CONTENT_FRAGMENT_TAG = "content_fragment_tag";
+    private static final String APP_SEARCH_FRAGMENT_TAG = "app_search_fragment_tag";
+    private static final String WEATHER_FRAGMENT_TAG = "weather_fragment_tag";
+    private static final String RECOGNIZE_ERROR_FRAGMENT_TAG = "recognize_error_fragment_tag";
     private VoiceFragment voiceFragment;
     private RecommendFragment contentFragment;
     private RecommendAppFragment appSearchFragment;
-    //    private SearchLoadingFragment searchLoadingFragment;
     private WeatherFragment weatherFragment;
     private RecognizeErrorFragment recognizeErrorFragment;
-//    private SearchLoadingWithBGFragment searchLoadingWithBGFragment;
-//
-//    private List<BaseFragment> fragmentList;
-//    private List<BaseFragment> leftFragmentList;
 
     private boolean voiceBtnIsDown = false;
     private View contentView;
     private MessagePopWindow networkEorrorPopupWindow;
 
-    public void hideNavigationBar() {
-        int uiFlags = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-        getWindow().getDecorView().setSystemUiVisibility(uiFlags);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,80 +53,7 @@ public class HomeActivity extends BaseActivity {
         networkEorrorPopupWindow = new MessagePopWindow(this, "网络异常，请检查网络", null);
         contentView = LayoutInflater.from(this).inflate(R.layout.activity_home, null);
         setContentView(contentView);
-//        voiceFragment = new VoiceFragment();
-//        contentFragment = new RecommendFragment();
-//        appSearchFragment = new RecommendAppFragment();
-//        searchLoadingFragment = new SearchLoadingFragment();
-//        weatherFragment = new WeatherFragment();
-//        recognizeErrorFragment = new RecognizeErrorFragment();
-//        searchLoadingWithBGFragment = new SearchLoadingWithBGFragment();
-//        fragmentList = new ArrayList<>();
-//        fragmentList.add(contentFragment);
-//        fragmentList.add(appSearchFragment);
-//        fragmentList.add(searchLoadingFragment);
-//        fragmentList.add(weatherFragment);
-//        fragmentList.add(recognizeErrorFragment);
-//        fragmentList.add(searchLoadingWithBGFragment);
-//
-//        leftFragmentList = new ArrayList<>();
-//        leftFragmentList.add(voiceFragment);
-//
-////        AppUpdateUtilsV2.getInstance(this).checkAppUpdate();
-//
-//        if (savedInstanceState != null) {
-//
-//        } else {
-//            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//            transaction.add(R.id.left_fragment, voiceFragment, VOICE_FRAGMENT_TAG);
-//            transaction.add(R.id.right_fragment, appSearchFragment, APP_SEARCH_FRAGMENT_TAG);
-//            transaction.add(R.id.right_fragment, searchLoadingFragment, SEARCH_LOADING_FRAGMENT);
-//            transaction.add(R.id.right_fragment, weatherFragment, WEATHER_FRAGMENT_TAG);
-//            transaction.add(R.id.right_fragment, recognizeErrorFragment, RECOGNIZE_ERROR_FRAGMENT_TAG);
-//            transaction.add(R.id.right_fragment, searchLoadingWithBGFragment, SEARCH_LOADING_BG_FRAGMENT);
-//            transaction.add(R.id.right_fragment, contentFragment, CONTENT_FRAGMENT_TAG);
-//            transaction.hide(searchLoadingFragment);
-//            transaction.hide(weatherFragment);
-//            transaction.hide(recognizeErrorFragment);
-//            transaction.hide(searchLoadingWithBGFragment);
-//            transaction.hide(contentFragment);
-//            transaction.hide(appSearchFragment);
-//            transaction.commit();
-//        }
-
-//        contentView.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                showIndicatorFragment(null, null);
-//            }
-//        }, 1000);
-
-//        contentView.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                showAppUpdatePop();
-//            }
-//        }, 1000);
     }
-
-//
-//    public void handleVoice() {
-//        searchVod(null);
-//    }
-//
-//    public void handleIndicatorClick(String contentType, String rawText) {
-//        searchVod(contentType, rawText);
-//    }
-
-//    @Override
-//    public boolean onKeyLongPress(int keyCode, KeyEvent event) {
-//        if (keyCode == KeyEvent.KEYCODE_F12) {
-//            Log.e(TAG, "long down: " + keyCode);
-//            voiceFragment.startSpeek();
-//            return true;
-//        }
-//        return super.onKeyLongPress(keyCode, event);
-//    }
-
 
     @Override
     protected void onResume() {
@@ -148,13 +62,9 @@ public class HomeActivity extends BaseActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         voiceFragment = new VoiceFragment();
         contentFragment = new RecommendFragment();
-        transaction.replace(R.id.left_fragment, voiceFragment);
-        transaction.replace(R.id.right_fragment, contentFragment);
-        transaction.setCustomAnimations(
-                R.anim.push_left_in,
-                R.anim.push_left_out);
+        transaction.replace(R.id.right_fragment, contentFragment, VOICE_FRAGMENT_TAG);
+        transaction.replace(R.id.left_fragment, voiceFragment, CONTENT_FRAGMENT_TAG);
         transaction.commit();
-
     }
 
     @Override
@@ -176,24 +86,15 @@ public class HomeActivity extends BaseActivity {
         }
 
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            onBackPressed();
-//            } else {
-//                voiceFragment.showTipFragment();
-////                showLeftFragment(voiceFragment);
-////                hideFragment(contentFragment);
-//
-//                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//                transaction.setCustomAnimations(
-//                        R.anim.push_left_in,
-//                        R.anim.push_left_out);
-//
-//                for (BaseFragment f : fragmentList) {
-//                    if (contentFragment != f && f.isVisible())
-//                        transaction.hide(f);
-//                }
-//                transaction.show(contentFragment).commit();
-//                contentFragment.fetchSharpHotWords();
-//            }
+            if (contentFragment.isVisible()) {
+                if (contentFragment.isRecommend()) {
+                    backToInit();
+                } else {
+                    onBackPressed();
+                }
+            } else {
+                backToInit();
+            }
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -209,48 +110,20 @@ public class HomeActivity extends BaseActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
-//
-//    public void handleAppIndicatorClick(String rawText) {
-//        searchApp(rawText);
-//    }
 
 
-//    public void showIndicatorFragment(SemanticSearchResponseEntity entity, String rawText) {
-////        String testJson = "{\"facet\":[{\"content_type\":\"variety\",\"count\":0,\"name\":\"综艺\",\"objects\":[],\"total_count\":2},{\"content_type\":\"entertainment\",\"count\":0,\"name\":\"娱乐\",\"objects\":[],\"total_count\":6},{\"content_type\":\"documentary\",\"count\":0,\"name\":\"纪录片\",\"objects\":[],\"total_count\":1}]}";
-////        String testText = "{\"raw_text\":\"一\"}";
-//        indicatorFragment.clearLayout();
-////        indicatorFragment.initVodIndicator(new Gson().fromJson(testJson, SemanticSearchResponseEntity.class), testText, true);
-//        indicatorFragment.initVodIndicator(entity, rawText, true);
-//    }
-//
-//
-//    public void showAppIndicatorFragment(List<AppSearchObjectEntity> entity, String data) {
-//        indicatorFragment.clearLayout();
-//        indicatorFragment.initAppIndicator(entity, data, true);
-//    }
-//
-//    public void showAppIndicatorFragmentNoClear(List<AppSearchObjectEntity> entity, String data) {
-//        indicatorFragment.initAppIndicator(entity, data, true);
-//    }
-//
-//
-//    public void refreshContentFragment(SemanticSearchResponseEntity entity, String rawText) {
-//        showMyFragment(contentFragment);
-//        contentFragment.notifyDataChanged(entity, rawText);
-//    }
-//
-//    public void refreshAppSearchFragment(final List<AppSearchObjectEntity> list, String rawText) {
-//        showMyFragment(appSearchFragment);
-//        appSearchFragment.notifyDataChanged(list, rawText);
-//
-//    }
+    private void backToInit() {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        voiceFragment = new VoiceFragment();
+        contentFragment = new RecommendFragment();
+        transaction.replace(R.id.left_fragment, voiceFragment, CONTENT_FRAGMENT_TAG);
+        transaction.setCustomAnimations(
+                R.anim.push_left_in,
+                R.anim.push_left_out);
+        transaction.replace(R.id.right_fragment, contentFragment, VOICE_FRAGMENT_TAG);
+        transaction.commit();
+    }
 
-
-//    private void hideFragment(Fragment fragment) {
-//        if (fragment.isVisible()) {
-//            getSupportFragmentManager().beginTransaction().hide(fragment).commit();
-//        }
-//    }
 
     /**
      * receive app update broadcast, and show update popup window
@@ -280,25 +153,6 @@ public class HomeActivity extends BaseActivity {
     }
 
 
-    //    public void backToVoiceFragment() {
-//        voiceFragment.backToVoice();
-//        showLeftFragment(voiceFragment);
-//    }
-//
-//
-//    private void showAppUpdatePop() {
-//        final MessagePopWindow popupWindow = new MessagePopWindow(this, "是否提交反馈信息?", null);
-//        popupWindow.showAtLocation(contentView, Gravity.CENTER, new MessagePopWindow.ConfirmListener() {
-//                    @Override
-//                    public void confirmClick(View view) {
-//                        popupWindow.dismiss();
-//                    }
-//                },
-//                null
-//        );
-//    }
-//
-//
     public void recommendVideo() {
         contentFragment = new RecommendFragment();
         contentFragment.setIsRecommend(true);
@@ -325,36 +179,7 @@ public class HomeActivity extends BaseActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.right_fragment, recognizeErrorFragment).commit();
     }
 
-//    private void showMyFragment(BaseFragment fragment) {
-//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-////        transaction.addToBackStack("hello");
-////        transaction.isAddToBackStackAllowed();
-////        transaction.setCustomAnimations(
-////                R.anim.push_left_in,
-////                R.anim.push_left_out);
-//
-//        for (BaseFragment f : fragmentList) {
-//            if (fragment != f && f.isVisible())
-//                transaction.hide(f);
-//        }
-//        transaction.show(fragment).commit();
-//    }
-
-    //
-//    private void showLeftFragment(BaseFragment fragment) {
-//        for (BaseFragment f : leftFragmentList) {
-//            if (fragment != f && f.isVisible())
-//                getSupportFragmentManager().beginTransaction().hide(f).commit();
-//        }
-//        getSupportFragmentManager().beginTransaction().show(fragment).commit();
-//    }
-//
-//    public void showIndicatorFragment() {
-//        showLeftFragment(indicatorFragment);
-//    }
-//
     public void showNetworkErrorPop() {
-
         networkEorrorPopupWindow = new MessagePopWindow(this, "网络异常，请检查网络", null);
         contentView.postDelayed(new Runnable() {
             @Override

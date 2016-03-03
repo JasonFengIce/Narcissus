@@ -46,6 +46,8 @@ public class WeatherFragment extends BaseFragment implements View.OnClickListene
 
     private CityTable location;
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -62,6 +64,8 @@ public class WeatherFragment extends BaseFragment implements View.OnClickListene
         moreWeatherBtn = (FrameLayout) view.findViewById(R.id.more_weather);
         currentLocationText = (TextView) view.findViewById(R.id.current_location);
         moreWeatherBtn.setOnClickListener(this);
+
+        fetchWeather();
 
     }
 
@@ -136,7 +140,6 @@ public class WeatherFragment extends BaseFragment implements View.OnClickListene
 
     public void setLocation(CityTable cityTable) {
         location = cityTable;
-        fetchWeather();
     }
 
     @Override

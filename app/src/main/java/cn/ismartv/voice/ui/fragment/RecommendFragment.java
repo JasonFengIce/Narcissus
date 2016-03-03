@@ -54,6 +54,10 @@ public class RecommendFragment extends BaseFragment implements View.OnFocusChang
         this.isRecommend = isRecommend;
     }
 
+    public boolean isRecommend() {
+        return isRecommend;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -74,7 +78,13 @@ public class RecommendFragment extends BaseFragment implements View.OnFocusChang
         arrowUp.setOnClickListener(this);
         arrowDown.setOnClickListener(this);
         arrowUp.bringToFront();
-        fetchSharpHotWords();
+        view.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                fetchSharpHotWords();
+            }
+        }, 500);
+
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 4, GridLayoutManager.VERTICAL, false);
 

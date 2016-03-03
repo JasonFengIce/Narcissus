@@ -60,6 +60,11 @@ public class RecommendAppFragment extends BaseFragment implements View.OnFocusCh
     public void setIsRecommend(boolean isRecommend) {
         this.isRecommend = isRecommend;
     }
+
+    public boolean isRecommend() {
+        return isRecommend;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -247,4 +252,5 @@ public class RecommendAppFragment extends BaseFragment implements View.OnFocusCh
             }
         });
     }
+
 }
