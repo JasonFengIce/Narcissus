@@ -118,8 +118,8 @@ public class HomeActivity extends BaseActivity {
             transaction.hide(recognizeErrorFragment);
             transaction.hide(searchLoadingWithBGFragment);
             transaction.add(R.id.right_fragment, contentFragment, CONTENT_FRAGMENT_TAG);
-//            transaction.hide(contentFragment);
-//            transaction.hide(voiceFragment);
+            transaction.hide(contentFragment);
+            transaction.hide(voiceFragment);
             transaction.commit();
         }
 
@@ -162,10 +162,10 @@ public class HomeActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         EventBus.getDefault().register(this);
-//        voiceFragment.showTipFragment();
-//        showLeftFragment(voiceFragment);
-//        contentFragment.fetchSharpHotWords();
-//        showMyFragment(contentFragment);
+        voiceFragment.showTipFragment();
+        showLeftFragment(voiceFragment);
+        contentFragment.fetchSharpHotWords();
+        showMyFragment(contentFragment);
     }
 
     @Override
@@ -192,6 +192,18 @@ public class HomeActivity extends BaseActivity {
             } else {
                 voiceFragment.showTipFragment();
                 showLeftFragment(voiceFragment);
+                hideFragment(contentFragment);
+
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(
+                        R.anim.push_left_in,
+                        R.anim.push_left_out);
+
+                for (BaseFragment f : fragmentList) {
+                    if (contentFragment != f && f.isVisible())
+                        transaction.hide(f);
+                }
+                transaction.show(contentFragment).commit();
                 contentFragment.fetchSharpHotWords();
             }
             return true;
