@@ -119,6 +119,7 @@ public class HomeActivity extends BaseActivity {
             transaction.hide(searchLoadingWithBGFragment);
             transaction.add(R.id.right_fragment, contentFragment, CONTENT_FRAGMENT_TAG);
 //            transaction.hide(contentFragment);
+//            transaction.hide(voiceFragment);
             transaction.commit();
         }
 
@@ -161,6 +162,10 @@ public class HomeActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         EventBus.getDefault().register(this);
+//        voiceFragment.showTipFragment();
+//        showLeftFragment(voiceFragment);
+//        contentFragment.fetchSharpHotWords();
+//        showMyFragment(contentFragment);
     }
 
     @Override
