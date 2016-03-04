@@ -3,11 +3,13 @@ package cn.ismartv.voice.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -67,6 +69,9 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
     private MessagePopWindow networkEorrorPopupWindow;
     private View contentView;
     private View indicatorSelectedView;
+    private HorizontalScrollView horizontalScrollView;
+
+    private View firstIndicatorItem;
 
 
     @Override
@@ -116,10 +121,12 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
         contentArrowRight = (ImageView) findViewById(R.id.content_arrow_right);
         indicatorArrowLeft = (ImageView) findViewById(R.id.indicator_left);
         indicatorArrowRight = (ImageView) findViewById(R.id.indicator_right);
+        horizontalScrollView = (HorizontalScrollView) findViewById(R.id.scrollview);
         contentArrowRight.setOnFocusChangeListener(this);
         contentArrowLeft.setOnFocusChangeListener(this);
         indicatorArrowLeft.setOnFocusChangeListener(this);
         indicatorArrowRight.setOnFocusChangeListener(this);
+
 
         LinearLayoutManager gridLayoutManager = new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false);
 
@@ -128,6 +135,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
         recyclerView.addItemDecoration(new StarSpaceItemDecoration(verticalSpacingInPixels, horizontalSpacingInPixels));
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setOnFocusChangeListener(this);
+
     }
 
 
@@ -156,6 +164,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                         itemView.setTag(facet.getContent_type());
                         itemView.setTag(R.id.filmStar_indicator_item, i);
                         if (i == 0) {
+                            firstIndicatorItem = itemView;
                             indicatorSelectedView = itemView;
                             indicatorTitle.setTextColor(getResources().getColor(R.color._ffffff));
                             itemView.setNextFocusLeftId(itemView.getId());
@@ -214,6 +223,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
     public void onFocusChange(View v, boolean hasFocus) {
         switch (v.getId()) {
             case R.id.filmStar_indicator_item:
+                Log.e(TAG, "first item visible: " + (firstIndicatorItem.getVisibility() == View.VISIBLE));
                 int position = (int) v.getTag(R.id.filmStar_indicator_item);
                 if (position == 0) {
                     indicatorArrowLeft.setVisibility(View.INVISIBLE);

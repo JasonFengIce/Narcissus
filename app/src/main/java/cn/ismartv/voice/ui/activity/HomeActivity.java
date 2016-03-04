@@ -46,11 +46,6 @@ public class HomeActivity extends BaseActivity {
     private View contentView;
     private MessagePopWindow networkEorrorPopupWindow;
 
-    private long voicePressTime;
-
-    public long getVoicePressTime() {
-        return voicePressTime;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +88,6 @@ public class HomeActivity extends BaseActivity {
             if (!voiceBtnIsDown) {
                 voiceBtnIsDown = true;
 //                showLeftFragment(voiceFragment);
-                voicePressTime = System.currentTimeMillis();
                 voiceFragment.startSpeek();
             }
             return true;
@@ -127,15 +121,19 @@ public class HomeActivity extends BaseActivity {
 
 
     public void backToInit() {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        voiceFragment = new VoiceFragment();
-        contentFragment = new RecommendFragment();
-        transaction.replace(R.id.left_fragment, voiceFragment, CONTENT_FRAGMENT_TAG);
-        transaction.setCustomAnimations(
-                R.anim.push_left_in,
-                R.anim.push_left_out);
-        transaction.replace(R.id.right_fragment, contentFragment, VOICE_FRAGMENT_TAG);
-        transaction.commit();
+        if (contentFragment.isVisible()) {
+            if (contentFragment.isRecommend()) {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                voiceFragment = new VoiceFragment();
+                contentFragment = new RecommendFragment();
+                transaction.replace(R.id.left_fragment, voiceFragment, CONTENT_FRAGMENT_TAG);
+                transaction.setCustomAnimations(
+                        R.anim.push_left_in,
+                        R.anim.push_left_out);
+                transaction.replace(R.id.right_fragment, contentFragment, VOICE_FRAGMENT_TAG);
+                transaction.commit();
+            }
+        }
     }
 
 

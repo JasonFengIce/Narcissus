@@ -89,6 +89,8 @@ public class VoiceFragment extends BaseFragment implements View.OnTouchListener,
 
     private SearchLoadingPopWindow searchLoadingPopWindow;
 
+    private long voicePressTime;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -166,13 +168,9 @@ public class VoiceFragment extends BaseFragment implements View.OnTouchListener,
 
     public void startSpeek() {
         if (voiceIsEnable) {
+            voicePressTime = System.currentTimeMillis();
             voiceIsEnable = false;
-            voiceProgressImg.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    loopAnim(voiceProgressImg, true);
-                }
-            }, 1000);
+            loopAnim(voiceProgressImg, true);
             voiceMicImg.setImageResource(R.drawable.voice_vol_1);
             startRecord();
             voiceMicImg.postDelayed(new Runnable() {
@@ -189,9 +187,12 @@ public class VoiceFragment extends BaseFragment implements View.OnTouchListener,
 
     public void stopSpeek() {
         loopAnim(voiceProgressImg, false);
-
-//                        ((HomeActivity) getActivity()).handleVoice();
-        voiceRecognitionClient.speakFinish();
+        voiceProgressImg.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                voiceRecognitionClient.speakFinish();
+            }
+        }, 500);
     }
 
 
@@ -259,7 +260,7 @@ public class VoiceFragment extends BaseFragment implements View.OnTouchListener,
                 break;
             // 已经检测到语音终点，等待网络返回
             case VoiceRecognitionClient.CLIENT_STATUS_SPEECH_END:
-                if (System.currentTimeMillis() - ((HomeActivity) getActivity()).getVoicePressTime() < 3000) {
+                if (System.currentTimeMillis() - voicePressTime < 3000) {
                     ((HomeActivity) getActivity()).backToInit();
                     return;
                 }
@@ -270,7 +271,7 @@ public class VoiceFragment extends BaseFragment implements View.OnTouchListener,
                 break;
             // 语音识别完成，显示obj中的结果
             case VoiceRecognitionClient.CLIENT_STATUS_FINISH:
-                if (System.currentTimeMillis() - ((HomeActivity) getActivity()).getVoicePressTime() < 3000) {
+                if (System.currentTimeMillis() - voicePressTime < 3000) {
                     ((HomeActivity) getActivity()).backToInit();
                     return;
                 }
@@ -310,7 +311,7 @@ public class VoiceFragment extends BaseFragment implements View.OnTouchListener,
 
     @Override
     public void onError(int errorType, int errorCode) {
-        if (System.currentTimeMillis() - ((HomeActivity) getActivity()).getVoicePressTime() < 3000) {
+        if (System.currentTimeMillis() - voicePressTime < 3000) {
             ((HomeActivity) getActivity()).backToInit();
             return;
         }

@@ -51,7 +51,7 @@ public class SearchTipFragment extends BaseFragment {
     }
 
     //http://www.jb51.net/article/37229.htm
-    public void fetchWords() {
+    private void fetchWords() {
         Retrofit retrofit = HttpManager.getInstance().resetAdapter_WUGUOJUN;
         wordsCall = retrofit.create(HttpAPI.Words.class).doRequest(5);
         wordsCall.enqueue(new Callback<List<String>>() {
