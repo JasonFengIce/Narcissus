@@ -197,6 +197,13 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 ((SearchResultActivity) getActivity()).showSearchLoadingFragment();
+                if (selectedView != null) {
+                    TextView textView = (TextView) selectedView.findViewById(R.id.title);
+                    textView.setTextColor(getResources().getColor(R.color._a6a6a6));
+                }
+                TextView textView = (TextView) v.findViewById(R.id.title);
+                textView.setTextColor(getResources().getColor(R.color._ffffff));
+                selectedView = v;
                 String rawText = (String) v.getTag();
                 searchApp(rawText, false);
             }
