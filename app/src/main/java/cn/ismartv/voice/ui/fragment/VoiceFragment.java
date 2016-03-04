@@ -27,7 +27,6 @@ import com.google.gson.JsonParser;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import cn.ismartv.voice.R;
@@ -82,7 +81,6 @@ public class VoiceFragment extends BaseFragment implements View.OnTouchListener,
 
     private boolean isRecognition = false;
     private Handler mHandler;
-    private List<BaseFragment> childFragmentList;
 
     private boolean voiceIsEnable = true;
     private View fragmentView;
@@ -104,15 +102,6 @@ public class VoiceFragment extends BaseFragment implements View.OnTouchListener,
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        searchTipFragment = new SearchTipFragment();
-        searchNoResultFragment = new SearchNoResultFragment();
-        searchKeyWordFragment = new SearchKeyWordFragment();
-        leftSearchLoadingFragment = new LeftSearchLoadingFragment();
-        childFragmentList = new ArrayList<>();
-        childFragmentList.add(searchTipFragment);
-        childFragmentList.add(searchNoResultFragment);
-        childFragmentList.add(searchKeyWordFragment);
-        childFragmentList.add(leftSearchLoadingFragment);
         fragmentView = inflater.inflate(R.layout.fragment_voice, null);
         return fragmentView;
     }
@@ -121,15 +110,9 @@ public class VoiceFragment extends BaseFragment implements View.OnTouchListener,
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         searchLoadingPopWindow = new SearchLoadingPopWindow(getContext());
-
+        searchTipFragment = new SearchTipFragment();
         FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.search_tip_layout, searchTipFragment, SEARCH_TIP_FRAGMENT_TAG);
-        fragmentTransaction.add(R.id.search_tip_layout, searchNoResultFragment, SEARCH_NO_RESULT_FRAGMENT_TAG);
-        fragmentTransaction.add(R.id.search_tip_layout, searchKeyWordFragment, SEARCH_KEYWORD_FRAGMENT_TAG);
-        fragmentTransaction.add(R.id.search_tip_layout, leftSearchLoadingFragment, LEFT_SEARCHING_LOADING_FRAGMENT);
-        fragmentTransaction.hide(leftSearchLoadingFragment);
-        fragmentTransaction.hide(searchKeyWordFragment);
-        fragmentTransaction.hide(searchNoResultFragment);
+        fragmentTransaction.replace(R.id.search_tip_layout, searchTipFragment, SEARCH_TIP_FRAGMENT_TAG);
         fragmentTransaction.commit();
 
         voiceProgressImg = (ImageView) view.findViewById(R.id.voice_progress);
@@ -264,7 +247,10 @@ public class VoiceFragment extends BaseFragment implements View.OnTouchListener,
                     ((HomeActivity) getActivity()).backToInit();
                     return;
                 }
-                showFragment(leftSearchLoadingFragment);
+                leftSearchLoadingFragment = new LeftSearchLoadingFragment();
+                getChildFragmentManager().beginTransaction().replace(R.id.search_tip_layout, leftSearchLoadingFragment).commit();
+
+
                 searchLoadingPopWindow.showAtLocation(fragmentView, Gravity.CENTER, 0, 0);
 
 //                ((HomeActivity) getActivity()).showSearchLoading();
@@ -402,26 +388,30 @@ public class VoiceFragment extends BaseFragment implements View.OnTouchListener,
 
 
     private void showNoVideoResultFragment(String rawText) {
-        searchNoResultFragment.recognizeNoResult(rawText);
-        showFragment(searchNoResultFragment);
+        searchNoResultFragment = new SearchNoResultFragment();
+        searchNoResultFragment.setRawText(rawText);
+        getChildFragmentManager().beginTransaction().replace(R.id.search_tip_layout, searchNoResultFragment).commit();
         ((HomeActivity) getActivity()).recommendVideo();
     }
 
     private void showNoAppResultFragment(String rawText) {
-        showFragment(searchNoResultFragment);
-        searchNoResultFragment.recognizeNoResult(rawText);
+
+        searchNoResultFragment = new SearchNoResultFragment();
+        searchNoResultFragment.setRawText(rawText);
+        getChildFragmentManager().beginTransaction().replace(R.id.search_tip_layout, searchNoResultFragment).commit();
         ((HomeActivity) getActivity()).recommendApp();
     }
 
     private void showRecognizeErrorFragment() {
-        showFragment(searchNoResultFragment);
-        searchNoResultFragment.recognizeError();
+        searchNoResultFragment = new SearchNoResultFragment();
+        getChildFragmentManager().beginTransaction().replace(R.id.search_tip_layout, searchNoResultFragment).commit();
         ((HomeActivity) getActivity()).showRecognizeError();
     }
 
     private void showSearchKeyWordFragment(String rawText) {
-        searchKeyWordFragment.setSearchKeyWord(rawText);
-        showFragment(searchKeyWordFragment);
+        searchKeyWordFragment = new SearchKeyWordFragment();
+        searchKeyWordFragment.setKeyWord(rawText);
+        getChildFragmentManager().beginTransaction().replace(R.id.search_tip_layout, searchKeyWordFragment).commit();
     }
 
     private void volumeChange(int vol) {
@@ -451,18 +441,15 @@ public class VoiceFragment extends BaseFragment implements View.OnTouchListener,
         ((HomeActivity) getActivity()).showWeatherNoRegion(table);
     }
 
-    private void showFragment(BaseFragment fragment) {
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        for (BaseFragment f : childFragmentList) {
-            if (fragment != f && f.isVisible())
-                transaction.hide(f);
-        }
-        transaction.show(fragment).commit();
-    }
+//    private void showFragment(BaseFragment fragment) {
+//        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+//        for (BaseFragment f : childFragmentList) {
+//            if (fragment != f && f.isVisible())
+//                transaction.hide(f);
+//        }
+//        transaction.show(fragment).commit();
+//    }
 
-    public void showTipFragment() {
-        showFragment(searchTipFragment);
-    }
 
     private void showSearchResult(String type, String data, String rawText) {
         Intent intent = new Intent();

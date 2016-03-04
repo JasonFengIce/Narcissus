@@ -15,6 +15,12 @@ import cn.ismartv.voice.R;
 public class SearchKeyWordFragment extends BaseFragment {
     private TextView searchKeyWordText;
 
+    private String keyWord;
+
+    public void setKeyWord(String keyWord) {
+        this.keyWord = keyWord;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -26,9 +32,6 @@ public class SearchKeyWordFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         searchKeyWordText = (TextView) view.findViewById(R.id.search_keyword);
-    }
-
-    public void setSearchKeyWord(String keyWord) {
         searchKeyWordText.setText(keyWord);
     }
 
