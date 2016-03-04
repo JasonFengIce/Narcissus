@@ -167,7 +167,12 @@ public class VoiceFragment extends BaseFragment implements View.OnTouchListener,
     public void startSpeek() {
         if (voiceIsEnable) {
             voiceIsEnable = false;
-            loopAnim(voiceProgressImg, true);
+            voiceProgressImg.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    loopAnim(voiceProgressImg, true);
+                }
+            }, 1000);
             voiceMicImg.setImageResource(R.drawable.voice_vol_1);
             startRecord();
             voiceMicImg.postDelayed(new Runnable() {
