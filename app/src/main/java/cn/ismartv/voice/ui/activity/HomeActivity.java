@@ -46,6 +46,11 @@ public class HomeActivity extends BaseActivity {
     private View contentView;
     private MessagePopWindow networkEorrorPopupWindow;
 
+    private long voicePressTime;
+
+    public long getVoicePressTime() {
+        return voicePressTime;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,18 +58,26 @@ public class HomeActivity extends BaseActivity {
         networkEorrorPopupWindow = new MessagePopWindow(this, "网络异常，请检查网络", null);
         contentView = LayoutInflater.from(this).inflate(R.layout.activity_home, null);
         setContentView(contentView);
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        EventBus.getDefault().register(this);
+
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         voiceFragment = new VoiceFragment();
         contentFragment = new RecommendFragment();
         transaction.replace(R.id.right_fragment, contentFragment, VOICE_FRAGMENT_TAG);
         transaction.replace(R.id.left_fragment, voiceFragment, CONTENT_FRAGMENT_TAG);
         transaction.commit();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        EventBus.getDefault().register(this);
+//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        voiceFragment = new VoiceFragment();
+//        contentFragment = new RecommendFragment();
+//        transaction.replace(R.id.right_fragment, contentFragment, VOICE_FRAGMENT_TAG);
+//        transaction.replace(R.id.left_fragment, voiceFragment, CONTENT_FRAGMENT_TAG);
+//        transaction.commit();
     }
 
     @Override
@@ -80,6 +93,7 @@ public class HomeActivity extends BaseActivity {
             if (!voiceBtnIsDown) {
                 voiceBtnIsDown = true;
 //                showLeftFragment(voiceFragment);
+                voicePressTime = System.currentTimeMillis();
                 voiceFragment.startSpeek();
             }
             return true;
@@ -90,7 +104,7 @@ public class HomeActivity extends BaseActivity {
                 if (contentFragment.isRecommend()) {
                     backToInit();
                 } else {
-                    onBackPressed();
+                    System.exit(0);
                 }
             } else {
                 backToInit();
@@ -112,7 +126,7 @@ public class HomeActivity extends BaseActivity {
     }
 
 
-    private void backToInit() {
+    public void backToInit() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         voiceFragment = new VoiceFragment();
         contentFragment = new RecommendFragment();
@@ -179,7 +193,7 @@ public class HomeActivity extends BaseActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.right_fragment, recognizeErrorFragment).commit();
     }
 
-    public void showNetworkErrorPop() {
+    private void showNetworkErrorPop() {
         networkEorrorPopupWindow = new MessagePopWindow(this, "网络异常，请检查网络", null);
         contentView.postDelayed(new Runnable() {
             @Override
@@ -196,7 +210,7 @@ public class HomeActivity extends BaseActivity {
                     );
                 }
             }
-        }, 2000);
+        }, 0);
     }
 
 

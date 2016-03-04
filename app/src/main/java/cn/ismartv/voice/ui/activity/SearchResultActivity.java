@@ -3,6 +3,7 @@ package cn.ismartv.voice.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -17,6 +18,7 @@ import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.ui.fragment.AppSearchFragment;
 import cn.ismartv.voice.ui.fragment.ContentFragment;
 import cn.ismartv.voice.ui.fragment.IndicatorFragment;
+import cn.ismartv.voice.ui.fragment.SearchLoadingFragment;
 import cn.ismartv.voice.ui.widget.MessagePopWindow;
 
 /**
@@ -33,6 +35,7 @@ public class SearchResultActivity extends BaseActivity {
     private ContentFragment contentFragment;
     private IndicatorFragment indicatorFragment;
     private AppSearchFragment appSearchFragment;
+    private SearchLoadingFragment searchLoadingFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,13 +111,43 @@ public class SearchResultActivity extends BaseActivity {
         transaction.commit();
     }
 
-    @Subscribe
-    public void answerAvailable(AnswerAvailableEvent event) {
-        switch (event.getEventCode()) {
-
-        }
+    public void showSearchLoadingFragment() {
+        searchLoadingFragment = new SearchLoadingFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.right_fragment, searchLoadingFragment).commit();
     }
 
+    private void showNetworkErrorPop() {
+        networkEorrorPopupWindow = new MessagePopWindow(this, "网络异常，请检查网络", null);
+        contentView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (!networkEorrorPopupWindow.isShowing()) {
+                    networkEorrorPopupWindow.showAtLocation(contentView, Gravity.CENTER, new MessagePopWindow.ConfirmListener() {
+                                @Override
+                                public void confirmClick(View view) {
+                                    networkEorrorPopupWindow.dismiss();
+                                    System.exit(0);
+                                }
+                            },
+                            null
+                    );
+                }
+            }
+        }, 0);
+    }
+
+
+    @Subscribe
+    public void answerAvailable(AnswerAvailableEvent event) {
+        showNetworkErrorPop();
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        networkEorrorPopupWindow = null;
+        super.onDestroy();
+    }
 
 //    public void showIndicatorFragment(SemanticSearchResponseEntity entity, String rawText) {
 ////        String testJson = "{\"facet\":[{\"content_type\":\"variety\",\"count\":0,\"name\":\"综艺\",\"objects\":[],\"total_count\":2},{\"content_type\":\"entertainment\",\"count\":0,\"name\":\"娱乐\",\"objects\":[],\"total_count\":6},{\"content_type\":\"documentary\",\"count\":0,\"name\":\"纪录片\",\"objects\":[],\"total_count\":1}]}";

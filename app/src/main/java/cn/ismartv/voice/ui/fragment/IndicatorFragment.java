@@ -149,7 +149,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
             linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    ((HomeActivity) getActivity()).showSearchLoadingWithBG();
+                    ((SearchResultActivity) getActivity()).showSearchLoadingFragment();
                     if (selectedView != null) {
                         TextView textView = (TextView) selectedView.findViewById(R.id.title);
                         textView.setTextColor(getResources().getColor(R.color._a6a6a6));
@@ -196,7 +196,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                ((HomeActivity) getActivity()).showSearchLoadingWithBG();
+                ((SearchResultActivity) getActivity()).showSearchLoadingFragment();
                 String rawText = (String) v.getTag();
                 searchApp(rawText, false);
             }

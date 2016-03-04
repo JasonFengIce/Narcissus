@@ -89,6 +89,7 @@ public class VoiceFragment extends BaseFragment implements View.OnTouchListener,
 
     private SearchLoadingPopWindow searchLoadingPopWindow;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -253,6 +254,10 @@ public class VoiceFragment extends BaseFragment implements View.OnTouchListener,
                 break;
             // 已经检测到语音终点，等待网络返回
             case VoiceRecognitionClient.CLIENT_STATUS_SPEECH_END:
+                if (System.currentTimeMillis() - ((HomeActivity) getActivity()).getVoicePressTime() < 3000) {
+                    ((HomeActivity) getActivity()).backToInit();
+                    return;
+                }
                 showFragment(leftSearchLoadingFragment);
                 searchLoadingPopWindow.showAtLocation(fragmentView, Gravity.CENTER, 0, 0);
 
@@ -260,6 +265,10 @@ public class VoiceFragment extends BaseFragment implements View.OnTouchListener,
                 break;
             // 语音识别完成，显示obj中的结果
             case VoiceRecognitionClient.CLIENT_STATUS_FINISH:
+                if (System.currentTimeMillis() - ((HomeActivity) getActivity()).getVoicePressTime() < 3000) {
+                    ((HomeActivity) getActivity()).backToInit();
+                    return;
+                }
                 searchLoadingPopWindow.dismiss();
                 isRecognition = false;
                 voiceMicImg.setImageResource(R.drawable.voice_mic);
@@ -296,6 +305,11 @@ public class VoiceFragment extends BaseFragment implements View.OnTouchListener,
 
     @Override
     public void onError(int errorType, int errorCode) {
+        if (System.currentTimeMillis() - ((HomeActivity) getActivity()).getVoicePressTime() < 3000) {
+            ((HomeActivity) getActivity()).backToInit();
+            return;
+        }
+
         searchLoadingPopWindow.dismiss();
         voiceMicImg.setImageResource(R.drawable.voice_mic);
         isRecognition = false;

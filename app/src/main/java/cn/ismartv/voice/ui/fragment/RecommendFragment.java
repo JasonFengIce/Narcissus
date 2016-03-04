@@ -246,6 +246,7 @@ public class RecommendFragment extends BaseFragment implements View.OnFocusChang
             Long pk = Long.parseLong(tag.get("pk"));
             String title = tag.get("title");
             Intent intent = new Intent();
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             switch (contentModel) {
                 case "person":
                     intent.putExtra("pk", pk);
