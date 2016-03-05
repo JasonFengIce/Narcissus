@@ -113,6 +113,8 @@ public class ContentFragment extends BaseFragment implements View.OnFocusChangeL
                 recyclerView.smoothScrollBy(0, recyclerView.getHeight());
                 break;
         }
+
+
     }
 
 
