@@ -75,12 +75,7 @@ public class RecommendVodFragment extends BaseFragment implements View.OnFocusCh
         arrowUp.setOnClickListener(this);
         arrowDown.setOnClickListener(this);
         arrowUp.bringToFront();
-        view.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                fetchSharpHotWords();
-            }
-        }, 500);
+        fetchSharpHotWords();
 
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 4, GridLayoutManager.VERTICAL, false);
