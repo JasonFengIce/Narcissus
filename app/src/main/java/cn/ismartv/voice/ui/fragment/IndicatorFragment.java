@@ -33,6 +33,7 @@ import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.data.table.AppTable;
 import cn.ismartv.voice.ui.activity.SearchResultActivity;
 import cn.ismartv.voice.util.ViewScaleUtil;
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -89,6 +90,10 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
         this.videoRaw = videoRaw;
     }
 
+    private Call<SemanticSearchResponseEntity> vodCall;
+    private Call<AppSearchResponseEntity> appCall;
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -133,6 +138,17 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
         }
     }
 
+    @Override
+    public void onDestroy() {
+        if (vodCall != vodCall && vodCall.isExecuted()) {
+            vodCall.cancel();
+        }
+        if (appCall != null && vodCall.isExecuted()) {
+            vodCall.cancel();
+        }
+
+        super.onDestroy();
+    }
 
     private void initVodIndicator(SemanticSearchResponseEntity entity, String data) {
         lostFocusView = null;
@@ -295,7 +311,8 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
         entity.setPage_count(300);
 
         Retrofit retrofit = HttpManager.getInstance().resetAdapter_QIANGUANGZHAO;
-        retrofit.create(HttpAPI.SemanticSearch.class).doRequest(entity).enqueue(new Callback<SemanticSearchResponseEntity>() {
+        vodCall = retrofit.create(HttpAPI.SemanticSearch.class).doRequest(entity);
+        vodCall.enqueue(new Callback<SemanticSearchResponseEntity>() {
             @Override
             public void onResponse(Response<SemanticSearchResponseEntity> response) {
                 if (response.errorBody() == null) {
@@ -325,7 +342,8 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
         params.setPage_count(AppConstant.DEFAULT_PAGE_COUNT);
         params.setPage_no(1);
         params.setContent_type("app");
-        retrofit.create(HttpAPI.AppSearch.class).doRequest(params).enqueue(new Callback<AppSearchResponseEntity>() {
+        appCall = retrofit.create(HttpAPI.AppSearch.class).doRequest(params);
+        appCall.enqueue(new Callback<AppSearchResponseEntity>() {
             @Override
             public void onResponse(Response<AppSearchResponseEntity> response) {
                 if (response.errorBody() == null) {

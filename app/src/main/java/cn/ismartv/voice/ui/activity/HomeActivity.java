@@ -104,12 +104,12 @@ public class HomeActivity extends BaseActivity {
         recommendVodFragment.reset();
         showRightFragment(recommendVodFragment);
 
-        contentView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                showNetworkErrorPop();
-            }
-        }, 3000);
+//        contentView.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                showNetworkErrorPop();
+//            }
+//        }, 3000);
     }
 
 
