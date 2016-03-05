@@ -90,7 +90,7 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
 
 
     public MessagePopWindow(Context context, String line1Message, String line2Message) {
-        setBackgroundDrawable(context.getResources().getDrawable(R.drawable.pop_bg));
+//        setBackgroundDrawable(context.getResources().getDrawable(R.drawable.pop_bg));
         mFirstLineMessage = line1Message;
         mSecondLineMessage = line2Message;
         mContext = context;
@@ -121,6 +121,7 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
         firstMessage.setText(mFirstLineMessage);
 
         RelativeLayout frameLayout = new RelativeLayout(mContext);
+        frameLayout.setBackgroundResource(R.drawable.pop_bg);
         RelativeLayout.LayoutParams layoutParams;
         layoutParams = new RelativeLayout.LayoutParams(width, height);
         layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
@@ -144,15 +145,6 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
 
         frameLayout.addView(contentView, layoutParams);
 
-        frameLayout.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    return true;
-                }
-                return false;
-            }
-        });
         setContentView(frameLayout);
         setFocusable(true);
 
