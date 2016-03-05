@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -46,7 +45,6 @@ import cn.ismartv.voice.data.http.VoiceResultEntity;
 import cn.ismartv.voice.data.table.CityTable;
 import cn.ismartv.voice.ui.activity.HomeActivity;
 import cn.ismartv.voice.ui.activity.SearchResultActivity;
-import cn.ismartv.voice.ui.widget.SearchLoadingPopWindow;
 
 import static com.baidu.voicerecognition.android.VoiceRecognitionClient.getInstance;
 
@@ -85,7 +83,7 @@ public class VoiceFragment extends BaseFragment implements View.OnTouchListener,
     private boolean voiceIsEnable = true;
     private View fragmentView;
 
-    private SearchLoadingPopWindow searchLoadingPopWindow;
+//    private SearchLoadingPopWindow searchLoadingPopWindow;
 
     private long voicePressTime;
 
@@ -109,7 +107,7 @@ public class VoiceFragment extends BaseFragment implements View.OnTouchListener,
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        searchLoadingPopWindow = new SearchLoadingPopWindow(getContext());
+//        searchLoadingPopWindow = new SearchLoadingPopWindow(getContext());
         searchTipFragment = new SearchTipFragment();
         FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.search_tip_layout, searchTipFragment, SEARCH_TIP_FRAGMENT_TAG);
@@ -187,12 +185,6 @@ public class VoiceFragment extends BaseFragment implements View.OnTouchListener,
 
     @Override
     public void onDestroy() {
-        if (searchLoadingPopWindow != null) {
-            if (searchLoadingPopWindow.isShowing()) {
-                searchLoadingPopWindow.dismiss();
-                searchLoadingPopWindow = null;
-            }
-        }
         super.onDestroy();
     }
 
@@ -251,9 +243,9 @@ public class VoiceFragment extends BaseFragment implements View.OnTouchListener,
                 getChildFragmentManager().beginTransaction().replace(R.id.search_tip_layout, leftSearchLoadingFragment).commit();
 
 
-                searchLoadingPopWindow.showAtLocation(fragmentView, Gravity.CENTER, 0, 0);
+//                searchLoadingPopWindow.showAtLocation(fragmentView, Gravity.CENTER, 0, 0);
 
-//                ((HomeActivity) getActivity()).showSearchLoading();
+                ((HomeActivity) getActivity()).showSearchLoadingFragment();
                 break;
             // 语音识别完成，显示obj中的结果
             case VoiceRecognitionClient.CLIENT_STATUS_FINISH:
@@ -261,7 +253,6 @@ public class VoiceFragment extends BaseFragment implements View.OnTouchListener,
                     ((HomeActivity) getActivity()).backToInit();
                     return;
                 }
-                searchLoadingPopWindow.dismiss();
                 isRecognition = false;
                 voiceMicImg.setImageResource(R.drawable.voice_mic);
                 VoiceResultEntity[] voiceResultEntity = new Gson().fromJson(o.toString(), VoiceResultEntity[].class);
@@ -281,7 +272,6 @@ public class VoiceFragment extends BaseFragment implements View.OnTouchListener,
                 break;
             // 用户取消
             case VoiceRecognitionClient.CLIENT_STATUS_USER_CANCELED:
-                searchLoadingPopWindow.dismiss();
                 isRecognition = false;
                 voiceMicImg.setImageResource(R.drawable.voice_mic);
                 break;
@@ -302,7 +292,6 @@ public class VoiceFragment extends BaseFragment implements View.OnTouchListener,
             return;
         }
 
-        searchLoadingPopWindow.dismiss();
         voiceMicImg.setImageResource(R.drawable.voice_mic);
         isRecognition = false;
         switch (errorType) {

@@ -21,6 +21,7 @@ import cn.ismartv.voice.data.table.CityTable;
 import cn.ismartv.voice.ui.fragment.RecognizeErrorFragment;
 import cn.ismartv.voice.ui.fragment.RecommendAppFragment;
 import cn.ismartv.voice.ui.fragment.RecommendFragment;
+import cn.ismartv.voice.ui.fragment.SearchLoadingFragment;
 import cn.ismartv.voice.ui.fragment.VoiceFragment;
 import cn.ismartv.voice.ui.fragment.WeatherFragment;
 import cn.ismartv.voice.ui.widget.MessagePopWindow;
@@ -41,6 +42,7 @@ public class HomeActivity extends BaseActivity {
     private RecommendAppFragment appSearchFragment;
     private WeatherFragment weatherFragment;
     private RecognizeErrorFragment recognizeErrorFragment;
+    private SearchLoadingFragment searchLoadingFragment;
 
     private boolean voiceBtnIsDown = false;
     private View contentView;
@@ -55,12 +57,12 @@ public class HomeActivity extends BaseActivity {
         setContentView(contentView);
 
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        voiceFragment = new VoiceFragment();
-        contentFragment = new RecommendFragment();
-        transaction.replace(R.id.right_fragment, contentFragment, VOICE_FRAGMENT_TAG);
-        transaction.replace(R.id.left_fragment, voiceFragment, CONTENT_FRAGMENT_TAG);
-        transaction.commit();
+//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        voiceFragment = new VoiceFragment();
+//        contentFragment = new RecommendFragment();
+//        transaction.replace(R.id.right_fragment, contentFragment, VOICE_FRAGMENT_TAG);
+//        transaction.replace(R.id.left_fragment, voiceFragment, CONTENT_FRAGMENT_TAG);
+//        transaction.commit();
     }
 
     @Override
@@ -73,6 +75,7 @@ public class HomeActivity extends BaseActivity {
 //        transaction.replace(R.id.right_fragment, contentFragment, VOICE_FRAGMENT_TAG);
 //        transaction.replace(R.id.left_fragment, voiceFragment, CONTENT_FRAGMENT_TAG);
 //        transaction.commit();
+        backToInit();
     }
 
     @Override
@@ -121,7 +124,9 @@ public class HomeActivity extends BaseActivity {
 
 
     public void backToInit() {
-        if (contentFragment.isVisible()) {
+
+
+        if (contentFragment != null && contentFragment.isVisible()) {
             if (contentFragment.isRecommend()) {
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 voiceFragment = new VoiceFragment();
@@ -133,6 +138,16 @@ public class HomeActivity extends BaseActivity {
                 transaction.replace(R.id.right_fragment, contentFragment, VOICE_FRAGMENT_TAG);
                 transaction.commit();
             }
+        } else {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            voiceFragment = new VoiceFragment();
+            contentFragment = new RecommendFragment();
+            transaction.replace(R.id.left_fragment, voiceFragment, CONTENT_FRAGMENT_TAG);
+            transaction.setCustomAnimations(
+                    R.anim.push_left_in,
+                    R.anim.push_left_out);
+            transaction.replace(R.id.right_fragment, contentFragment, VOICE_FRAGMENT_TAG);
+            transaction.commit();
         }
     }
 
@@ -211,6 +226,10 @@ public class HomeActivity extends BaseActivity {
         }, 0);
     }
 
+    public void showSearchLoadingFragment() {
+        searchLoadingFragment = new SearchLoadingFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.right_fragment, searchLoadingFragment).commit();
+    }
 
     @Subscribe
     public void answerAvailable(AnswerAvailableEvent event) {
