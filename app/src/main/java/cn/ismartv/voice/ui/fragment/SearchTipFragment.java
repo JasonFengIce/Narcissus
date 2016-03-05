@@ -50,6 +50,15 @@ public class SearchTipFragment extends BaseFragment {
         fetchWords();
     }
 
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+//            fetchWords();
+        }
+    }
+
     //http://www.jb51.net/article/37229.htm
     private void fetchWords() {
         Retrofit retrofit = HttpManager.getInstance().resetAdapter_WUGUOJUN;
@@ -77,7 +86,6 @@ public class SearchTipFragment extends BaseFragment {
                             builder.setSpan(scaleXSpan, result.start, result.end + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                         }
 
-
                         textView.setText(builder);
                         tipListView.addView(textView, layoutParams);
                     }
@@ -96,9 +104,6 @@ public class SearchTipFragment extends BaseFragment {
 
     @Override
     public void onStop() {
-        if (wordsCall != null && !wordsCall.isCanceled()) {
-            wordsCall.cancel();
-        }
         super.onStop();
     }
 }

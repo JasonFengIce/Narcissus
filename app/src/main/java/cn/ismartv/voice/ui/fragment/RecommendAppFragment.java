@@ -55,16 +55,6 @@ public class RecommendAppFragment extends BaseFragment implements View.OnFocusCh
     private ImageView arrowDown;
     private View firstItemView;
 
-    private boolean isRecommend;
-
-    public void setIsRecommend(boolean isRecommend) {
-        this.isRecommend = isRecommend;
-    }
-
-    public boolean isRecommend() {
-        return isRecommend;
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -77,9 +67,7 @@ public class RecommendAppFragment extends BaseFragment implements View.OnFocusCh
         super.onViewCreated(view, savedInstanceState);
         recyclerView = (RecyclerView) view.findViewById(R.id.app_search_list);
         searchTitle = (TextView) view.findViewById(R.id.search_title);
-        if (isRecommend){
-            searchTitle.setText(getString(R.string.recommend_content_title));
-        }
+        searchTitle.setText(getString(R.string.recommend_content_title));
 
         arrowUp = (ImageView) view.findViewById(R.id.arrow_up);
         arrowDown = (ImageView) view.findViewById(R.id.arrow_down);
@@ -92,8 +80,6 @@ public class RecommendAppFragment extends BaseFragment implements View.OnFocusCh
         recyclerView.setLayoutManager(gridLayoutManager);
         fetchRecommendApp();
     }
-
-
 
 
     @Override

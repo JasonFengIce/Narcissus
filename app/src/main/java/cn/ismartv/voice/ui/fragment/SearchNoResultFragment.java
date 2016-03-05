@@ -22,7 +22,16 @@ public class SearchNoResultFragment extends BaseFragment {
 
     public void setRawText(String rawText) {
         this.rawText = rawText;
+        if (TextUtils.isEmpty(rawText)) {
+            title.setVisibility(View.GONE);
+            tip.setText(R.string.recognize_error_tip);
+        } else {
+            title.setVisibility(View.VISIBLE);
+            title.setText(rawText.replace("\"", ""));
+            tip.setText(R.string.search_no_result);
+        }
     }
+
 
     @Nullable
     @Override
@@ -36,15 +45,6 @@ public class SearchNoResultFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         title = (TextView) view.findViewById(R.id.raw_text);
         tip = (TextView) view.findViewById(R.id.tip);
-
-        if (TextUtils.isEmpty(rawText)) {
-            title.setVisibility(View.GONE);
-            tip.setText(R.string.recognize_error_tip);
-        } else {
-            title.setVisibility(View.VISIBLE);
-            title.setText(rawText.replace("\"", ""));
-            tip.setText(R.string.search_no_result);
-        }
     }
 
 }

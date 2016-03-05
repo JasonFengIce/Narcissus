@@ -39,7 +39,7 @@ import retrofit2.Retrofit;
 /**
  * Created by huaijie on 1/18/16.
  */
-public class RecommendFragment extends BaseFragment implements View.OnFocusChangeListener, OnClickListener {
+public class RecommendVodFragment extends BaseFragment implements View.OnFocusChangeListener, OnClickListener {
     private static final String TAG = "ContentFragment";
     private RecyclerView recyclerView;
     private TextView searchTitle;
@@ -48,14 +48,14 @@ public class RecommendFragment extends BaseFragment implements View.OnFocusChang
     private ImageView arrowUp;
     private ImageView arrowDown;
 
-    private boolean isRecommend;
-
-    public void setIsRecommend(boolean isRecommend) {
-        this.isRecommend = isRecommend;
-    }
+    private boolean isRecommend = false;
 
     public boolean isRecommend() {
         return isRecommend;
+    }
+
+    public void setIsRecommend(boolean isRecommend) {
+        this.isRecommend = isRecommend;
     }
 
     @Nullable
@@ -70,9 +70,6 @@ public class RecommendFragment extends BaseFragment implements View.OnFocusChang
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
         searchTitle = (TextView) view.findViewById(R.id.search_title);
 
-        if (isRecommend) {
-            searchTitle.setText(getString(R.string.recommend_content_title));
-        }
         arrowUp = (ImageView) view.findViewById(R.id.arrow_up);
         arrowDown = (ImageView) view.findViewById(R.id.arrow_down);
         arrowUp.setOnClickListener(this);
@@ -96,6 +93,15 @@ public class RecommendFragment extends BaseFragment implements View.OnFocusChang
 
     }
 
+    public void reset() {
+        isRecommend = true;
+        searchTitle.setText(getString(R.string.today_hot_vod));
+    }
+
+    public void changeTitle() {
+        isRecommend = true;
+        searchTitle.setText(getString(R.string.recommend_content_title));
+    }
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
