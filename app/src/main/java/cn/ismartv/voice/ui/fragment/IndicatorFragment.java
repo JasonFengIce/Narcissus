@@ -1,8 +1,10 @@
 package cn.ismartv.voice.ui.fragment;
 
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -325,6 +327,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
                         }
                     }
                 } else {
+                    Log.e("clickIndicator", "error");
                     //error
                     EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
                 }
@@ -332,6 +335,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
 
             @Override
             public void onFailure(Throwable t) {
+                Log.e("clickIndicator", "error");
                 EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
             }
         });

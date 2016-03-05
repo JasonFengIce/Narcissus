@@ -14,7 +14,8 @@ import retrofit2.Retrofit;
  * Created by huaijie on 1/15/16.
  */
 public class HttpManager {
-    private static final int DEFAULT_TIMEOUT = 2;
+    private static final int DEFAULT_CONNECT_TIMEOUT = 2;
+    private static final int DEFAULT_READ_TIMEOUT = 5;
 
     private static HttpManager ourInstance = new HttpManager();
     private static final String TSN_BAIDU_HOST = "http://tsn.baidu.com";
@@ -40,8 +41,8 @@ public class HttpManager {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         client = new OkHttpClient.Builder()
-                .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
-                .readTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
+                .connectTimeout(DEFAULT_CONNECT_TIMEOUT, TimeUnit.SECONDS)
+                .readTimeout(DEFAULT_READ_TIMEOUT, TimeUnit.SECONDS)
                 .addInterceptor(interceptor)
                 .build();
         restAdapter_TSN_BAIDU_HOST = new Retrofit.Builder()

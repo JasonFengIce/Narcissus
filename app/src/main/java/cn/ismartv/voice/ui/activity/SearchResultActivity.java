@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
@@ -70,6 +71,18 @@ public class SearchResultActivity extends BaseActivity {
         transaction.add(R.id.left_fragment, indicatorFragment, INDICATOR_FRAGMENT_TAG);
 //        transaction.add(R.id.right_fragment, contentFragment, CONTENT_FRAGMENT_TAG);
         transaction.commit();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
     }
 
     public void firstTimeVod(SemanticSearchResponseEntity entity, String raw) {
