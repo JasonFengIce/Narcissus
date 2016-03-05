@@ -24,7 +24,7 @@
 <dimen name="content_fragment_recycler_margin_top">-5.56dp</dimen>
 <dimen name="content_fragment_title_height">37.78dp</dimen>
 
-<dimen name="content_fragment_item_vertical_space">13.33dp</dimen>
+<dimen name="content_fragment_item_vertical_space">9.63dp</dimen>
 <dimen name="content_fragment_item_horizontal_space">29.63dp</dimen>
 <dimen name="textSize_24sp">8.89sp</dimen>
 <dimen name="textSize_30sp">11.11sp</dimen>
@@ -152,5 +152,6 @@
 <dimen name="pop_cursor_btn_width">61.11dp</dimen>
 
 <dimen name="item_margin_bottom">8.52dp</dimen>
+<dimen name="content_recycler_margin_bottom">3.70dp</dimen>
 
 </resources>

@@ -104,14 +104,12 @@ public class HomeActivity extends BaseActivity {
         recommendVodFragment.reset();
         showRightFragment(recommendVodFragment);
 
-
-//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//        voiceFragment = new VoiceFragment();
-//        contentFragment = new RecommendFragment();
-//        transaction.replace(R.id.right_fragment, contentFragment, VOICE_FRAGMENT_TAG);
-//        transaction.replace(R.id.left_fragment, voiceFragment, CONTENT_FRAGMENT_TAG);
-//        transaction.commit();
-//        backToInit();
+//        contentView.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                showNetworkErrorPop();
+//            }
+//        }, 3000);
     }
 
 
@@ -140,7 +138,6 @@ public class HomeActivity extends BaseActivity {
             Log.i(TAG, "key code: " + keyCode);
             if (!voiceBtnIsDown) {
                 voiceBtnIsDown = true;
-//                showLeftFragment(voiceFragment);
                 voiceFragment.startSpeek();
             }
             return true;

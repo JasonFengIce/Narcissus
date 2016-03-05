@@ -2,6 +2,7 @@ package cn.ismartv.voice.ui.widget;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -142,6 +143,16 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
         cursorImageView.setLayoutParams(params);
 
         frameLayout.addView(contentView, layoutParams);
+
+        frameLayout.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    return true;
+                }
+                return false;
+            }
+        });
         setContentView(frameLayout);
         setFocusable(true);
 

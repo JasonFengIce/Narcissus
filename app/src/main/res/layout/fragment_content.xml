@@ -47,7 +47,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/content_fragment_recycler_margin_top"
+            android:layout_marginBottom="@dimen/content_recycler_margin_bottom"
             android:clipChildren="false"
             android:clipToPadding="false"
             android:paddingLeft="@dimen/content_fragment_recycler_margin_lr"
