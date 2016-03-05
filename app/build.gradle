@@ -8,8 +8,8 @@ android {
         applicationId "cn.ismartv.voice"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 53
-        versionName "53"
+        versionCode 54
+        versionName "54"
     }
 
     signingConfigs {
