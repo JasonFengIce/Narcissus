@@ -313,14 +313,14 @@ public class RecommendVodFragment extends BaseFragment implements View.OnFocusCh
                 if (response.errorBody() == null) {
                     recyclerView.setAdapter(new RecyclerAdapter(response.body().getObjects()));
                 } else {
-                    EventBus.getDefault().post(new AnswerAvailableEvent());
+                    EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
                 }
 
             }
 
             @Override
             public void onFailure(Throwable t) {
-                EventBus.getDefault().post(new AnswerAvailableEvent());
+                EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
             }
         });
 

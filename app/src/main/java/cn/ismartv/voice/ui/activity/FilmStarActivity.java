@@ -183,13 +183,13 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                     }
                     fetchActorRelateByType(pk, entity.getFacet().get(0).getContent_type());
                 } else {
-                    EventBus.getDefault().post(new AnswerAvailableEvent());
+                    EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-                EventBus.getDefault().post(new AnswerAvailableEvent());
+                EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
             }
         });
     }
@@ -208,13 +208,13 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                     SemanticSearchResponseEntity entity = response.body();
                     recyclerView.setAdapter(new RecyclerAdapter(entity.getFacet().get(0).getObjects()));
                 } else {
-                    EventBus.getDefault().post(new AnswerAvailableEvent());
+                    EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-                EventBus.getDefault().post(new AnswerAvailableEvent());
+                EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
             }
         });
     }

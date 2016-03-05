@@ -316,20 +316,23 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
             @Override
             public void onResponse(Response<SemanticSearchResponseEntity> response) {
                 if (response.errorBody() == null) {
-                    if (isFirstTime) {
-                        ((SearchResultActivity) getActivity()).firstTimeVod(response.body(), rawText);
-                    } else {
-                        ((SearchResultActivity) getActivity()).refreshContent(response.body(), rawText);
+                    SearchResultActivity activity = ((SearchResultActivity) getActivity());
+                    if (activity != null) {
+                        if (isFirstTime) {
+                            activity.firstTimeVod(response.body(), rawText);
+                        } else {
+                            activity.refreshContent(response.body(), rawText);
+                        }
                     }
                 } else {
                     //error
-                    EventBus.getDefault().post(new AnswerAvailableEvent());
+                    EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-                EventBus.getDefault().post(new AnswerAvailableEvent());
+                EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
             }
         });
     }
@@ -378,20 +381,24 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
                         appSearchResponseEntity.getFacet()[0].setObjects(appList);
                         appSearchResponseEntity.getFacet()[0].setTotal_count(appList.size());
                     }
-                    if (isFirstTime) {
-                        ((SearchResultActivity) getActivity()).firstTimeApp(appList, appName);
-                    } else {
-                        ((SearchResultActivity) getActivity()).refreshApp(appList, appName);
+
+                    SearchResultActivity activity = ((SearchResultActivity) getActivity());
+                    if (activity != null) {
+                        if (isFirstTime) {
+                            ((SearchResultActivity) getActivity()).firstTimeApp(appList, appName);
+                        } else {
+                            ((SearchResultActivity) getActivity()).refreshApp(appList, appName);
+                        }
                     }
                 } else {
                     //error
-                    EventBus.getDefault().post(new AnswerAvailableEvent());
+                    EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-                EventBus.getDefault().post(new AnswerAvailableEvent());
+                EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
             }
         });
     }

@@ -87,7 +87,7 @@ public class WeatherFragment extends BaseFragment implements View.OnClickListene
             @Override
             public void onResponse(Response<ResponseBody> response) {
                 if (response.errorBody() != null) {
-                    EventBus.getDefault().post(new AnswerAvailableEvent());
+                    EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
                 } else {
                     try {
                         String result = response.body().string();
@@ -131,7 +131,7 @@ public class WeatherFragment extends BaseFragment implements View.OnClickListene
 
             @Override
             public void onFailure(Throwable t) {
-                EventBus.getDefault().post(new AnswerAvailableEvent());
+                EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
             }
         });
     }

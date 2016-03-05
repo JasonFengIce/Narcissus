@@ -227,7 +227,7 @@ public class AppSearchFragment extends BaseFragment implements View.OnFocusChang
             @Override
             public void onResponse(Response<List<AppSearchObjectEntity>> response) {
                 if (response.errorBody() != null) {
-                    EventBus.getDefault().post(new AnswerAvailableEvent());
+                    EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
                 } else {
 
                     List<AppSearchObjectEntity> entities = response.body();
@@ -237,7 +237,7 @@ public class AppSearchFragment extends BaseFragment implements View.OnFocusChang
 
             @Override
             public void onFailure(Throwable t) {
-                EventBus.getDefault().post(new AnswerAvailableEvent());
+                EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
             }
         });
     }

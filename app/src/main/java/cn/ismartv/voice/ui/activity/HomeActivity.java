@@ -278,7 +278,11 @@ public class HomeActivity extends BaseActivity {
 
     @Subscribe
     public void answerAvailable(AnswerAvailableEvent event) {
-        showNetworkErrorPop();
+        switch (event.getEventType()) {
+            case NETWORK_ERROR:
+                showNetworkErrorPop();
+                break;
+        }
     }
 
     @Override

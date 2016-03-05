@@ -68,7 +68,7 @@ public class AppHandler {
                             List<AppTable> tables = new Select().from(AppTable.class).where("app_package = ?", entity.getCaption()).execute();
                             if (tables.size() == 0) {
                                 appList.add(entity);
-                            }else {
+                            } else {
                                 for (AppTable table : tables) {
                                     AppSearchObjectEntity appSearchObjectEntity = new AppSearchObjectEntity();
                                     appSearchObjectEntity.setTitle(table.app_name);
@@ -85,13 +85,13 @@ public class AppHandler {
 
                 } else {
                     //error
-                    EventBus.getDefault().post(new AnswerAvailableEvent());
+                    EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-                EventBus.getDefault().post(new AnswerAvailableEvent());
+                EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
             }
         });
     }

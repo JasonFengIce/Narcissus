@@ -320,7 +320,7 @@ public class VoiceFragment extends BaseFragment implements View.OnTouchListener,
                 showRecognizeErrorFragment();
                 break;
             case VoiceRecognitionClient.ERROR_NETWORK:
-                EventBus.getDefault().post(new AnswerAvailableEvent());
+                EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
                 break;
         }
 

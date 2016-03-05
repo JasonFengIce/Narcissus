@@ -109,7 +109,7 @@ public class MultiHandler extends Thread {
 
 
                     } catch (IOException e) {
-                        EventBus.getDefault().post(new AnswerAvailableEvent());
+                        EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
                     }
                     break;
                 case "video":
@@ -128,7 +128,7 @@ public class MultiHandler extends Thread {
                         entity.setSemantic(new Gson().toJson(jsonObject));
                         indicatorList.add(0, entity);
                     } catch (IOException e) {
-                        EventBus.getDefault().post(new AnswerAvailableEvent());
+                        EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
                     }
                     break;
             }
