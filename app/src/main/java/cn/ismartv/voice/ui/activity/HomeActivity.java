@@ -36,7 +36,7 @@ import cn.ismartv.voice.ui.widget.MessagePopWindow;
 public class HomeActivity extends BaseActivity {
     private static final String TAG = "HomeActivity";
 
-    //    private static final String VOICE_FRAGMENT_TAG = "voice_fragment_tag";
+//    private static final String VOICE_FRAGMENT_TAG = "voice_fragment_tag";
 //    private static final String CONTENT_FRAGMENT_TAG = "content_fragment_tag";
 //    private static final String APP_SEARCH_FRAGMENT_TAG = "app_search_fragment_tag";
 //    private static final String WEATHER_FRAGMENT_TAG = "weather_fragment_tag";
@@ -119,9 +119,13 @@ public class HomeActivity extends BaseActivity {
             if (fragment != baseFragment && baseFragment.isVisible())
                 transaction.hide(baseFragment);
         }
-        transaction.setCustomAnimations(
-                R.anim.push_left_in,
-                R.anim.push_left_out);
+
+        if (fragment.getClass() != SearchLoadingFragment.class) {
+            transaction.setCustomAnimations(
+                    R.anim.push_left_in,
+                    R.anim.push_left_out);
+        }
+
         transaction.show(fragment).commitAllowingStateLoss();
     }
 

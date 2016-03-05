@@ -2,7 +2,6 @@ package cn.ismartv.voice.ui.widget;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -121,7 +120,7 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
         firstMessage.setText(mFirstLineMessage);
 
         RelativeLayout frameLayout = new RelativeLayout(mContext);
-        frameLayout.setBackgroundResource(R.drawable.pop_bg);
+        frameLayout.setBackgroundColor(context.getResources().getColor(R.color.pop_bg));
         RelativeLayout.LayoutParams layoutParams;
         layoutParams = new RelativeLayout.LayoutParams(width, height);
         layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
