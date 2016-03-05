@@ -99,7 +99,7 @@ public class HomeActivity extends BaseActivity {
         super.onResume();
         EventBus.getDefault().register(this);
         voiceFragment.reset();
-        getSupportFragmentManager().beginTransaction().show(voiceFragment).commit();
+        getSupportFragmentManager().beginTransaction().show(voiceFragment).commitAllowingStateLoss();
 
         recommendVodFragment.reset();
         showRightFragment(recommendVodFragment);
@@ -124,7 +124,7 @@ public class HomeActivity extends BaseActivity {
         transaction.setCustomAnimations(
                 R.anim.push_left_in,
                 R.anim.push_left_out);
-        transaction.show(fragment).commit();
+        transaction.show(fragment).commitAllowingStateLoss();
     }
 
 

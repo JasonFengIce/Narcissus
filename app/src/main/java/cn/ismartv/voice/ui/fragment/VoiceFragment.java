@@ -453,7 +453,7 @@ public class VoiceFragment extends BaseFragment implements View.OnTouchListener,
             if (fragment != f && f.isVisible())
                 transaction.hide(f);
         }
-        transaction.show(fragment).commit();
+        transaction.show(fragment).commitAllowingStateLoss();
     }
 
 
