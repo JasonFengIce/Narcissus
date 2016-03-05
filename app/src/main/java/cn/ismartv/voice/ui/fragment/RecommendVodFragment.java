@@ -89,7 +89,7 @@ public class RecommendVodFragment extends BaseFragment implements View.OnFocusCh
     }
 
     public void reset() {
-        isRecommend = true;
+        isRecommend = false;
         searchTitle.setText(getString(R.string.today_hot_vod));
     }
 
