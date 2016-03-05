@@ -11,6 +11,8 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -36,7 +38,7 @@ import cn.ismartv.voice.ui.widget.MessagePopWindow;
 public class HomeActivity extends BaseActivity {
     private static final String TAG = "HomeActivity";
 
-//    private static final String VOICE_FRAGMENT_TAG = "voice_fragment_tag";
+    //    private static final String VOICE_FRAGMENT_TAG = "voice_fragment_tag";
 //    private static final String CONTENT_FRAGMENT_TAG = "content_fragment_tag";
 //    private static final String APP_SEARCH_FRAGMENT_TAG = "app_search_fragment_tag";
 //    private static final String WEATHER_FRAGMENT_TAG = "weather_fragment_tag";
@@ -61,6 +63,7 @@ public class HomeActivity extends BaseActivity {
         networkEorrorPopupWindow = new MessagePopWindow(this, "网络异常，请检查网络", null);
         contentView = LayoutInflater.from(this).inflate(R.layout.activity_home, null);
         setContentView(contentView);
+
 
         voiceFragment = new VoiceFragment();
         recommendVodFragment = new RecommendVodFragment();

@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -80,12 +82,18 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
         networkEorrorPopupWindow = new MessagePopWindow(this, "网络异常，请检查网络", null);
         contentView = LayoutInflater.from(this).inflate(R.layout.activity_filmstar, null);
         setContentView(contentView);
+
+        Window window = getWindow();
+        WindowManager.LayoutParams params = window.getAttributes();
+        params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        window.setAttributes(params);
+
         initViews();
         Intent intent = getIntent();
-        pk = intent.getLongExtra("pk", 0);
-//        pk = 1054;
-        String title = intent.getStringExtra("title");
-//        String title = "刘德华";
+//        pk = intent.getLongExtra("pk", 0);
+        pk = 2857;
+//        String title = intent.getStringExtra("title");
+        String title = "刘德华";
         filmStartitle.setText(title);
         fetchActorRelate(pk);
 
@@ -223,19 +231,19 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
     public void onFocusChange(View v, boolean hasFocus) {
         switch (v.getId()) {
             case R.id.filmStar_indicator_item:
-                Log.e(TAG, "first item visible: " + (firstIndicatorItem.getVisibility() == View.VISIBLE));
                 int position = (int) v.getTag(R.id.filmStar_indicator_item);
-                if (position == 0) {
-                    indicatorArrowLeft.setVisibility(View.INVISIBLE);
-                } else {
-                    indicatorArrowLeft.setVisibility(View.VISIBLE);
-                }
-
-                if (indicatorListLayout.getChildCount() - 1 == position) {
-                    indicatorArrowRight.setVisibility(View.INVISIBLE);
-                } else {
-                    indicatorArrowRight.setVisibility(View.VISIBLE);
-                }
+                Log.i(TAG, "indicator position: " + position);
+//                if (position == 0) {
+//                    indicatorArrowLeft.setVisibility(View.INVISIBLE);
+//                } else {
+//                    indicatorArrowLeft.setVisibility(View.VISIBLE);
+//                }
+//
+//                if (indicatorListLayout.getChildCount() - 1 == position) {
+//                    indicatorArrowRight.setVisibility(View.INVISIBLE);
+//                } else {
+//                    indicatorArrowRight.setVisibility(View.VISIBLE);
+//                }
 
                 ImageView bg = (ImageView) v.findViewById(R.id.indicator_bg);
                 TextView textView = (TextView) v.findViewById(R.id.title);
@@ -259,6 +267,23 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                     bg.setVisibility(View.INVISIBLE);
                     ViewScaleUtil.scaleToNormal(v, 1.3f);
                 }
+
+                int scrollX = horizontalScrollView.getScrollX();
+                Log.i(TAG, "scroll x: " + scrollX);
+                int itemWidth = (int) getResources().getDimension(R.dimen.film_star_indicator_bg_width);
+                if (scrollX >= itemWidth) {
+                    indicatorArrowLeft.setVisibility(View.VISIBLE);
+                } else {
+                    indicatorArrowLeft.setVisibility(View.INVISIBLE);
+                }
+
+                int count = indicatorListLayout.getChildCount();
+                if (scrollX == (count - 4) * itemWidth) {
+                    indicatorArrowRight.setVisibility(View.INVISIBLE);
+                } else {
+                    indicatorArrowRight.setVisibility(View.VISIBLE);
+                }
+
                 break;
             case R.id.content_arrow_left:
             case R.id.content_arrow_right:
