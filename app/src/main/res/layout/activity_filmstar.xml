@@ -81,6 +81,7 @@
             android:clickable="true"
             android:focusable="true"
             android:focusableInTouchMode="true"
+            android:visibility="invisible"
             />
 
         <cn.ismartv.recyclerview.widget.RecyclerView
@@ -105,6 +106,7 @@
             android:clickable="true"
             android:focusable="true"
             android:focusableInTouchMode="true"
+            android:visibility="invisible"
             />
 
     </RelativeLayout>
