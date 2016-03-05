@@ -267,12 +267,13 @@ public class VoiceFragment extends BaseFragment implements View.OnTouchListener,
                 break;
             // 语音识别完成，显示obj中的结果
             case VoiceRecognitionClient.CLIENT_STATUS_FINISH:
+                voiceMicImg.setImageResource(R.drawable.voice_mic);
+                isRecognition = false;
                 if (System.currentTimeMillis() - voicePressTime < 3000) {
                     ((HomeActivity) getActivity()).backToInit();
                     return;
                 }
-                isRecognition = false;
-                voiceMicImg.setImageResource(R.drawable.voice_mic);
+
                 VoiceResultEntity[] voiceResultEntity = new Gson().fromJson(o.toString(), VoiceResultEntity[].class);
                 if (voiceResultEntity.length == 0) {
                     showRecognizeErrorFragment();
@@ -305,13 +306,13 @@ public class VoiceFragment extends BaseFragment implements View.OnTouchListener,
 
     @Override
     public void onError(int errorType, int errorCode) {
+        voiceMicImg.setImageResource(R.drawable.voice_mic);
+        isRecognition = false;
         if (System.currentTimeMillis() - voicePressTime < 3000) {
             ((HomeActivity) getActivity()).backToInit();
             return;
         }
 
-        voiceMicImg.setImageResource(R.drawable.voice_mic);
-        isRecognition = false;
         switch (errorType) {
             case VoiceRecognitionClient.ERROR_CLIENT:
             case VoiceRecognitionClient.ERROR_RECORDER:
