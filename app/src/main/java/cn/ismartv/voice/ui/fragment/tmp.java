@@ -9,8 +9,11 @@
 //import android.view.LayoutInflater;
 //import android.view.View;
 //import android.view.View.OnClickListener;
+//import android.view.View.OnFocusChangeListener;
 //import android.view.ViewGroup;
 //import android.widget.AdapterView;
+//import android.widget.AdapterView.OnItemClickListener;
+//import android.widget.AdapterView.OnItemSelectedListener;
 //import android.widget.BaseAdapter;
 //import android.widget.GridView;
 //import android.widget.ImageView;
@@ -21,38 +24,40 @@
 //import com.squareup.picasso.Picasso;
 //import com.squareup.picasso.Transformation;
 //
+//import org.greenrobot.eventbus.EventBus;
+//
 //import java.util.List;
 //
 //import cn.ismartv.imagereflection.ReflectionTransformationBuilder;
 //import cn.ismartv.imagereflection.RelectionImageView;
 //import cn.ismartv.voice.R;
+//import cn.ismartv.voice.core.event.AnswerAvailableEvent;
+//import cn.ismartv.voice.core.http.HttpAPI;
+//import cn.ismartv.voice.core.http.HttpManager;
+//import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 //import cn.ismartv.voice.data.http.SemantichObjectEntity;
+//import cn.ismartv.voice.data.http.SharpHotWordsEntity;
 //import cn.ismartv.voice.util.ViewScaleUtil;
+//import retrofit2.Callback;
+//import retrofit2.Response;
+//import retrofit2.Retrofit;
 //
 ///**
 // * Created by huaijie on 1/18/16.
 // */
-//public class ContentFragment2 extends BaseFragment implements View.OnFocusChangeListener, OnClickListener, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
+//public class ContentFragment2 extends BaseFragment implements OnFocusChangeListener, OnClickListener, OnItemClickListener, OnItemSelectedListener {
 //    private static final String TAG = "ContentFragment";
 //    private GridView recyclerView;
 //    private TextView searchTitle;
 //
-//    private View lostFocusItemView;
 //    private ImageView arrowUp;
 //    private ImageView arrowDown;
-//
 //    private View lastItemFocusView;
 //
+//    private boolean isRecommend = true;
 //
-//    private List<SemantichObjectEntity> objectEntities;
-//    private String raw;
-//
-//    public void setObjectEntities(List<SemantichObjectEntity> objectEntities) {
-//        this.objectEntities = objectEntities;
-//    }
-//
-//    public void setRaw(String raw) {
-//        this.raw = raw;
+//    public boolean isRecommend() {
+//        return isRecommend;
 //    }
 //
 //    @Nullable
@@ -71,21 +76,22 @@
 //        arrowUp.setOnClickListener(this);
 //        arrowDown.setOnClickListener(this);
 //        arrowUp.bringToFront();
-//
+//        fetchSharpHotWords();
 //        recyclerView.setOnFocusChangeListener(this);
-//
-//        notifyDataChanged(objectEntities, raw);
-//
+//        recyclerView.setOnItemClickListener(this);
+//        recyclerView.setOnItemSelectedListener(this);
 //    }
 //
 //
-//    public void notifyDataChanged(List<SemantichObjectEntity> entities, String data) {
+//    public void notifyDataChanged(SemanticSearchResponseEntity responseEntity, String data) {
+//        isRecommend = false;
 //        String rawTextValue = getString(R.string.search_title);
 //        String rawText = new JsonParser().parse(data).getAsJsonObject().get("raw_text").toString();
 //        searchTitle.setText(String.format(rawTextValue, rawText));
-//        recyclerView.setAdapter(new GridAdapter(entities, getContext()));
+//        recyclerView.setAdapter(new GridAdapter(responseEntity.getFacet().get(0).getObjects(), getContext()));
 //        //first item request focus
 //    }
+//
 //
 //    @Override
 //    public void onFocusChange(View v, boolean hasFocus) {
@@ -128,9 +134,34 @@
 //                recyclerView.smoothScrollBy(0, recyclerView.getHeight());
 //                break;
 //        }
+//    }
 //
+//    public void setSearchTitle() {
+//        searchTitle.setText(getString(R.string.recommend_content_title));
+//    }
+//
+//    public void fetchSharpHotWords() {
+//        isRecommend = true;
+//        Retrofit retrofit = HttpManager.getInstance().resetAdapter_WUGUOJUN;
+//        retrofit.create(HttpAPI.SharpHotWords.class).doRequest(8).enqueue(new Callback<SharpHotWordsEntity>() {
+//            @Override
+//            public void onResponse(Response<SharpHotWordsEntity> response) {
+//                if (response.errorBody() == null) {
+//                    recyclerView.setAdapter(new GridAdapter(response.body().getObjects(), getContext()));
+//                } else {
+//                    EventBus.getDefault().post(new AnswerAvailableEvent());
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Throwable t) {
+//                EventBus.getDefault().post(new AnswerAvailableEvent());
+//            }
+//        });
 //
 //    }
+//
 //
 //    private class GridAdapter extends BaseAdapter {
 //        private Context context;
@@ -305,6 +336,4 @@
 //    @Override
 //    public void onNothingSelected(AdapterView<?> parent) {
 //    }
-//
-//
 //}

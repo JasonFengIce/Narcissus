@@ -41,6 +41,7 @@ public class HttpManager {
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         client = new OkHttpClient.Builder()
                 .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
+                .readTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .addInterceptor(interceptor)
                 .build();
         restAdapter_TSN_BAIDU_HOST = new Retrofit.Builder()
