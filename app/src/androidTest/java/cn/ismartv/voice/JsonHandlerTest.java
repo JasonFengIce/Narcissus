@@ -27,6 +27,5 @@ public class JsonHandlerTest extends AndroidTestCase {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }

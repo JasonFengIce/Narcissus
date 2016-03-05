@@ -54,10 +54,6 @@ public class RecommendVodFragment extends BaseFragment implements View.OnFocusCh
         return isRecommend;
     }
 
-    public void setIsRecommend(boolean isRecommend) {
-        this.isRecommend = isRecommend;
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -292,6 +288,7 @@ public class RecommendVodFragment extends BaseFragment implements View.OnFocusCh
             }
         }
     }
+
 
     private class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView textView;

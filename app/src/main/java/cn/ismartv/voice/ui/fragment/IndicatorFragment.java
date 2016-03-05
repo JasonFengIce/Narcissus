@@ -121,10 +121,14 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
                 break;
             case "multi":
                 SemanticSearchResponseEntity videoEntity = new Gson().fromJson(videoData, SemanticSearchResponseEntity.class);
-                initVodIndicator(videoEntity, videoRaw);
+                if (videoEntity != null && videoEntity.getFacet().get(0) != null) {
+                    initVodIndicator(videoEntity, videoRaw);
+                }
 
                 List<AppSearchObjectEntity> appEntity = new Gson().fromJson(appData, List.class);
-                initAppIndicator(appEntity, appRaw);
+                if (appEntity != null && appEntity.size() != 0) {
+                    initAppIndicator(appEntity, appRaw);
+                }
                 break;
         }
     }
