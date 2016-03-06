@@ -24,7 +24,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/app_fragment_recycler_margin_top"
         android:clipChildren="false"
         android:clipToPadding="false">
 
@@ -43,11 +42,14 @@
         <cn.ismartv.voice.ui.widget.ZGridView
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/app_search_recycler_height"
+            android:layout_centerInParent="true"
             android:cacheColorHint="@android:color/transparent"
             android:clipChildren="false"
             android:clipToPadding="false"
             android:focusable="true"
+            android:paddingLeft="@dimen/content_fragment_recycler_margin_lr"
+            android:paddingRight="@dimen/content_fragment_recycler_margin_lr"
             android:scrollbars="none"
             app:horizontalSpace="80dp"
             app:listSelector="@drawable/selector_item"

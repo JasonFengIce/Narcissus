@@ -114,7 +114,7 @@ public class ResultAppFragment extends BaseFragment implements View.OnFocusChang
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        onVodItemClick((SemantichObjectEntity) view.getTag());
+        onAppItemClick((AppSearchObjectEntity) view.getTag());
     }
 
     @Override
@@ -161,7 +161,7 @@ public class ResultAppFragment extends BaseFragment implements View.OnFocusChang
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder myViewHolder;
             if (convertView == null) {
-                convertView = LayoutInflater.from(context).inflate(R.layout.item_app, null);
+                convertView = LayoutInflater.from(context).inflate(R.layout.item_app_result, null);
                 myViewHolder = new ViewHolder();
                 myViewHolder.imageView = (ImageView) convertView.findViewById(R.id.item_app_image);
                 myViewHolder.textView = (TextView) convertView.findViewById(R.id.item_app_title);
