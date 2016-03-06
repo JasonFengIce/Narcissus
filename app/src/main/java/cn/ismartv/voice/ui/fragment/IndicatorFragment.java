@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +58,12 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
     private String type;
     private String data;
     private String raw;
+    private String appData;
+    private String videoData;
+    private String appRaw;
+    private String videoRaw;
+    private Call<SemanticSearchResponseEntity> vodCall;
+    private Call<AppSearchResponseEntity> appCall;
 
     public void setType(String type) {
         this.type = type;
@@ -69,11 +76,6 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
     public void setRaw(String raw) {
         this.raw = raw;
     }
-
-    private String appData;
-    private String videoData;
-    private String appRaw;
-    private String videoRaw;
 
     public void setAppData(String appData) {
         this.appData = appData;
@@ -90,10 +92,6 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
     public void setVideoRaw(String videoRaw) {
         this.videoRaw = videoRaw;
     }
-
-    private Call<SemanticSearchResponseEntity> vodCall;
-    private Call<AppSearchResponseEntity> appCall;
-
 
     @Nullable
     @Override
@@ -159,7 +157,6 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
         int i = 0;
         for (SemanticSearchResponseEntity.Facet facet : entity.getFacet()) {
             LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.item_indicator, null);
-            linearLayout.setBackgroundResource(R.drawable.seletor_indicator_item);
             TextView title = (TextView) linearLayout.findViewById(R.id.title);
             title.setText(facet.getName() + "  ( " + facet.getTotal_count() + " )");
 
@@ -194,8 +191,11 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
                 TextView textView = (TextView) linearLayout.findViewById(R.id.title);
                 textView.setTextColor(getResources().getColor(R.color._ffffff));
             }
+            int height = (int) getResources().getDimension(R.dimen.content_fragment_indicator_item_height) + (int) getResources().getDimension(R.dimen.divider_line_height);
 
-            videoContentLayout.addView(linearLayout);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
+            layoutParams.gravity = Gravity.CENTER;
+            videoContentLayout.addView(linearLayout, layoutParams);
             i = i + 1;
         }
 
@@ -207,7 +207,6 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
         appTypeLayout.setVisibility(View.VISIBLE);
         appContentLayout.removeAllViews();
         LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.item_indicator, null);
-        linearLayout.setBackgroundResource(R.drawable.seletor_indicator_item);
         TextView title = (TextView) linearLayout.findViewById(R.id.title);
         linearLayout.setId(R.id.all_app_type);
         title.setText("全部应用" + "  ( " + entitys.size() + " )");
@@ -231,7 +230,11 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
         });
         linearLayout.setNextFocusLeftId(R.id.indicator_slide_menu);
         linearLayout.setOnFocusChangeListener(this);
-        appContentLayout.addView(linearLayout);
+
+        int height = (int) getResources().getDimension(R.dimen.content_fragment_indicator_item_height) + (int) getResources().getDimension(R.dimen.divider_line_height);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
+        layoutParams.gravity = Gravity.CENTER;
+        appContentLayout.addView(linearLayout, layoutParams);
 
         if (videoTypeLayout.getVisibility() == View.GONE) {
             lostFocusView = null;
