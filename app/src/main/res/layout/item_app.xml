@@ -11,27 +11,21 @@
 
     >
 
-    <RelativeLayout
-        android:id="@+id/item_app_image_layout"
-        android:layout_width="@dimen/content_fragment_item_width"
-        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/item_app_image"
-            android:layout_width="@dimen/content_fragment_item_width"
-            android:layout_height="@dimen/content_fragment_item_img_height"
-            android:layout_centerHorizontal="true"
-            android:scaleType="fitXY" />
-    </RelativeLayout>
+    <ImageView
+        android:id="@+id/item_app_image"
+        android:layout_width="@dimen/item_app_search_width"
+        android:layout_height="@dimen/item_app_search_width"
+        android:layout_centerHorizontal="true"
+        android:scaleType="fitXY" />
 
 
     <TextView
         android:id="@+id/item_app_title"
         android:layout_width="@dimen/content_fragment_item_width"
         android:layout_height="wrap_content"
-        android:layout_below="@id/item_app_image_layout"
+        android:layout_below="@id/item_app_image"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/item_text_margin_top"
         android:ellipsize="marquee"
         android:gravity="center"
         android:marqueeRepeatLimit="marquee_forever"
