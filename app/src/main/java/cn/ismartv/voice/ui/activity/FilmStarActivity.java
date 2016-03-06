@@ -256,7 +256,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                     }
 
                     bg.setVisibility(View.VISIBLE);
-                    ViewScaleUtil.scaleToLarge(v, 1.3f);
+                    ViewScaleUtil.zoomin_1_3(v);
                 } else {
                     if (indicatorSelectedView == v) {
                         textView.setTextColor(getResources().getColor(R.color._ffffff));
@@ -265,7 +265,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                     }
 
                     bg.setVisibility(View.INVISIBLE);
-                    ViewScaleUtil.scaleToNormal(v, 1.3f);
+                    ViewScaleUtil.zoomout_1_3(v);
                 }
 
                 int scrollX = horizontalScrollView.getScrollX();
@@ -290,9 +290,9 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
             case R.id.indicator_left:
             case R.id.indicator_right:
                 if (hasFocus) {
-                    ViewScaleUtil.scaleToLarge(v, 1.3f);
+                    ViewScaleUtil.zoomin_1_3(v);
                 } else {
-                    ViewScaleUtil.scaleToNormal(v, 1.3f);
+                    ViewScaleUtil.zoomout_1_3(v);
                 }
                 break;
             case R.id.recyclerview:
@@ -489,12 +489,12 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                 setFilmAttr(attributesEntity, description);
                 textView.setSelected(true);
                 imageView.setBackgroundResource(R.drawable.item_focus);
-                ViewScaleUtil.scaleToLarge(v, 1.15f);
+                ViewScaleUtil.zoomin_1_15(v);
             } else {
                 lostFocusItemView = v;
                 textView.setSelected(false);
                 imageView.setBackgroundDrawable(null);
-                ViewScaleUtil.scaleToNormal(v, 1.15f);
+                ViewScaleUtil.zoomout_1_15(v);
             }
         }
     }

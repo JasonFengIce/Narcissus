@@ -199,11 +199,11 @@ public class AppSearchFragment extends BaseFragment implements View.OnFocusChang
             if (hasFocus) {
                 textView.setSelected(true);
                 imageView.setBackgroundResource(R.drawable.item_focus);
-                ViewScaleUtil.scaleToLarge(v, 1.15f);
+                ViewScaleUtil.zoomin_1_15(v);
             } else {
                 textView.setSelected(false);
                 imageView.setBackgroundDrawable(null);
-                ViewScaleUtil.scaleToNormal(v, 1.15f);
+                ViewScaleUtil.zoomout_1_15(v);
             }
         }
     }

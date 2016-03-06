@@ -276,23 +276,23 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
                 if (hasFocus) {
                     transferLine.setFocusable(false);
                     transferLine.setFocusableInTouchMode(false);
+                    ViewScaleUtil.zoomin_1_3(v);
                     if (selectedView == v) {
                         textView.setTextColor(getResources().getColor(R.color._ffffff));
-                        ViewScaleUtil.scaleLarge_1_3_(v);
+
                     } else {
                         textView.setTextColor(getResources().getColor(R.color._ff9c3c));
-                        ViewScaleUtil.scaleLarge_1_3_(v);
                     }
 
                 } else {
                     transferLine.setFocusable(true);
                     transferLine.setFocusableInTouchMode(true);
+                    ViewScaleUtil.zoomout_1_3(v);
                     if (selectedView == v) {
                         textView.setTextColor(getResources().getColor(R.color._ffffff));
-                        ViewScaleUtil.scaleNormal_1_3(v);
+
                     } else {
                         textView.setTextColor(getResources().getColor(R.color._a6a6a6));
-                        ViewScaleUtil.scaleNormal_1_3(v);
                     }
                     slideMenu.setNextFocusRightId(v.getId());
                     lostFocusView = v;

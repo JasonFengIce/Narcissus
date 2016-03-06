@@ -177,16 +177,16 @@ public class RecommendVodFragment extends BaseFragment implements OnFocusChangeL
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-        ImageView imageView = (ImageView) v.findViewById(R.id.item_vod_image);
+        View imageViewLayout = v.findViewById(R.id.item_vod_image_layout);
         TextView textView = (TextView) v.findViewById(R.id.item_vod_title);
         if (hasFocus) {
             textView.setSelected(true);
-            imageView.setBackgroundResource(R.drawable.item_focus);
-            ViewScaleUtil.scaleToLarge(v, 1.15f);
+            imageViewLayout.setSelected(true);
+            ViewScaleUtil.zoomin_1_15(v);
         } else {
             textView.setSelected(false);
-            imageView.setBackgroundDrawable(null);
-            ViewScaleUtil.scaleToNormal(v, 1.15f);
+            imageViewLayout.setSelected(false);
+            ViewScaleUtil.zoomout_1_15(v);
         }
     }
 

@@ -134,10 +134,10 @@ public class RecognizeErrorFragment extends BaseFragment implements View.OnFocus
         TextView textView = (TextView) v;
         if (hasFocus) {
             textView.setTextColor(getResources().getColor(R.color._ff9c3c));
-            ViewScaleUtil.scaleToLarge(v, 1.3f);
+            ViewScaleUtil.zoomin_1_3(v);
         } else {
             textView.setTextColor(getResources().getColor(R.color._ffffff));
-            ViewScaleUtil.scaleToNormal(v, 1.3f);
+            ViewScaleUtil.zoomout_1_3(v);
         }
     }
 

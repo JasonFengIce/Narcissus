@@ -122,16 +122,16 @@ public class RecommendAppFragment extends BaseFragment implements View.OnFocusCh
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-        ImageView imageView = (ImageView) v.findViewById(R.id.item_app_image);
+        View imageView = v.findViewById(R.id.item_app_image);
         TextView textView = (TextView) v.findViewById(R.id.item_app_title);
         if (hasFocus) {
             textView.setSelected(true);
-            imageView.setBackgroundResource(R.drawable.item_focus);
-            ViewScaleUtil.scaleToLarge(v, 1.15f);
+            imageView.setSelected(true);
+            ViewScaleUtil.zoomin_1_15(v);
         } else {
             textView.setSelected(false);
-            imageView.setBackgroundDrawable(null);
-            ViewScaleUtil.scaleToNormal(v, 1.15f);
+            imageView.setSelected(false);
+            ViewScaleUtil.zoomout_1_15(v);
         }
     }
 

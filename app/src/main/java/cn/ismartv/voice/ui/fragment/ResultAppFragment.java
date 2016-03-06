@@ -1,15 +1,8 @@
 package cn.ismartv.voice.ui.fragment;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,36 +10,15 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
-import cn.ismartv.imagereflection.RelectionImageView;
-import cn.ismartv.injectdb.library.query.Select;
-import cn.ismartv.recyclerview.widget.GridLayoutManager;
-import cn.ismartv.recyclerview.widget.RecyclerView;
-import cn.ismartv.voice.MainApplication;
 import cn.ismartv.voice.R;
-import cn.ismartv.voice.core.event.AnswerAvailableEvent;
-import cn.ismartv.voice.core.http.HttpAPI;
-import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.data.http.AppSearchObjectEntity;
-import cn.ismartv.voice.data.http.SemantichObjectEntity;
-import cn.ismartv.voice.data.table.AppTable;
-import cn.ismartv.voice.ui.ReflectionTransformationBuilder;
-import cn.ismartv.voice.ui.SpaceItemDecoration;
-import cn.ismartv.voice.ui.widget.LaunchAppTransitionPopWindow;
 import cn.ismartv.voice.ui.widget.ZGridView;
-import cn.ismartv.voice.util.ViewScaleUtil;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
  * Created by huaijie on 1/28/16.
