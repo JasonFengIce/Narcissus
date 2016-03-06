@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ZGridView">
+
+        <!-- Defines the default horizontal spacing between columns. -->
+        <attr name="horizontalSpace" format="dimension" />
+        <!-- Defines the default vertical spacing between rows. -->
+        <attr name="verticalSpace" format="dimension" />
+        <!-- Defines how columns should stretch to fill the available empty space, if any. -->
+        <attr name="stretchMode">
+
+            <!-- Stretching is disabled. -->
+            <enum name="none" value="0" />
+            <!-- The spacing between each column is stretched. -->
+            <enum name="spacingWidth" value="1" />
+            <!-- Each column is stretched equally. -->
+            <enum name="columnWidth" value="2" />
+            <!-- The spacing between each column is uniformly stretched.. -->
+            <enum name="spacingWidthUniform" value="3" />
+        </attr>
+        <!-- Specifies the fixed width for each column. -->
+        <attr name="columnWidth" format="dimension" />
+        <!-- Defines how many columns to show. -->
+        <attr name="numColumns" format="integer" min="0">
+
+            <!-- Display as many columns as possible to fill the available space. -->
+            <enum name="auto_fit" value="-1" />
+        </attr>
+        <!-- Specifies the gravity within each cell. -->
+        <attr name="gravity" format="integer" />
+        <!-- //////////////////////////////////////////////////////////// -->
+        <!-- Drawable used to indicate the currently selected item in the list. -->
+        <attr name="listSelector" format="color|reference" />
+        <attr name="drawSelectorOnTop" format="boolean" />
+        <attr name="stackFromBottom" format="boolean" />
+        <attr name="scrollingCache" format="boolean" />
+        <attr name="textFilterEnabled" format="boolean" />
+        <!--
+             Sets the transcript mode for the list. In transcript mode, the list
+             scrolls to the bottom to make new items visible when they are added.
+        -->
+        <attr name="transcriptMode">
+            <enum name="disabled" value="0" />
+            <enum name="normal" value="1" />
+            <enum name="alwaysScroll" value="2" />
+        </attr>
+        <attr name="cacheColorHint" format="color" />
+        <attr name="fastScrollEnabled" format="boolean" />
+        <attr name="smoothScrollbar" format="boolean" />
+        <attr name="choiceMode">
+
+            <!-- Normal list that does not indicate choices. -->
+            <enum name="none" value="0" />
+            <!-- The list allows up to one choice. -->
+            <enum name="singleChoice" value="1" />
+            <!-- The list allows multiple choices. -->
+            <enum name="multipleChoice" value="2" />
+            <!-- The list allows multiple choices in a custom selection mode. -->
+            <enum name="multipleChoiceModal" value="3" />
+        </attr>
+
+        <!--
+             When set to true, the list will always show the fast scroll interface.
+             This setting implies fastScrollEnabled.
+        -->
+        <attr name="fastScrollAlwaysVisible" format="boolean" />
+        <attr name="selectorLeftPadding" format="dimension" />
+        <attr name="selectorTopPadding" format="dimension" />
+        <attr name="selectorRightPadding" format="dimension" />
+        <attr name="selectorBottomPadding" format="dimension" />
+    </declare-styleable>
+
+
+</resources>

@@ -17,7 +17,8 @@ import cn.ismartv.voice.core.event.AnswerAvailableEvent;
 import cn.ismartv.voice.data.http.AppSearchObjectEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.ui.fragment.AppSearchFragment;
-import cn.ismartv.voice.ui.fragment.ContentFragment;
+import cn.ismartv.voice.ui.fragment.ResultAppFragment;
+import cn.ismartv.voice.ui.fragment.ResultVodFragment;
 import cn.ismartv.voice.ui.fragment.IndicatorFragment;
 import cn.ismartv.voice.ui.fragment.SearchLoadingFragment;
 import cn.ismartv.voice.ui.widget.MessagePopWindow;
@@ -33,9 +34,9 @@ public class SearchResultActivity extends BaseActivity {
     private MessagePopWindow networkEorrorPopupWindow;
     private View contentView;
 
-    private ContentFragment contentFragment;
+    private ResultVodFragment contentFragment;
     private IndicatorFragment indicatorFragment;
-    private AppSearchFragment appSearchFragment;
+    private ResultAppFragment appSearchFragment;
     private SearchLoadingFragment searchLoadingFragment;
 
     @Override
@@ -46,7 +47,6 @@ public class SearchResultActivity extends BaseActivity {
         setContentView(contentView);
 
         indicatorFragment = new IndicatorFragment();
-
 
         Intent intent = getIntent();
         String type = intent.getStringExtra("type");
@@ -86,7 +86,7 @@ public class SearchResultActivity extends BaseActivity {
     }
 
     public void firstTimeVod(SemanticSearchResponseEntity entity, String raw) {
-        contentFragment = new ContentFragment();
+        contentFragment = new ResultVodFragment();
         contentFragment.setRaw(raw);
         contentFragment.setObjectEntities(entity.getFacet().get(0).getObjects());
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -95,7 +95,7 @@ public class SearchResultActivity extends BaseActivity {
     }
 
     public void firstTimeApp(List<AppSearchObjectEntity> list, String appname) {
-        appSearchFragment = new AppSearchFragment();
+        appSearchFragment = new ResultAppFragment();
 
         appSearchFragment.setRaw(appname);
         appSearchFragment.setAppSearchObjectEntities(list);
@@ -106,7 +106,6 @@ public class SearchResultActivity extends BaseActivity {
     }
 
     public void refreshContent(SemanticSearchResponseEntity entity, String raw) {
-        contentFragment = new ContentFragment();
         contentFragment.setRaw(raw);
         contentFragment.setObjectEntities(entity.getFacet().get(0).getObjects());
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -115,7 +114,7 @@ public class SearchResultActivity extends BaseActivity {
     }
 
     public void refreshApp(List<AppSearchObjectEntity> list, String appname) {
-        appSearchFragment = new AppSearchFragment();
+        appSearchFragment = new ResultAppFragment();
 
         appSearchFragment.setRaw(appname);
         appSearchFragment.setAppSearchObjectEntities(list);
@@ -165,26 +164,4 @@ public class SearchResultActivity extends BaseActivity {
         networkEorrorPopupWindow = null;
         super.onDestroy();
     }
-
-//    public void showIndicatorFragment(SemanticSearchResponseEntity entity, String rawText) {
-////        String testJson = "{\"facet\":[{\"content_type\":\"variety\",\"count\":0,\"name\":\"综艺\",\"objects\":[],\"total_count\":2},{\"content_type\":\"entertainment\",\"count\":0,\"name\":\"娱乐\",\"objects\":[],\"total_count\":6},{\"content_type\":\"documentary\",\"count\":0,\"name\":\"纪录片\",\"objects\":[],\"total_count\":1}]}";
-////        String testText = "{\"raw_text\":\"一\"}";
-////        indicatorFragment.initVodIndicator(new Gson().fromJson(testJson, SemanticSearchResponseEntity.class), testText, true);
-//        indicatorFragment.initVodIndicator(entity, rawText, true);
-//    }
-//
-//
-//    public void refreshContentFragment(SemanticSearchResponseEntity entity, String rawText) {
-//        contentFragment.notifyDataChanged(entity, rawText);
-//    }
-//
-//
-//    public void showAppIndicatorFragment(List<AppSearchObjectEntity> entity, String data) {
-//        indicatorFragment.clearLayout();
-//        indicatorFragment.initAppIndicator(entity, data, true);
-//    }
-//
-//    public void showAppIndicatorFragmentNoClear(List<AppSearchObjectEntity> entity, String data) {
-//        indicatorFragment.initAppIndicator(entity, data, true);
-//    }
 }

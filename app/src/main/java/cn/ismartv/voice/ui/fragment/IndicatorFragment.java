@@ -1,6 +1,5 @@
 package cn.ismartv.voice.ui.fragment;
 
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -145,8 +144,8 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
         if (vodCall != vodCall && vodCall.isExecuted()) {
             vodCall.cancel();
         }
-        if (appCall != null && vodCall.isExecuted()) {
-            vodCall.cancel();
+        if (appCall != null && appCall.isExecuted()) {
+            appCall.cancel();
         }
 
         super.onDestroy();
