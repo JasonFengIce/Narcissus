@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
@@ -24,13 +23,8 @@ import com.squareup.picasso.Transformation;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.HashMap;
 import java.util.List;
 
-import cn.ismartv.imagereflection.ReflectionTransformationBuilder;
-import cn.ismartv.imagereflection.RelectionImageView;
-import cn.ismartv.recyclerview.widget.LinearLayoutManager;
-import cn.ismartv.recyclerview.widget.RecyclerView;
 import cn.ismartv.voice.R;
 import cn.ismartv.voice.core.event.AnswerAvailableEvent;
 import cn.ismartv.voice.core.http.HttpAPI;
@@ -39,7 +33,6 @@ import cn.ismartv.voice.data.http.ActorRelateRequestParams;
 import cn.ismartv.voice.data.http.AttributesEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.data.http.SemantichObjectEntity;
-import cn.ismartv.voice.ui.StarSpaceItemDecoration;
 import cn.ismartv.voice.ui.widget.MessagePopWindow;
 import cn.ismartv.voice.util.ViewScaleUtil;
 import retrofit2.Callback;
@@ -54,7 +47,8 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
     private long pk;
     private TextView filmStartitle;
     private LinearLayout indicatorListLayout;
-    private RecyclerView recyclerView;
+    private LinearLayout vodListView;
+    private HorizontalScrollView vodHorizontalScrollView;
 
     private ImageView contentArrowLeft;
     private ImageView contentArrowRight;
@@ -72,8 +66,6 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
     private View contentView;
     private View indicatorSelectedView;
     private HorizontalScrollView horizontalScrollView;
-
-    private View firstIndicatorItem;
 
 
     @Override
@@ -120,7 +112,6 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
     private void initViews() {
         filmStartitle = (TextView) findViewById(R.id.film_star_title);
         indicatorListLayout = (LinearLayout) findViewById(R.id.film_list_indicator);
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         actorView = (TextView) findViewById(R.id.actor);
         directorView = (TextView) findViewById(R.id.director);
         areaView = (TextView) findViewById(R.id.area);
@@ -130,19 +121,14 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
         indicatorArrowLeft = (ImageView) findViewById(R.id.indicator_left);
         indicatorArrowRight = (ImageView) findViewById(R.id.indicator_right);
         horizontalScrollView = (HorizontalScrollView) findViewById(R.id.scrollview);
+        vodListView = (LinearLayout) findViewById(R.id.vod_list_view);
+        vodHorizontalScrollView = (HorizontalScrollView) findViewById(R.id.vod_scrollview);
+
         contentArrowRight.setOnFocusChangeListener(this);
         contentArrowLeft.setOnFocusChangeListener(this);
         indicatorArrowLeft.setOnFocusChangeListener(this);
         indicatorArrowRight.setOnFocusChangeListener(this);
 
-
-        LinearLayoutManager gridLayoutManager = new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false);
-
-        int verticalSpacingInPixels = (int) (getResources().getDimensionPixelSize(R.dimen.content_fragment_item_vertical_space));
-        int horizontalSpacingInPixels = (int) (getResources().getDimensionPixelSize(R.dimen.filmStar_item_horizontal_space));
-        recyclerView.addItemDecoration(new StarSpaceItemDecoration(verticalSpacingInPixels, horizontalSpacingInPixels));
-        recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.setOnFocusChangeListener(this);
 
     }
 
@@ -172,7 +158,6 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                         itemView.setTag(facet.getContent_type());
                         itemView.setTag(R.id.filmStar_indicator_item, i);
                         if (i == 0) {
-                            firstIndicatorItem = itemView;
                             indicatorSelectedView = itemView;
                             indicatorTitle.setTextColor(getResources().getColor(R.color._ffffff));
                             itemView.setNextFocusLeftId(itemView.getId());
@@ -214,7 +199,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
             public void onResponse(Response<SemanticSearchResponseEntity> response) {
                 if (response.errorBody() == null) {
                     SemanticSearchResponseEntity entity = response.body();
-                    recyclerView.setAdapter(new RecyclerAdapter(entity.getFacet().get(0).getObjects()));
+                    fillVodList(entity.getFacet().get(0).getObjects());
                 } else {
                     EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
                 }
@@ -227,23 +212,98 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
         });
     }
 
+    private void fillVodList(List<SemantichObjectEntity> list) {
+        for (int i = 0; i < list.size(); i++) {
+            View itemView = LayoutInflater.from(this).inflate(R.layout.item_vod, null);
+            TextView itemVodTitle = (TextView) itemView.findViewById(R.id.item_vod_title);
+            ImageView itemVodImage = (ImageView) itemView.findViewById(R.id.item_vod_image);
+            TextView itemScore = (TextView) itemView.findViewById(R.id.item_vod_score);
+            TextView itemPrice = (TextView) itemView.findViewById(R.id.item_vod_price);
+            TextView itemFocus = (TextView) itemView.findViewById(R.id.item_vod_focus);
+
+            itemVodTitle.setText(list.get(i).getTitle());
+            Transformation mTransformation = new cn.ismartv.voice.ui.ReflectionTransformationBuilder()
+                    .setIsHorizontal(true)
+                    .build();
+            String verticalUrl = list.get(i).getVertical_url();
+            String horizontalUrl = list.get(i).getPoster_url();
+            String scoreValue = list.get(i).getBean_score();
+            float priceValue = list.get(i).getExpense() == null ? 0 : list.get(i).getExpense().getPrice();
+            String focusValue = list.get(i).getFocus();
+
+            if (!TextUtils.isEmpty(verticalUrl)) {
+                if (!TextUtils.isEmpty(scoreValue)) {
+                    itemScore.setVisibility(View.VISIBLE);
+                    itemScore.setText(scoreValue);
+                }
+                if (priceValue != 0) {
+                    itemPrice.setVisibility(View.VISIBLE);
+                    itemPrice.setText("￥" + String.valueOf(priceValue));
+                }
+                if (!TextUtils.isEmpty(focusValue)) {
+                    itemFocus.setVisibility(View.VISIBLE);
+                    itemFocus.setText(focusValue);
+                }
+                Picasso.with(this)
+                        .load(verticalUrl)
+                        .memoryPolicy(MemoryPolicy.NO_STORE)
+                        .memoryPolicy(MemoryPolicy.NO_CACHE)
+                        .error(R.drawable.vertical_preview_bg)
+                        .placeholder(R.drawable.vertical_preview_bg)
+                        .transform(mTransformation)
+                        .into(itemVodImage);
+            } else {
+                Picasso.with(this)
+                        .load(horizontalUrl)
+                        .memoryPolicy(MemoryPolicy.NO_STORE)
+                        .memoryPolicy(MemoryPolicy.NO_CACHE)
+                        .error(R.drawable.vertical_preview_bg)
+                        .placeholder(R.drawable.vertical_preview_bg)
+                        .transform(mTransformation)
+                        .into(itemVodImage);
+            }
+
+            itemView.setTag(list.get(i));
+            itemView.setOnFocusChangeListener(new OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    View imageViewLayout = v.findViewById(R.id.item_vod_image_layout);
+                    TextView textView = (TextView) v.findViewById(R.id.item_vod_title);
+                    if (hasFocus) {
+                        SemantichObjectEntity entity = (SemantichObjectEntity) v.getTag();
+                        AttributesEntity attributesEntity = entity.getAttributes();
+                        String description = entity.getDescription();
+                        setFilmAttr(attributesEntity, description);
+                        textView.setSelected(true);
+                        imageViewLayout.setSelected(true);
+                        ViewScaleUtil.zoomin_1_15(v);
+                    } else {
+                        textView.setSelected(false);
+                        imageViewLayout.setSelected(false);
+                        ViewScaleUtil.zoomout_1_15(v);
+                    }
+                }
+            });
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FilmStarActivity.this.onVodItemClick((SemantichObjectEntity) v.getTag());
+                }
+            });
+
+            int padding = (int) getResources().getDimension(R.dimen.filmStar_item_horizontal_space);
+            itemView.setPadding(padding, padding, padding, padding);
+            vodListView.addView(itemView);
+        }
+
+    }
+
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         switch (v.getId()) {
             case R.id.filmStar_indicator_item:
                 int position = (int) v.getTag(R.id.filmStar_indicator_item);
                 Log.i(TAG, "indicator position: " + position);
-//                if (position == 0) {
-//                    indicatorArrowLeft.setVisibility(View.INVISIBLE);
-//                } else {
-//                    indicatorArrowLeft.setVisibility(View.VISIBLE);
-//                }
-//
-//                if (indicatorListLayout.getChildCount() - 1 == position) {
-//                    indicatorArrowRight.setVisibility(View.INVISIBLE);
-//                } else {
-//                    indicatorArrowRight.setVisibility(View.VISIBLE);
-//                }
 
                 ImageView bg = (ImageView) v.findViewById(R.id.indicator_bg);
                 TextView textView = (TextView) v.findViewById(R.id.title);
@@ -322,183 +382,6 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
     }
 
 
-    private class RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder> implements View.OnClickListener, OnFocusChangeListener {
-        private List<SemantichObjectEntity> datas;
-
-        public RecyclerAdapter(List<SemantichObjectEntity> objectEntities) {
-            if (objectEntities.size() <= 8) {
-                contentArrowLeft.setVisibility(View.GONE);
-                contentArrowRight.setVisibility(View.GONE);
-            } else {
-                contentArrowLeft.setVisibility(View.VISIBLE);
-                contentArrowRight.setVisibility(View.VISIBLE);
-            }
-            this.datas = objectEntities;
-        }
-
-        @Override
-        public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-            MyViewHolder holder = new MyViewHolder(LayoutInflater.from(FilmStarActivity.this).inflate(R.layout.item_recycler, viewGroup, false));
-            return holder;
-        }
-
-        @Override
-        public void onBindViewHolder(MyViewHolder myViewHolder, int postion) {
-
-            myViewHolder.textView.setText(datas.get(postion).getTitle());
-            String postUrl = datas.get(postion).getPoster_url();
-            String verticalUrl = datas.get(postion).getVertical_url();
-            HashMap<String, String> hashMap = new HashMap<>();
-            hashMap.put("url", datas.get(postion).getUrl());
-            hashMap.put("content_model", datas.get(postion).getContent_model());
-            hashMap.put("pk", datas.get(postion).getPk());
-            hashMap.put("title", datas.get(postion).getTitle());
-            hashMap.put("attr", new Gson().toJson(datas.get(postion).getAttributes()));
-            hashMap.put("description", datas.get(postion).getDescription());
-
-            String focusString = datas.get(postion).getFocus();
-
-            float price = 0;
-            if (!TextUtils.isEmpty(focusString) && focusString.length() > 10) {
-                focusString = focusString.subSequence(0, 10).toString();
-            }
-
-            String score = datas.get(postion).getBean_score();
-            SemantichObjectEntity.Expense expense = datas.get(postion).getExpense();
-            if (expense != null) {
-                price = expense.getPrice();
-            }
-
-
-            myViewHolder.imageView.setFoucsText(focusString);
-
-            if (!TextUtils.isEmpty(verticalUrl)) {
-                if (!TextUtils.isEmpty(score)) {
-                    myViewHolder.imageView.setScore(score);
-                }
-
-                if (price != 0) {
-                    myViewHolder.imageView.setPrice("￥" + price);
-                }
-
-                hashMap.put("orientation", "vertical");
-                myViewHolder.imageView.setIsHorizontal(false);
-                Picasso.with(FilmStarActivity.this)
-                        .load(datas.get(postion).getVertical_url())
-                        .memoryPolicy(MemoryPolicy.NO_STORE)
-                        .error(R.drawable.vertical_preview_bg)
-                        .placeholder(R.drawable.vertical_preview_bg)
-                        .into(myViewHolder.imageView);
-
-            } else if (!TextUtils.isEmpty(postUrl)) {
-                hashMap.put("orientation", "horizontal");
-                myViewHolder.imageView.setIsHorizontal(true);
-                Transformation mTransformation = new ReflectionTransformationBuilder()
-                        .setIsHorizontal(true)
-                        .build();
-                Picasso.with(FilmStarActivity.this).load(postUrl)
-                        .memoryPolicy(MemoryPolicy.NO_STORE)
-                        .error(R.drawable.vertical_preview_bg)
-                        .placeholder(R.drawable.vertical_preview_bg)
-                        .transform(mTransformation)
-                        .into(myViewHolder.imageView);
-
-            } else {
-                hashMap.put("orientation", "vertical");
-                myViewHolder.imageView.setIsHorizontal(false);
-                Picasso.with(FilmStarActivity.this)
-                        .load(R.drawable.vertical_preview_bg)
-                        .memoryPolicy(MemoryPolicy.NO_STORE)
-                        .placeholder(R.drawable.vertical_preview_bg)
-                        .error(R.drawable.vertical_preview_bg)
-                        .into(myViewHolder.imageView);
-            }
-            myViewHolder.mItemView.setTag(hashMap);
-            myViewHolder.mItemView.setOnClickListener(this);
-            myViewHolder.mItemView.setOnFocusChangeListener(this);
-            if (postion == 0) {
-                lostFocusItemView = myViewHolder.mItemView;
-                myViewHolder.mItemView.requestFocusFromTouch();
-                myViewHolder.mItemView.requestFocus();
-            }
-
-            if (postion >= 5) {
-                contentArrowLeft.setVisibility(View.VISIBLE);
-            } else {
-                contentArrowLeft.setVisibility(View.GONE);
-            }
-
-            if (postion == datas.size() - 1) {
-                contentArrowRight.setVisibility(View.GONE);
-            } else {
-                contentArrowRight.setVisibility(View.VISIBLE);
-            }
-        }
-
-
-        @Override
-        public int getItemCount() {
-            return datas.size();
-        }
-
-
-        @Override
-        public void onClick(View v) {
-            HashMap<String, String> tag = (HashMap) v.getTag();
-            String url = tag.get("url");
-            String contentModel = tag.get("content_model");
-            Long pk = Long.parseLong(tag.get("pk"));
-            String title = tag.get("title");
-
-            Intent intent = new Intent();
-            switch (contentModel) {
-                case "person":
-                    intent.putExtra("pk", pk);
-                    intent.putExtra("title", title);
-                    intent.setAction("cn.ismartv.voice.film_star");
-                    startActivity(intent);
-                    break;
-                default:
-                    if (!TextUtils.isEmpty(url)) {
-
-                        intent.putExtra("url", url);
-
-                        switch (tag.get("orientation")) {
-                            case "horizontal":
-                                intent.setAction("tv.ismar.daisy.Item");
-                                break;
-                            case "vertical":
-                                intent.setAction("tv.ismar.daisy.PFileItem");
-                                break;
-                        }
-                        startActivity(intent);
-                    }
-                    break;
-            }
-
-        }
-
-        @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            HashMap<String, String> tag = (HashMap) v.getTag();
-            AttributesEntity attributesEntity = new Gson().fromJson(tag.get("attr"), AttributesEntity.class);
-            String description = tag.get("description");
-            ImageView imageView = (ImageView) v.findViewById(R.id.image);
-            TextView textView = (TextView) v.findViewById(R.id.id_number);
-            if (hasFocus) {
-                setFilmAttr(attributesEntity, description);
-                textView.setSelected(true);
-                imageView.setBackgroundResource(R.drawable.item_focus);
-                ViewScaleUtil.zoomin_1_15(v);
-            } else {
-                lostFocusItemView = v;
-                textView.setSelected(false);
-                imageView.setBackgroundDrawable(null);
-                ViewScaleUtil.zoomout_1_15(v);
-            }
-        }
-    }
-
     private void setFilmAttr(AttributesEntity attributesEntity, String description) {
         actorView.setText("演员 : ");
         directorView.setText("导演 : ");
@@ -542,24 +425,8 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
         }
     }
 
-    private class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView textView;
-        private RelectionImageView imageView;
-        private View mItemView;
-
-        public MyViewHolder(View itemView) {
-            super(itemView);
-            this.mItemView = itemView;
-            textView = (TextView) itemView.findViewById(R.id.id_number);
-            imageView = (RelectionImageView) itemView.findViewById(R.id.image);
-//            imageView.setLrPaddingFlag(1);
-
-        }
-
-    }
 
     public void showNetworkErrorPop() {
-
         networkEorrorPopupWindow = new MessagePopWindow(this, "网络异常，请检查网络", null);
         contentView.postDelayed(new Runnable() {
             @Override
