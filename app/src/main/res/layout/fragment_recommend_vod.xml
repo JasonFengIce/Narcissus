@@ -26,12 +26,13 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/content_recycler_margin_bottom"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:orientation="vertical"
+        android:layout_marginBottom="@dimen/content_recycler_margin_bottom"
         android:paddingLeft="@dimen/content_fragment_recycler_margin_lr"
-        android:paddingRight="@dimen/content_fragment_recycler_margin_lr">
+        android:paddingRight="@dimen/content_fragment_recycler_margin_lr"
+        >
 
         <LinearLayout
             android:id="@+id/first_row"

@@ -133,7 +133,7 @@ public class RecommendVodFragment extends BaseFragment implements OnFocusChangeL
                 }
                 if (priceValue != 0) {
                     itemPrice.setVisibility(View.VISIBLE);
-                    itemPrice.setText(String.valueOf(priceValue));
+                    itemPrice.setText("￥" + String.valueOf(priceValue));
                 }
                 if (!TextUtils.isEmpty(focusValue)) {
                     itemFocus.setVisibility(View.VISIBLE);

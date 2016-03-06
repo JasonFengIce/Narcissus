@@ -133,59 +133,58 @@ public class ResultVodFragment extends BaseFragment implements View.OnFocusChang
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder myViewHolder;
             if (convertView == null) {
-                convertView = LayoutInflater.from(context).inflate(R.layout.item_vod, null);
+                convertView = LayoutInflater.from(context).inflate(R.layout.item_vod_search, null);
                 myViewHolder = new ViewHolder();
-                myViewHolder.imageView = (ImageView) convertView.findViewById(R.id.item_vod_image);
-                myViewHolder.textView = (TextView) convertView.findViewById(R.id.item_vod_title);
+                myViewHolder.itemVodTitle = (TextView) convertView.findViewById(R.id.item_vod_title);
+                myViewHolder.itemVodImage = (ImageView) convertView.findViewById(R.id.item_vod_image);
+                myViewHolder.itemScore = (TextView) convertView.findViewById(R.id.item_vod_score);
+                myViewHolder.itemPrice = (TextView) convertView.findViewById(R.id.item_vod_price);
+                myViewHolder.itemFocus = (TextView) convertView.findViewById(R.id.item_vod_focus);
                 convertView.setTag(myViewHolder);
             } else {
                 myViewHolder = (ViewHolder) convertView.getTag();
             }
 
-            myViewHolder.textView.setText(datas.get(position).getTitle());
-            String postUrl = datas.get(position).getPoster_url();
+            myViewHolder.itemVodTitle.setText(datas.get(position).getTitle());
+            Transformation mTransformation = new ReflectionTransformationBuilder()
+                    .setIsHorizontal(true)
+                    .build();
             String verticalUrl = datas.get(position).getVertical_url();
-            String focusString = datas.get(position).getFocus();
+            String horizontalUrl = datas.get(position).getPoster_url();
+            String scoreValue = datas.get(position).getBean_score();
+            float priceValue = datas.get(position).getExpense() == null ? 0 : datas.get(position).getExpense().getPrice();
+            String focusValue = datas.get(position).getFocus();
 
-//            float price = 0;
-//            if (!TextUtils.isEmpty(focusString) && focusString.length() > 10) {
-//                focusString = focusString.subSequence(0, 10).toString();
-//            }
-//
-//            String score = datas.get(position).getBean_score();
-//            SemantichObjectEntity.Expense expense = datas.get(position).getExpense();
-//            if (expense != null) {
-//                price = expense.getPrice();
-//            }
-//
             if (!TextUtils.isEmpty(verticalUrl)) {
-//                if (!TextUtils.isEmpty(score)) {
-//                    myViewHolder.imageView.setScore(score);
-//                }
-//
-//                if (price != 0) {
-//                    myViewHolder.imageView.setPrice("￥" + price);
-//                }
-
+                if (!TextUtils.isEmpty(scoreValue)) {
+                    myViewHolder.itemScore.setVisibility(View.VISIBLE);
+                    myViewHolder.itemScore.setText(scoreValue);
+                }
+                if (priceValue != 0) {
+                    myViewHolder.itemPrice.setVisibility(View.VISIBLE);
+                    myViewHolder.itemPrice.setText("￥" + String.valueOf(priceValue));
+                }
+                if (!TextUtils.isEmpty(focusValue)) {
+                    myViewHolder.itemFocus.setVisibility(View.VISIBLE);
+                    myViewHolder.itemFocus.setText(focusValue);
+                }
                 Picasso.with(getContext())
                         .load(verticalUrl)
                         .memoryPolicy(MemoryPolicy.NO_STORE)
-                        .error(R.drawable.vertical_preview_bg)
-                        .placeholder(R.drawable.vertical_preview_bg)
-                        .into(myViewHolder.imageView);
-
-            } else {
-                Transformation mTransformation = new ReflectionTransformationBuilder()
-                        .setIsHorizontal(true)
-                        .build();
-
-                Picasso.with(getContext()).load(postUrl)
-                        .memoryPolicy(MemoryPolicy.NO_STORE)
+                        .memoryPolicy(MemoryPolicy.NO_CACHE)
                         .error(R.drawable.vertical_preview_bg)
                         .placeholder(R.drawable.vertical_preview_bg)
                         .transform(mTransformation)
-                        .into(myViewHolder.imageView);
-
+                        .into(myViewHolder.itemVodImage);
+            } else {
+                Picasso.with(getContext())
+                        .load(horizontalUrl)
+                        .memoryPolicy(MemoryPolicy.NO_STORE)
+                        .memoryPolicy(MemoryPolicy.NO_CACHE)
+                        .error(R.drawable.vertical_preview_bg)
+                        .placeholder(R.drawable.vertical_preview_bg)
+                        .transform(mTransformation)
+                        .into(myViewHolder.itemVodImage);
             }
 
             return convertView;
@@ -196,8 +195,11 @@ public class ResultVodFragment extends BaseFragment implements View.OnFocusChang
 
 
     private class ViewHolder {
-        private TextView textView;
-        private ImageView imageView;
+        TextView itemVodTitle;
+        ImageView itemVodImage;
+        TextView itemScore;
+        TextView itemPrice;
+        TextView itemFocus;
     }
 
 

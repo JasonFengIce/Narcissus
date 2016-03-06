@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/item_vod_image_layout"
+        android:layout_width="@dimen/content_fragment_item_width"
+        android:layout_height="@dimen/content_fragment_item_img_height">
+
+        <ImageView
+            android:id="@+id/item_vod_image"
+            android:layout_width="@dimen/content_fragment_item_width"
+            android:layout_height="@dimen/content_fragment_item_img_height"
+            android:layout_centerHorizontal="true"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:id="@+id/item_vod_score"
+            android:layout_width="@dimen/left_top_mark_width"
+            android:layout_height="@dimen/left_top_mark_width"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/score_mark_icon"
+            android:gravity="center"
+            android:textSize="@dimen/textSize_30sp"
+            android:visibility="invisible" />
+
+        <cn.ismartv.voice.ui.widget.RotateableTextView
+            android:id="@+id/item_vod_price"
+            android:layout_width="@dimen/right_top_mark_width"
+            android:layout_height="@dimen/right_top_mark_width"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/price_mark_icon"
+            android:gravity="center"
+            android:text="$77"
+            android:textSize="@dimen/textSize_24sp"
+            android:visibility="invisible" />
+
+
+        <TextView
+            android:id="@+id/item_vod_focus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="#b2000000"
+            android:gravity="center"
+            android:maxLength="8"
+            android:singleLine="true"
+            android:textSize="@dimen/textSize_24sp"
+            android:visibility="invisible"
+
+            />
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/item_vod_title"
+        android:layout_width="@dimen/content_fragment_item_width"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/item_vod_image_layout"
+        android:layout_below="@id/item_vod_image_layout"
+        android:layout_centerHorizontal="true"
+        android:ellipsize="marquee"
+        android:gravity="center"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:singleLine="true"
+        android:textSize="@dimen/textSize_36sp" />
+
+</LinearLayout>
