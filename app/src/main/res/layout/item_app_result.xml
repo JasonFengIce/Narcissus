@@ -13,6 +13,7 @@
         android:layout_width="@dimen/item_app_search_width"
         android:layout_height="@dimen/item_app_search_width"
         android:layout_centerHorizontal="true"
+        android:background="@drawable/selector_list_item"
         android:scaleType="fitXY" />
 
 

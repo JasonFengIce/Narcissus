@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <RelativeLayout
+        android:background="@drawable/selector_list_item"
         android:id="@+id/item_vod_image_layout"
         android:layout_width="@dimen/content_fragment_item_width"
         android:layout_height="@dimen/content_fragment_item_img_height">

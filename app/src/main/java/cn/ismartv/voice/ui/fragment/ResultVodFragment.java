@@ -78,6 +78,8 @@ public class ResultVodFragment extends BaseFragment implements View.OnFocusChang
         String rawText = new JsonParser().parse(data).getAsJsonObject().get("raw_text").toString();
         searchTitle.setText(String.format(rawTextValue, rawText));
         recyclerView.setAdapter(new GridAdapter(entities, getContext()));
+        recyclerView.setUpView(arrowUp);
+        recyclerView.setDownView(arrowDown);
         //first item request focus
     }
 
@@ -89,14 +91,14 @@ public class ResultVodFragment extends BaseFragment implements View.OnFocusChang
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.arrow_up:
-                recyclerView.smoothScrollBy(0, -recyclerView.getHeight());
-                break;
-            case R.id.arrow_down:
-                recyclerView.smoothScrollBy(0, recyclerView.getHeight());
-                break;
-        }
+//        switch (v.getId()) {
+//            case R.id.arrow_up:
+//                recyclerView.smoothScrollBy(0, -recyclerView.getHeight());
+//                break;
+//            case R.id.arrow_down:
+//                recyclerView.smoothScrollBy(0, recyclerView.getHeight());
+//                break;
+//        }
     }
 
     private class GridAdapter extends BaseAdapter {
@@ -105,13 +107,13 @@ public class ResultVodFragment extends BaseFragment implements View.OnFocusChang
 
         public GridAdapter(List<SemantichObjectEntity> objectEntities, Context context) {
             this.context = context;
+            this.datas = objectEntities;
+
             if (objectEntities.size() > 8) {
                 arrowDown.setVisibility(View.VISIBLE);
             } else {
                 arrowDown.setVisibility(View.GONE);
             }
-
-            this.datas = objectEntities;
         }
 
         @Override
@@ -211,9 +213,9 @@ public class ResultVodFragment extends BaseFragment implements View.OnFocusChang
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View currentFocusView, int position, long id) {
-        if (currentFocusView == null) {
-            currentFocusView = recyclerView.getChildAt(0);
-        }
+//        if (currentFocusView == null) {
+//            currentFocusView = recyclerView.getChildAt(0);
+//        }
 
 //        if (lastItemFocusView != null) {
 //            ImageView imageView = (ImageView) lastItemFocusView.findViewById(R.id.image);

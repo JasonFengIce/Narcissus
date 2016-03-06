@@ -53,7 +53,6 @@
             android:paddingRight="@dimen/content_fragment_recycler_margin_lr"
             android:scrollbars="none"
             app:horizontalSpace="80dp"
-            app:listSelector="@drawable/selector_item"
             app:numColumns="4"
             app:verticalSpace="36dp"
 
