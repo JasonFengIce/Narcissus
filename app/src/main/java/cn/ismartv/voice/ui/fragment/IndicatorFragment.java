@@ -34,7 +34,6 @@ import cn.ismartv.voice.data.http.SemanticSearchRequestEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.data.table.AppTable;
 import cn.ismartv.voice.ui.activity.SearchResultActivity;
-import cn.ismartv.voice.util.ViewScaleUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -279,7 +278,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
                 if (hasFocus) {
                     transferLine.setFocusable(false);
                     transferLine.setFocusableInTouchMode(false);
-                    ViewScaleUtil.zoomin_1_3(v);
+                    textView.setTextSize(getResources().getDimension(R.dimen.textSize_36sp) / getDensityRate());
                     if (selectedView == v) {
                         textView.setTextColor(getResources().getColor(R.color._ffffff));
 
@@ -288,12 +287,12 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
                     }
 
                 } else {
+
                     transferLine.setFocusable(true);
                     transferLine.setFocusableInTouchMode(true);
-                    ViewScaleUtil.zoomout_1_3(v);
+                    textView.setTextSize(getResources().getDimension(R.dimen.textSize_30sp) / getDensityRate());
                     if (selectedView == v) {
                         textView.setTextColor(getResources().getColor(R.color._ffffff));
-
                     } else {
                         textView.setTextColor(getResources().getColor(R.color._a6a6a6));
                     }
