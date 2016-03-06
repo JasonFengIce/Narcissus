@@ -14,7 +14,7 @@
         android:layout_width="@dimen/content_fragment_item_width"
         android:layout_height="@dimen/content_fragment_item_img_height"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/selector_item_2"
+        android:background="@drawable/selector_list_item"
         android:scaleType="fitXY"
         app:focus_title_background="#b2000000"
         app:focus_title_height="@dimen/focus_text_height"

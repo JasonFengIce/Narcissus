@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,7 +38,7 @@ import retrofit2.Retrofit;
  * Created by huaijie on 1/18/16.
  */
 public class RecommendVodFragment extends BaseFragment implements OnFocusChangeListener, OnClickListener {
-    private static final String TAG = "ContentFragment";
+    private static final String TAG = "RecommendVodFragment";
     private TextView searchTitle;
 
     private boolean isRecommend = false;
@@ -111,13 +112,33 @@ public class RecommendVodFragment extends BaseFragment implements OnFocusChangeL
             View itemView = LayoutInflater.from(mContext).inflate(R.layout.item_vod, null);
             TextView itemVodTitle = (TextView) itemView.findViewById(R.id.item_vod_title);
             ImageView itemVodImage = (ImageView) itemView.findViewById(R.id.item_vod_image);
+            TextView itemScore = (TextView) itemView.findViewById(R.id.item_vod_score);
+            TextView itemPrice = (TextView) itemView.findViewById(R.id.item_vod_price);
+            TextView itemFocus = (TextView) itemView.findViewById(R.id.item_vod_focus);
+
             itemVodTitle.setText(list.get(i).getTitle());
             Transformation mTransformation = new ReflectionTransformationBuilder()
                     .setIsHorizontal(true)
                     .build();
             String verticalUrl = list.get(i).getVertical_url();
             String horizontalUrl = list.get(i).getPoster_url();
+            String scoreValue = list.get(i).getBean_score();
+            float priceValue = list.get(i).getExpense() == null ? 0 : list.get(i).getExpense().getPrice();
+            String focusValue = list.get(i).getFocus();
+
             if (!TextUtils.isEmpty(verticalUrl)) {
+                if (!TextUtils.isEmpty(scoreValue)) {
+                    itemScore.setVisibility(View.VISIBLE);
+                    itemScore.setText(scoreValue);
+                }
+                if (priceValue != 0) {
+                    itemPrice.setVisibility(View.VISIBLE);
+                    itemPrice.setText(String.valueOf(priceValue));
+                }
+                if (!TextUtils.isEmpty(focusValue)) {
+                    itemFocus.setVisibility(View.VISIBLE);
+                    itemFocus.setText(focusValue);
+                }
                 Picasso.with(getContext())
                         .load(verticalUrl)
                         .memoryPolicy(MemoryPolicy.NO_STORE)
