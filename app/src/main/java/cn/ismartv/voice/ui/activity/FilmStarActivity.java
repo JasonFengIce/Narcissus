@@ -292,10 +292,10 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
             });
 
             int padding = (int) getResources().getDimension(R.dimen.filmStar_item_horizontal_space);
-//            itemView.setPadding(padding, padding, padding, padding);
+            itemView.setPadding(padding, padding, padding, padding);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.gravity = Gravity.CENTER;
-            layoutParams.setMargins(padding, 0, padding, 0);
+//            layoutParams.setMargins(padding, 0, padding, 0);
             vodListView.addView(itemView, layoutParams);
         }
 

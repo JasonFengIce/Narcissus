@@ -112,7 +112,7 @@
 
 <dimen name="filmStar_content_height">222.22dp</dimen>
 <dimen name="content_arrow_left_margin_left">16.67dp</dimen>
-<dimen name="filmStar_recycler_marginLeft">22.22dp</dimen>
+<dimen name="filmStar_recycler_marginLeft">44.44dp</dimen>
 <dimen name="filmStar_indicatorLayout_marginTop">7.41dp</dimen>
 <dimen name="filmStar_indicatorLayout_marginLeft">233.33dp</dimen>
 <dimen name="filmStar_indicatorLayout_item_marginLeft">-111.11dp</dimen>
@@ -123,7 +123,7 @@
 <dimen name="filmStar_description_text_margin">7.41dp</dimen>
 <dimen name="filmStar_divider_height">0.74dp</dimen>
 
-<dimen name="filmStar_item_horizontal_space">5.56dp</dimen>
+<dimen name="filmStar_item_horizontal_space">4.81dp</dimen>
 
 <dimen name="arrow_margin">11.11dp</dimen>
 

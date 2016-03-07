@@ -89,8 +89,6 @@
             android:layout_marginLeft="@dimen/filmStar_recycler_marginLeft"
             android:layout_marginRight="@dimen/filmStar_recycler_marginLeft"
             android:descendantFocusability="afterDescendants"
-            android:paddingLeft="@dimen/filmStar_recycler_marginLeft"
-            android:paddingRight="@dimen/filmStar_recycler_marginLeft"
             android:scrollbars="none">
 
             <LinearLayout
