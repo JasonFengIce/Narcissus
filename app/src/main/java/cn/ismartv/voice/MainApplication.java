@@ -39,10 +39,10 @@ public class MainApplication extends Application {
         try {
             Context daisyContext = createPackageContext("tv.ismar.daisy", Context.CONTEXT_IGNORE_SECURITY);
             SharedPreferences sharedPreferences = daisyContext.getSharedPreferences("account", Context.MODE_WORLD_READABLE);
-            appUpdateDomain = sharedPreferences.getString("app_update_domain", "");
+            appUpdateDomain = sharedPreferences.getString("app_update_domain", "http://skytest.tvxio.com");
             locationPY = sharedPreferences.getString("province_py", "");
             snToken = sharedPreferences.getString("sn_token", "");
-            apiDomain = sharedPreferences.getString("api_domain", "");
+            apiDomain = sharedPreferences.getString("api_domain", "http://skytest.tvxio.com");
             geoId = Long.parseLong(sharedPreferences.getString("geo_id", "0"));
             city = sharedPreferences.getString("city", "");
 
