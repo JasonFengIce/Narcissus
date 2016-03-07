@@ -66,6 +66,7 @@
         android:layout_alignBottom="@id/item_vod_image_layout"
         android:layout_below="@id/item_vod_image_layout"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/vod_title_marigin_top"
         android:ellipsize="marquee"
         android:gravity="center"
         android:marqueeRepeatLimit="marquee_forever"
