@@ -4,6 +4,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 
+import com.squareup.picasso.Picasso;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import cn.ismartv.injectdb.library.app.Application;
 import cn.ismartv.voice.core.initialize.InitializeProcess;
 
@@ -27,6 +32,11 @@ public class MainApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
+
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Picasso picasso = new Picasso.Builder(mContext).executor(executorService).build();
+        Picasso.setSingletonInstance(picasso);
+
         initializeInfo();
         new Thread(new InitializeProcess(this)).start();
     }

@@ -64,7 +64,10 @@
         <activity
             android:name=".ui.activity.HomeActivity"
             android:screenOrientation="landscape">
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
             <intent-filter>
                 <action android:name="cn.ismartv.voice.home"/>
 
@@ -80,10 +83,6 @@
         <activity
             android:name=".ui.activity.FilmStarActivity"
             android:screenOrientation="landscape">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
 
             <intent-filter>
                 <action android:name="cn.ismartv.voice.film_star"/>

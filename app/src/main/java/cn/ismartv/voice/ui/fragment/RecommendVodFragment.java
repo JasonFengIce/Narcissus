@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,13 +13,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import cn.ismartv.voice.R;
 import cn.ismartv.voice.core.event.AnswerAvailableEvent;
@@ -139,10 +139,9 @@ public class RecommendVodFragment extends BaseFragment implements OnFocusChangeL
                     itemFocus.setVisibility(View.VISIBLE);
                     itemFocus.setText(focusValue);
                 }
+
                 Picasso.with(getContext())
                         .load(verticalUrl)
-                        .memoryPolicy(MemoryPolicy.NO_STORE)
-                        .memoryPolicy(MemoryPolicy.NO_CACHE)
                         .error(R.drawable.vertical_preview_bg)
                         .placeholder(R.drawable.vertical_preview_bg)
                         .transform(mTransformation)
@@ -150,8 +149,6 @@ public class RecommendVodFragment extends BaseFragment implements OnFocusChangeL
             } else {
                 Picasso.with(getContext())
                         .load(horizontalUrl)
-                        .memoryPolicy(MemoryPolicy.NO_STORE)
-                        .memoryPolicy(MemoryPolicy.NO_CACHE)
                         .error(R.drawable.vertical_preview_bg)
                         .placeholder(R.drawable.vertical_preview_bg)
                         .transform(mTransformation)
