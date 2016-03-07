@@ -1,5 +1,6 @@
 package cn.ismartv.voice.ui.activity;
 
+import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.ismartv.voice.R;
+import cn.ismartv.voice.core.ScreenManager;
 import cn.ismartv.voice.core.event.AnswerAvailableEvent;
 import cn.ismartv.voice.data.table.CityTable;
 import cn.ismartv.voice.ui.fragment.BaseFragment;
@@ -58,6 +60,7 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ScreenManager.getScreenManager().pushActivity(this);
         networkEorrorPopupWindow = new MessagePopWindow(this, "网络异常，请检查网络", null);
         contentView = LayoutInflater.from(this).inflate(R.layout.activity_home, null);
         setContentView(contentView);
@@ -267,14 +270,14 @@ public class HomeActivity extends BaseActivity {
                                 @Override
                                 public void confirmClick(View view) {
                                     networkEorrorPopupWindow.dismiss();
-                                    android.os.Process.killProcess(android.os.Process.myPid());
+                                    ScreenManager.getScreenManager().popAllActivityExceptOne(null);
                                 }
                             },
                             null
                     );
                 }
             }
-        }, 0);
+        }, 1000);
     }
 
     public void showSearchLoadingFragment() {
@@ -291,8 +294,15 @@ public class HomeActivity extends BaseActivity {
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onStop() {
+        super.onStop();
         networkEorrorPopupWindow = null;
+    }
+
+    @Override
+    protected void onDestroy() {
+        ScreenManager.getScreenManager().popActivity(this);
         super.onDestroy();
     }
+
 }

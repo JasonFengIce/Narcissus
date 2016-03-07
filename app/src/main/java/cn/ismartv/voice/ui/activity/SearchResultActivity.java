@@ -13,6 +13,7 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.List;
 
 import cn.ismartv.voice.R;
+import cn.ismartv.voice.core.ScreenManager;
 import cn.ismartv.voice.core.event.AnswerAvailableEvent;
 import cn.ismartv.voice.data.http.AppSearchObjectEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
@@ -41,6 +42,7 @@ public class SearchResultActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ScreenManager.getScreenManager().pushActivity(this);
         networkEorrorPopupWindow = new MessagePopWindow(this, "网络异常，请检查网络", null);
         contentView = LayoutInflater.from(this).inflate(R.layout.activity_home, null);
         setContentView(contentView);
@@ -137,14 +139,14 @@ public class SearchResultActivity extends BaseActivity {
                                 @Override
                                 public void confirmClick(View view) {
                                     networkEorrorPopupWindow.dismiss();
-                                    android.os.Process.killProcess(android.os.Process.myPid());
+                                    ScreenManager.getScreenManager().popAllActivityExceptOne(null);
                                 }
                             },
                             null
                     );
                 }
             }
-        }, 0);
+        }, 1000);
     }
 
 
@@ -159,8 +161,14 @@ public class SearchResultActivity extends BaseActivity {
 
 
     @Override
-    protected void onDestroy() {
+    protected void onStop() {
         networkEorrorPopupWindow = null;
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        ScreenManager.getScreenManager().popActivity(this);
         super.onDestroy();
     }
 }

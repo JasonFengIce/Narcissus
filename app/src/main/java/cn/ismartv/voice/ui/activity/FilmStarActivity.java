@@ -26,6 +26,7 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.List;
 
 import cn.ismartv.voice.R;
+import cn.ismartv.voice.core.ScreenManager;
 import cn.ismartv.voice.core.event.AnswerAvailableEvent;
 import cn.ismartv.voice.core.http.HttpAPI;
 import cn.ismartv.voice.core.http.HttpManager;
@@ -71,6 +72,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ScreenManager.getScreenManager().pushActivity(this);
         networkEorrorPopupWindow = new MessagePopWindow(this, "网络异常，请检查网络", null);
         contentView = LayoutInflater.from(this).inflate(R.layout.activity_filmstar, null);
         setContentView(contentView);
@@ -99,13 +101,15 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
 
     @Override
     protected void onPause() {
+        networkEorrorPopupWindow = null;
         EventBus.getDefault().unregister(this);
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        networkEorrorPopupWindow = null;
+        ScreenManager.getScreenManager().popActivity(this);
+
         super.onDestroy();
     }
 
@@ -439,14 +443,14 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                                 @Override
                                 public void confirmClick(View view) {
                                     networkEorrorPopupWindow.dismiss();
-                                    android.os.Process.killProcess(android.os.Process.myPid());
+                                    ScreenManager.getScreenManager().popAllActivityExceptOne(null);
                                 }
                             },
                             null
                     );
                 }
             }
-        }, 2000);
+        }, 1000);
     }
 
 
