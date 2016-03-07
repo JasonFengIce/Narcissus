@@ -86,7 +86,7 @@ public class ResultAppFragment extends BaseFragment implements View.OnFocusChang
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        onAppItemClick((AppSearchObjectEntity) view.getTag());
+        onAppItemClick((AppSearchObjectEntity) recyclerView.getAdapter().getItem(position));
     }
 
     @Override
