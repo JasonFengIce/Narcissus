@@ -278,26 +278,6 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                 itemView.setNextFocusRightId(itemView.getId());
             }
 
-            itemView.setOnFocusChangeListener(new OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    View imageViewLayout = v.findViewById(R.id.item_vod_image_layout);
-                    TextView textView = (TextView) v.findViewById(R.id.item_vod_title);
-                    if (hasFocus) {
-                        SemantichObjectEntity entity = (SemantichObjectEntity) v.getTag();
-                        AttributesEntity attributesEntity = entity.getAttributes();
-                        String description = entity.getDescription();
-                        setFilmAttr(attributesEntity, description);
-                        textView.setSelected(true);
-                        imageViewLayout.setSelected(true);
-                        ViewScaleUtil.zoomin_1_15(v);
-                    } else {
-                        textView.setSelected(false);
-                        imageViewLayout.setSelected(false);
-                        ViewScaleUtil.zoomout_1_15(v);
-                    }
-                }
-            });
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -381,13 +361,21 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                 }
                 break;
             case R.id.star_vod_list_item:
+                View imageLayout = v.findViewById(R.id.item_vod_image_layout);
+                View vodTitle = v.findViewById(R.id.item_vod_title);
                 if (hasFocus) {
+                    SemantichObjectEntity entity = (SemantichObjectEntity) v.getTag();
+                    AttributesEntity attributesEntity = entity.getAttributes();
+                    String description = entity.getDescription();
+                    setFilmAttr(attributesEntity, description);
+                    vodTitle.setSelected(true);
                     ViewScaleUtil.zoomin_1_15(v);
                 } else {
+                    vodTitle.setSelected(false);
                     ViewScaleUtil.zoomout_1_15(v);
                 }
 
-                View imageLayout = v.findViewById(R.id.item_vod_image_layout);
+
                 if (hasFocus) {
                     imageLayout.setSelected(true);
                 } else {
