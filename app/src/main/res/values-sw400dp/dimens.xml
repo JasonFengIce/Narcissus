@@ -16,10 +16,11 @@
 <dimen name="pop_btn_margin_lr">22.22dp</dimen>
 
 <dimen name="content_fragment_item_height">144.44dp</dimen>
-<dimen name="content_fragment_item_img_height">131.48dp</dimen>
+<dimen name="content_fragment_item_img_height">142.59dp</dimen>
+<dimen name="item_vod_title_width">92.59dp</dimen>
 <dimen name="content_fragment_item_text_margin_top">5.56dp</dimen>
 
-<dimen name="content_fragment_item_width">94.81dp</dimen>
+<dimen name="content_fragment_item_width">113.33dp</dimen>
 <dimen name="content_fragment_recycler_margin_lr">42.96dp</dimen>
 <dimen name="content_fragment_recycler_margin_top">-5.56dp</dimen>
 <dimen name="content_fragment_title_height">37.78dp</dimen>
@@ -153,5 +154,7 @@
 
 <dimen name="item_margin_bottom">8.52dp</dimen>
 <dimen name="content_recycler_margin_bottom">3.70dp</dimen>
+<dimen name="result_vod_vertical_space">7.41dp</dimen>
+<dimen name="result_vod_horizontal_space">29.63dp</dimen>
 
 </resources>

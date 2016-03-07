@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="#405185"
-    android:orientation="vertical">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:background="#405185"
+              android:orientation="vertical">
 
     <TextView
         android:id="@+id/search_title"
@@ -12,7 +12,7 @@
         android:layout_height="@dimen/content_fragment_title_height"
         android:gravity="center"
         android:text="@string/today_hot_vod"
-        android:textSize="@dimen/textSize_36sp" />
+        android:textSize="@dimen/textSize_36sp"/>
 
     <ImageView
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
         android:layout_marginLeft="@dimen/content_divider_line_margin_lr"
         android:layout_marginRight="@dimen/content_divider_line_margin_lr"
         android:scaleType="fitXY"
-        android:src="@drawable/voice_fragment_divider_line" />
+        android:src="@drawable/voice_fragment_divider_line"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -37,13 +37,14 @@
             android:clickable="true"
             android:focusable="true"
             android:src="@drawable/selector_arrow_up"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <cn.ismartv.voice.ui.widget.ZGridView
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/content_recycler_margin_bottom"
+            android:layout_marginBottom="25dp"
+            android:layout_marginTop="25dp"
             android:cacheColorHint="@android:color/transparent"
             android:clipChildren="false"
             android:clipToPadding="false"
@@ -52,9 +53,9 @@
             android:paddingLeft="@dimen/content_fragment_recycler_margin_lr"
             android:paddingRight="@dimen/content_fragment_recycler_margin_lr"
             android:scrollbars="none"
-            app:horizontalSpace="80dp"
+            app:horizontalSpace="@dimen/result_vod_horizontal_space"
             app:numColumns="4"
-            app:verticalSpace="36dp"
+            app:verticalSpace="@dimen/result_vod_vertical_space"
 
             />
 
@@ -67,7 +68,7 @@
             android:clickable="true"
             android:focusable="true"
             android:src="@drawable/selector_arrow_down"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
     </RelativeLayout>
 
