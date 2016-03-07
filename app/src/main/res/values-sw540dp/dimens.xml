@@ -158,5 +158,6 @@
 <dimen name="result_vod_vertical_space">10.00dp</dimen>
 <dimen name="result_vod_horizontal_space">40.00dp</dimen>
 <dimen name="vod_title_marigin_top">-5.00dp</dimen>
+<dimen name="recommend_vod_marigin_bottom">15.00dp</dimen>
 
 </resources>
