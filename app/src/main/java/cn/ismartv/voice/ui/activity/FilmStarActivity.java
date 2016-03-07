@@ -178,7 +178,11 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                     if (entity.getFacet().size() > 4) {
                         indicatorArrowRight.setVisibility(View.VISIBLE);
                     }
-                    fetchActorRelateByType(pk, entity.getFacet().get(0).getContent_type());
+                    try {
+                        fetchActorRelateByType(pk, entity.getFacet().get(0).getContent_type());
+                    } catch (Exception e) {
+                        EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
+                    }
                 } else {
                     EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
                 }
