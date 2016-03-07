@@ -196,7 +196,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
         ActorRelateRequestParams params = new ActorRelateRequestParams();
         params.setActor_id(pk);
         params.setPage_no(1);
-        params.setPage_count(300);
+        params.setPage_count(30);
         params.setContent_type(type);
         HttpManager.getInstance().resetAdapter_SKY.create(HttpAPI.ActorRelate.class).doRequest(params).enqueue(new Callback<SemanticSearchResponseEntity>() {
             @Override
@@ -217,6 +217,12 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
     }
 
     private void fillVodList(List<SemantichObjectEntity> list) {
+        if (list.size() > 5) {
+            contentArrowRight.setVisibility(View.VISIBLE);
+        } else {
+            contentArrowRight.setVisibility(View.INVISIBLE);
+        }
+        vodListView.removeAllViews();
         for (int i = 0; i < list.size(); i++) {
             View itemView = LayoutInflater.from(this).inflate(R.layout.item_vod_star, null);
             TextView itemVodTitle = (TextView) itemView.findViewById(R.id.item_vod_title);
@@ -268,6 +274,10 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
             }
 
             itemView.setTag(list.get(i));
+            if (i == list.size() - 1) {
+                itemView.setNextFocusRightId(itemView.getId());
+            }
+
             itemView.setOnFocusChangeListener(new OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
@@ -294,15 +304,19 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                     FilmStarActivity.this.onVodItemClick((SemantichObjectEntity) v.getTag());
                 }
             });
+            itemView.setOnFocusChangeListener(this);
 
             int padding = (int) getResources().getDimension(R.dimen.filmStar_item_horizontal_space);
-            itemView.setPadding(padding, padding, padding, padding);
+            int verticalPadding = (int) getResources().getDimension(R.dimen.filmStar_item_vertical_space);
+            itemView.setPadding(padding, verticalPadding, padding, verticalPadding);
+
+
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.gravity = Gravity.CENTER;
 //            layoutParams.setMargins(padding, 0, padding, 0);
             vodListView.addView(itemView, layoutParams);
         }
-
+        vodListView.getChildAt(0).requestFocus();
     }
 
     @Override
@@ -336,7 +350,6 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                 }
 
                 int scrollX = horizontalScrollView.getScrollX();
-                Log.i(TAG, "scroll x: " + scrollX);
                 int itemWidth = (int) getResources().getDimension(R.dimen.film_star_indicator_bg_width);
                 if (scrollX >= itemWidth) {
                     indicatorArrowLeft.setVisibility(View.VISIBLE);
@@ -345,7 +358,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                 }
 
                 int count = indicatorListLayout.getChildCount();
-                if (scrollX == (count - 4) * itemWidth) {
+                if (scrollX >= (count - 4) * itemWidth) {
                     indicatorArrowRight.setVisibility(View.INVISIBLE);
                 } else {
                     indicatorArrowRight.setVisibility(View.VISIBLE);
@@ -365,6 +378,28 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
             case R.id.recyclerview:
                 if (lostFocusItemView != null) {
                     lostFocusItemView.requestFocus();
+                }
+                break;
+            case R.id.star_vod_list_item:
+                View imageLayout = v.findViewById(R.id.item_vod_image_layout);
+                if (hasFocus) {
+                    imageLayout.setSelected(true);
+                } else {
+                    imageLayout.setSelected(false);
+                }
+
+                int vodScrollX = vodHorizontalScrollView.getScrollX();
+                if (vodScrollX >= 312) {
+                    contentArrowLeft.setVisibility(View.VISIBLE);
+                } else {
+                    contentArrowLeft.setVisibility(View.INVISIBLE);
+                }
+
+                int vodCount = vodListView.getChildCount();
+                if (vodScrollX >= (vodCount - 5 - 1) * 332 + 312) {
+                    contentArrowRight.setVisibility(View.INVISIBLE);
+                } else {
+                    contentArrowRight.setVisibility(View.VISIBLE);
                 }
                 break;
         }

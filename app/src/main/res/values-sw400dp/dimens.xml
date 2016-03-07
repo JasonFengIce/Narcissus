@@ -124,6 +124,7 @@
 <dimen name="filmStar_divider_height">0.74dp</dimen>
 
 <dimen name="filmStar_item_horizontal_space">4.81dp</dimen>
+<dimen name="filmStar_item_vertical_space">11.11dp</dimen>
 
 <dimen name="arrow_margin">11.11dp</dimen>
 

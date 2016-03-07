@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#405185"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#405185"
+              android:orientation="vertical">
 
     <TextView
         android:id="@+id/film_star_title"
@@ -12,7 +12,7 @@
         android:layout_marginLeft="@dimen/film_star_title_marginLeft"
         android:layout_marginTop="@dimen/film_star_title_marginTop"
         android:gravity="center"
-        android:textSize="@dimen/textSize_40sp" />
+        android:textSize="@dimen/textSize_40sp"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -30,7 +30,7 @@
             android:layout_marginLeft="@dimen/arrow_margin"
             android:background="@drawable/selector_star_arrow_left"
             android:clickable="true"
-            android:visibility="invisible" />
+            android:visibility="invisible"/>
 
         <HorizontalScrollView
             android:id="@+id/scrollview"
@@ -58,7 +58,7 @@
             android:background="@drawable/selector_star_arrow_right"
             android:clickable="true"
             android:padding="10dp"
-            android:visibility="invisible" />
+            android:visibility="invisible"/>
 
     </LinearLayout>
 
@@ -78,7 +78,7 @@
             android:clickable="true"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:visibility="invisible" />
+            android:visibility="invisible"/>
 
 
         <HorizontalScrollView
@@ -96,7 +96,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:descendantFocusability="afterDescendants"
+                android:focusable="true"
                 android:gravity="center"
+                android:nextFocusLeft="@id/vod_list_view"
+                android:nextFocusRight="@id/vod_list_view"
                 android:orientation="horizontal">
 
             </LinearLayout>
@@ -114,7 +117,7 @@
             android:clickable="true"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:visibility="invisible" />
+            android:visibility="invisible"/>
 
     </RelativeLayout>
 
@@ -124,7 +127,7 @@
         android:layout_marginLeft="@dimen/filmStar_divider_margin"
         android:layout_marginRight="@dimen/filmStar_divider_margin"
         android:scaleType="fitXY"
-        android:src="#202e5d" />
+        android:src="#202e5d"/>
 
     <LinearLayout
         android:id="@+id/film_description"
@@ -145,21 +148,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/filmStar_description_text_margin"
-                android:textSize="@dimen/textSize_30sp" />
+                android:textSize="@dimen/textSize_30sp"/>
 
             <TextView
                 android:id="@+id/director"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/filmStar_description_text_margin"
-                android:textSize="@dimen/textSize_30sp" />
+                android:textSize="@dimen/textSize_30sp"/>
 
             <TextView
                 android:id="@+id/area"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/filmStar_description_text_margin"
-                android:textSize="@dimen/textSize_30sp" />
+                android:textSize="@dimen/textSize_30sp"/>
 
 
         </LinearLayout>
@@ -170,7 +173,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/filmStar_description_text_margin"
             android:layout_weight="1"
-            android:textSize="@dimen/textSize_30sp" />
+            android:textSize="@dimen/textSize_30sp"/>
 
     </LinearLayout>
 
