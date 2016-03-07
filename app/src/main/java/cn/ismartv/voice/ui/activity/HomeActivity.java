@@ -11,8 +11,6 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -269,7 +267,7 @@ public class HomeActivity extends BaseActivity {
                                 @Override
                                 public void confirmClick(View view) {
                                     networkEorrorPopupWindow.dismiss();
-                                    System.exit(0);
+                                    android.os.Process.killProcess(android.os.Process.myPid());
                                 }
                             },
                             null

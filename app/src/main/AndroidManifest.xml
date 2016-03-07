@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cn.ismartv.voice">
+    package="cn.ismartv.voice"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.GET_TASKS"/>
     <!-- 蓝牙录音 -->
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
     <!-- 某些手机启动SCO音频连接需要此权限 -->
-    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY"/>
     <!-- 蓝牙录音检测耳机状态 -->
-    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
 
 
     <application
@@ -33,17 +33,17 @@
         <!--inject db-->
         <meta-data
             android:name="AA_DB_NAME"
-            android:value="narcissus.db" />
+            android:value="narcissus.db"/>
         <meta-data
             android:name="AA_DB_VERSION"
-            android:value="4" />
+            android:value="4"/>
 
 
         <!--content provider-->
         <provider
             android:name="cn.ismartv.injectdb.library.content.ContentProvider"
             android:authorities="cn.ismartv.voice"
-            android:exported="false" />
+            android:exported="false"/>
 
         <!--inject db end-->
 
@@ -65,9 +65,14 @@
             android:name=".ui.activity.HomeActivity"
             android:screenOrientation="landscape">
             <intent-filter>
-                <action android:name="cn.ismartv.voice.home" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
 
-                <category android:name="android.intent.category.DEFAULT" />
+            <intent-filter>
+                <action android:name="cn.ismartv.voice.home"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 
@@ -80,14 +85,10 @@
             android:name=".ui.activity.FilmStarActivity"
             android:screenOrientation="landscape">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
             <intent-filter>
-                <action android:name="cn.ismartv.voice.film_star" />
-                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="cn.ismartv.voice.film_star"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 
@@ -100,19 +101,19 @@
             android:name=".core.service.LauncherService"
             android:exported="true">
             <intent-filter>
-                <action android:name="cn.ismartv.voice.launcher_service" />
+                <action android:name="cn.ismartv.voice.launcher_service"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
 
         </service>
 
         <receiver android:name=".core.AppChangeReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED" />
-                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <action android:name="android.intent.action.PACKAGE_ADDED"/>
+                <action android:name="android.intent.action.PACKAGE_REMOVED"/>
 
-                <data android:scheme="package" />
+                <data android:scheme="package"/>
             </intent-filter>
         </receiver>
     </application>

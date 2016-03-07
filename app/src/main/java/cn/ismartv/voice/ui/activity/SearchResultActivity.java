@@ -16,10 +16,9 @@ import cn.ismartv.voice.R;
 import cn.ismartv.voice.core.event.AnswerAvailableEvent;
 import cn.ismartv.voice.data.http.AppSearchObjectEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
-import cn.ismartv.voice.ui.fragment.AppSearchFragment;
+import cn.ismartv.voice.ui.fragment.IndicatorFragment;
 import cn.ismartv.voice.ui.fragment.ResultAppFragment;
 import cn.ismartv.voice.ui.fragment.ResultVodFragment;
-import cn.ismartv.voice.ui.fragment.IndicatorFragment;
 import cn.ismartv.voice.ui.fragment.SearchLoadingFragment;
 import cn.ismartv.voice.ui.widget.MessagePopWindow;
 
@@ -138,7 +137,7 @@ public class SearchResultActivity extends BaseActivity {
                                 @Override
                                 public void confirmClick(View view) {
                                     networkEorrorPopupWindow.dismiss();
-                                    System.exit(0);
+                                    android.os.Process.killProcess(android.os.Process.myPid());
                                 }
                             },
                             null

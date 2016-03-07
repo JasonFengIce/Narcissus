@@ -439,7 +439,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                                 @Override
                                 public void confirmClick(View view) {
                                     networkEorrorPopupWindow.dismiss();
-                                    System.exit(0);
+                                    android.os.Process.killProcess(android.os.Process.myPid());
                                 }
                             },
                             null
