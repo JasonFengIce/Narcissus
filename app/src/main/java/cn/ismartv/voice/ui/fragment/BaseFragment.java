@@ -1,7 +1,6 @@
 package cn.ismartv.voice.ui.fragment;
 
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import android.widget.Toast;
 import java.util.List;
 
 import cn.ismartv.injectdb.library.query.Select;
-import cn.ismartv.voice.MainApplication;
 import cn.ismartv.voice.R;
 import cn.ismartv.voice.data.http.AppSearchObjectEntity;
 import cn.ismartv.voice.data.http.SemantichObjectEntity;
@@ -54,8 +52,6 @@ public class BaseFragment extends Fragment {
                 intent.putExtra("pk", pk);
                 intent.putExtra("title", title);
                 intent.setAction("cn.ismartv.voice.film_star");
-                startActivity(intent);
-
                 break;
             default:
                 intent.putExtra("url", url);

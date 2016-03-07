@@ -381,6 +381,12 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                 }
                 break;
             case R.id.star_vod_list_item:
+                if (hasFocus) {
+                    ViewScaleUtil.zoomin_1_15(v);
+                } else {
+                    ViewScaleUtil.zoomout_1_15(v);
+                }
+
                 View imageLayout = v.findViewById(R.id.item_vod_image_layout);
                 if (hasFocus) {
                     imageLayout.setSelected(true);
