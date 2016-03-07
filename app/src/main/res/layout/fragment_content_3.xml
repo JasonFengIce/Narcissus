@@ -40,6 +40,7 @@
             android:visibility="gone"/>
 
         <cn.ismartv.voice.ui.widget.ZGridView
+
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -49,6 +50,8 @@
             android:clipChildren="false"
             android:clipToPadding="false"
             android:focusable="true"
+            android:nextFocusDown="@id/recyclerview"
+            android:nextFocusUp="@id/recyclerview"
             android:paddingLeft="@dimen/content_fragment_recycler_margin_lr"
             android:paddingRight="@dimen/content_fragment_recycler_margin_lr"
             android:scrollbars="none"
