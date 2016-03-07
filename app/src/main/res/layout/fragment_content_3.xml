@@ -48,13 +48,18 @@
             android:cacheColorHint="@android:color/transparent"
             android:clipChildren="false"
             android:clipToPadding="false"
-            android:descendantFocusability="blocksDescendants"
             android:focusable="true"
             android:paddingLeft="@dimen/content_fragment_recycler_margin_lr"
             android:paddingRight="@dimen/content_fragment_recycler_margin_lr"
             android:scrollbars="none"
             app:horizontalSpace="@dimen/result_vod_horizontal_space"
+            app:listSelector="@drawable/selector_list_item"
             app:numColumns="4"
+
+            app:selectorBottomPadding="10dp"
+            app:selectorLeftPadding="10dp"
+            app:selectorRightPadding="10dp"
+            app:selectorTopPadding="10dp"
             app:verticalSpace="@dimen/result_vod_vertical_space"
 
             />

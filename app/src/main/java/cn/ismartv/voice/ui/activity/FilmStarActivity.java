@@ -214,7 +214,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
 
     private void fillVodList(List<SemantichObjectEntity> list) {
         for (int i = 0; i < list.size(); i++) {
-            View itemView = LayoutInflater.from(this).inflate(R.layout.item_vod, null);
+            View itemView = LayoutInflater.from(this).inflate(R.layout.item_vod_star, null);
             TextView itemVodTitle = (TextView) itemView.findViewById(R.id.item_vod_title);
             ImageView itemVodImage = (ImageView) itemView.findViewById(R.id.item_vod_image);
             TextView itemScore = (TextView) itemView.findViewById(R.id.item_vod_score);
@@ -292,8 +292,11 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
             });
 
             int padding = (int) getResources().getDimension(R.dimen.filmStar_item_horizontal_space);
-            itemView.setPadding(padding, padding, padding, padding);
-            vodListView.addView(itemView);
+//            itemView.setPadding(padding, padding, padding, padding);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams.gravity = Gravity.CENTER;
+            layoutParams.setMargins(padding, 0, padding, 0);
+            vodListView.addView(itemView, layoutParams);
         }
 
     }

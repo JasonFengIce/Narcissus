@@ -123,7 +123,7 @@
 <dimen name="filmStar_description_text_margin">13.33dp</dimen>
 <dimen name="filmStar_divider_height">1.33dp</dimen>
 
-<dimen name="filmStar_item_horizontal_space">9.33dp</dimen>
+<dimen name="filmStar_item_horizontal_space">10.00dp</dimen>
 
 <dimen name="arrow_margin">20.00dp</dimen>
 
