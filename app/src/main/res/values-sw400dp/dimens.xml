@@ -160,4 +160,16 @@
 <dimen name="vod_title_marigin_top">-3.70dp</dimen>
 <dimen name="recommend_vod_marigin_bottom">11.11dp</dimen>
 
+<dimen name="app_update_message_pop_height">251.85dp</dimen>
+<dimen name="app_pop_text_layout_height">77.78dp</dimen>
+<dimen name="app_pop_text_width">233.33dp</dimen>
+<dimen name="app_pop_btn_height">48.15dp</dimen>
+<dimen name="app_pop_btn_margin_lr">22.22dp</dimen>
+<dimen name="app_update_title_marginTop">14.81dp</dimen>
+<dimen name="app_update_title_marginBottom">3.70dp</dimen>
+<dimen name="app_update_item_margin">5.93dp</dimen>
+<dimen name="app_update_pop_text_layout_height">203.70dp</dimen>
+
+
+
 </resources>

@@ -1,7 +1,5 @@
 package cn.ismartv.voice.ui.activity;
 
-import android.app.ActivityManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -22,6 +20,7 @@ import java.util.List;
 import cn.ismartv.voice.R;
 import cn.ismartv.voice.core.ScreenManager;
 import cn.ismartv.voice.core.event.AnswerAvailableEvent;
+import cn.ismartv.voice.core.update.AppUpdateUtilsV2;
 import cn.ismartv.voice.data.table.CityTable;
 import cn.ismartv.voice.ui.fragment.BaseFragment;
 import cn.ismartv.voice.ui.fragment.RecognizeErrorFragment;
@@ -30,6 +29,7 @@ import cn.ismartv.voice.ui.fragment.RecommendVodFragment;
 import cn.ismartv.voice.ui.fragment.SearchLoadingFragment;
 import cn.ismartv.voice.ui.fragment.VoiceFragment;
 import cn.ismartv.voice.ui.fragment.WeatherFragment;
+import cn.ismartv.voice.ui.widget.AppUpdateMessagePopWindow;
 import cn.ismartv.voice.ui.widget.MessagePopWindow;
 
 /**
@@ -53,6 +53,7 @@ public class HomeActivity extends BaseActivity {
     private boolean voiceBtnIsDown = false;
     private View contentView;
     private MessagePopWindow networkEorrorPopupWindow;
+    private AppUpdateMessagePopWindow appUpdateMessagePopWindow;
 
     private List<BaseFragment> rightFragmentList;
 
@@ -65,6 +66,7 @@ public class HomeActivity extends BaseActivity {
         contentView = LayoutInflater.from(this).inflate(R.layout.activity_home, null);
         setContentView(contentView);
 
+        AppUpdateUtilsV2.getInstance(this).checkAppUpdate();
 
         voiceFragment = new VoiceFragment();
         recommendVodFragment = new RecommendVodFragment();
@@ -213,21 +215,33 @@ public class HomeActivity extends BaseActivity {
     /**
      * receive app update broadcast, and show update popup window
      */
-    class AppUpdateReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            final Bundle bundle = intent.getBundleExtra("data");
-            final String path = bundle.getString("path");
-            installApk(HomeActivity.this, path);
-//            contentView.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    showUpdatePopup(contentView, bundle);
-//                }
-//            }, 2000);
+    public void showAppUpdatePop(Bundle bundle) {
+        final String path = bundle.getString("path");
+        List<String> msgs = bundle.getStringArrayList("msgs");
+        appUpdateMessagePopWindow = new AppUpdateMessagePopWindow(this, msgs, new AppUpdateMessagePopWindow.ConfirmListener() {
+            @Override
+            public void confirmClick(View view) {
+                appUpdateMessagePopWindow.dismiss();
+                installApk(HomeActivity.this, path);
+            }
+        }, new AppUpdateMessagePopWindow.CancelListener() {
+            @Override
+            public void cancelClick(View view) {
+                appUpdateMessagePopWindow.dismiss();
+            }
+        });
 
-        }
+        contentView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (!appUpdateMessagePopWindow.isShowing()) {
+                    appUpdateMessagePopWindow.setButtonText("立即升级", "下次升级");
+                    appUpdateMessagePopWindow.showAtLocation(contentView, Gravity.CENTER);
+                }
+            }
+        }, 1000);
     }
+
 
     public void installApk(Context mContext, String path) {
         Uri uri = Uri.parse("file://" + path);
@@ -289,6 +303,9 @@ public class HomeActivity extends BaseActivity {
         switch (event.getEventType()) {
             case NETWORK_ERROR:
                 showNetworkErrorPop();
+                break;
+            case APP_UPDATE:
+                showAppUpdatePop((Bundle) event.getMsg());
                 break;
         }
     }

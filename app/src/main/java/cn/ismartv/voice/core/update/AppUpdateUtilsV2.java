@@ -1,7 +1,6 @@
 package cn.ismartv.voice.core.update;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -19,7 +18,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-import cn.ismartv.voice.AppConstant;
 import cn.ismartv.voice.MainApplication;
 import cn.ismartv.voice.core.event.AnswerAvailableEvent;
 import cn.ismartv.voice.core.http.HttpAPI;
@@ -62,7 +60,7 @@ public class AppUpdateUtilsV2 extends Handler {
         String sn = MainApplication.getSnToken();
         String app = "voice";
         String ver = String.valueOf(currentApkVersionCode);
-        String manu = "google";
+        String manu = "sharp";
         String model = DeviceUtil.getModelName();
 
 
@@ -75,7 +73,7 @@ public class AppUpdateUtilsV2 extends Handler {
                         updateProcess(versionInfoV2Entity);
                     }
                 } else {
-                    EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
+//                    EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
                 }
             }
 
@@ -151,7 +149,6 @@ public class AppUpdateUtilsV2 extends Handler {
     }
 
     private void downloadAPK(final Context mContext, final String downloadUrl) {
-        checkDowload = false;
         new Thread() {
             @Override
             public void run() {
@@ -182,6 +179,7 @@ public class AppUpdateUtilsV2 extends Handler {
 
                 Log.d(TAG, "downloadAPK is end...");
                 if (!checkDowload) {
+                    checkDowload = true;
                     sendEmptyMessage(0);
                 }
             }
@@ -190,10 +188,9 @@ public class AppUpdateUtilsV2 extends Handler {
 
 
     private void sendUpdateBroadcast(Context context, Bundle bundle) {
-        Intent intent = new Intent();
-        intent.setAction(AppConstant.APP_UPDATE_ACTION);
-        intent.putExtra("data", bundle);
-        context.sendBroadcast(intent);
+        AnswerAvailableEvent appUpdateEvent = new AnswerAvailableEvent(AnswerAvailableEvent.EventType.APP_UPDATE);
+        appUpdateEvent.setMsg(bundle);
+        EventBus.getDefault().post(appUpdateEvent);
     }
 
     private int getApkVersionCode(Context context, String path) {

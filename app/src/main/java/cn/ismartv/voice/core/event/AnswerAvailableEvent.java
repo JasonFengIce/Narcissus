@@ -14,6 +14,24 @@ public class AnswerAvailableEvent {
 
     private EventType eventType;
     private int eventCode;
+    private Object msg;
+
+    public AnswerAvailableEvent(EventType eventType, int eventCode) {
+        this.eventType = eventType;
+        this.eventCode = eventCode;
+    }
+
+    public AnswerAvailableEvent(EventType eventType) {
+        this.eventType = eventType;
+    }
+
+    public Object getMsg() {
+        return msg;
+    }
+
+    public void setMsg(Object msg) {
+        this.msg = msg;
+    }
 
     public EventType getEventType() {
         return eventType;
@@ -23,14 +41,10 @@ public class AnswerAvailableEvent {
         return eventCode;
     }
 
-    public AnswerAvailableEvent(EventType eventType, int eventCode) {
-        this.eventType = eventType;
-        this.eventCode = eventCode;
-    }
-
     public enum EventType {
         NETWORK_ERROR,
-        REFRESH_DATA
+        REFRESH_DATA,
+        APP_UPDATE
     }
 
 

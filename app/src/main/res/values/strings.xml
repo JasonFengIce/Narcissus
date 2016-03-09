@@ -33,4 +33,5 @@
     <string name="recognize_error_tip">我没有听清,请您再说一次</string>
     <string name="ismartv_store_app_not_install">视云商店未安装</string>
     <string name="today_hot_vod">今日热搜</string>
+    <string name="app_update_title">升级通知</string>
 </resources>
