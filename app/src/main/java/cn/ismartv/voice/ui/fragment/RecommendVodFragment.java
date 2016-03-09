@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
@@ -115,7 +116,7 @@ public class RecommendVodFragment extends BaseFragment implements OnFocusChangeL
             TextView itemScore = (TextView) itemView.findViewById(R.id.item_vod_score);
             TextView itemPrice = (TextView) itemView.findViewById(R.id.item_vod_price);
             TextView itemFocus = (TextView) itemView.findViewById(R.id.item_vod_focus);
-
+            itemView.setOnHoverListener(mOnHoverListener);
             itemVodTitle.setText(list.get(i).getTitle());
             Transformation mTransformation = new ReflectionTransformationBuilder()
                     .setIsHorizontal(true)
@@ -191,4 +192,22 @@ public class RecommendVodFragment extends BaseFragment implements OnFocusChangeL
     public void onClick(View v) {
         onVodItemClick((SemantichObjectEntity) v.getTag());
     }
+
+    private View.OnHoverListener mOnHoverListener = new View.OnHoverListener() {
+
+        @Override
+        public boolean onHover(View v, MotionEvent keycode) {
+            switch (keycode.getAction()) {
+                case MotionEvent.ACTION_HOVER_ENTER:
+                case MotionEvent.ACTION_HOVER_MOVE:
+                    v.requestFocus();
+                    break;
+                case MotionEvent.ACTION_HOVER_EXIT:
+                    break;
+                default:
+                    break;
+            }
+            return false;
+        }
+    };
 }
