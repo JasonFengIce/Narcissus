@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<cn.ismartv.voice.ui.widget.LinerLayoutContainer
     android:id="@+id/filmStar_indicator_item"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -26,4 +26,4 @@
         android:background="@drawable/film_star_indicator_focus_bg"
         android:visibility="invisible"/>
 
-</LinearLayout>
+</cn.ismartv.voice.ui.widget.LinerLayoutContainer>

@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -180,6 +181,15 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
                     searchVod(type, data, false);
                 }
             });
+            linearLayout.setOnHoverListener(new View.OnHoverListener() {
+                @Override
+                public boolean onHover(View view, MotionEvent motionEvent) {
+                    if (motionEvent.getAction() == MotionEvent.ACTION_HOVER_ENTER || motionEvent.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
+                        view.requestFocus();
+                    }
+                    return false;
+                }
+            });
             linearLayout.setId(R.id.indicator_list_item + i);
             linearLayout.setOnFocusChangeListener(this);
             linearLayout.setNextFocusLeftId(R.id.indicator_slide_menu);
@@ -225,6 +235,15 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
                 selectedView = v;
                 String rawText = (String) v.getTag();
                 searchApp(rawText, false);
+            }
+        });
+        linearLayout.setOnHoverListener(new View.OnHoverListener() {
+            @Override
+            public boolean onHover(View view, MotionEvent motionEvent) {
+                if(motionEvent.getAction() == MotionEvent.ACTION_HOVER_ENTER || motionEvent.getAction() == MotionEvent.ACTION_HOVER_MOVE){
+                    view.requestFocus();
+                }
+                return false;
             }
         });
         linearLayout.setNextFocusLeftId(R.id.indicator_slide_menu);

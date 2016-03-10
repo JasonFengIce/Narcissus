@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -110,6 +111,15 @@ public class RecognizeErrorFragment extends BaseFragment implements View.OnFocus
                         textView.setTag(hashMap);
                         textView.setOnFocusChangeListener(RecognizeErrorFragment.this);
                         textView.setOnClickListener(RecognizeErrorFragment.this);
+                        textView.setOnHoverListener(new View.OnHoverListener() {
+                            @Override
+                            public boolean onHover(View view, MotionEvent motionEvent) {
+                                if(motionEvent.getAction() == MotionEvent.ACTION_HOVER_ENTER || motionEvent.getAction() == MotionEvent.ACTION_HOVER_MOVE){
+                                    view.requestFocus();
+                                }
+                                return false;
+                            }
+                        });
                         errorTipListLayout.addView(textView, layoutParams);
                         if (postion == 0) {
                             textView.requestFocus();

@@ -30,6 +30,8 @@
             android:layout_marginLeft="@dimen/arrow_margin"
             android:background="@drawable/selector_star_arrow_left"
             android:clickable="true"
+            android:focusableInTouchMode="true"
+            android:focusable="true"
             android:visibility="invisible"/>
 
         <HorizontalScrollView
@@ -57,6 +59,8 @@
             android:layout_marginRight="@dimen/arrow_margin"
             android:background="@drawable/selector_star_arrow_right"
             android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:padding="10dp"
             android:visibility="invisible"/>
 
@@ -88,15 +92,12 @@
             android:layout_centerInParent="true"
             android:layout_marginLeft="@dimen/filmStar_recycler_marginLeft"
             android:layout_marginRight="@dimen/filmStar_recycler_marginLeft"
-            android:descendantFocusability="afterDescendants"
             android:scrollbars="none">
 
             <LinearLayout
                 android:id="@+id/vod_list_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:descendantFocusability="afterDescendants"
-                android:focusable="true"
                 android:gravity="center"
                 android:nextFocusLeft="@id/vod_list_view"
                 android:nextFocusRight="@id/vod_list_view"
