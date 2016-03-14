@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -104,7 +105,15 @@ public class RecommendAppFragment extends BaseFragment implements View.OnFocusCh
             itemView.setTag(list.get(i));
             itemView.setOnFocusChangeListener(this);
             itemView.setOnClickListener(this);
-
+            itemView.setOnHoverListener(new View.OnHoverListener() {
+                @Override
+                public boolean onHover(View view, MotionEvent motionEvent) {
+                    if (motionEvent.getAction() == MotionEvent.ACTION_HOVER_ENTER || motionEvent.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
+                        view.requestFocus();
+                    }
+                    return false;
+                }
+            });
             int row = i / 4 + 1;
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.weight = 1;

@@ -6,11 +6,10 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -77,17 +76,17 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
         contentView = LayoutInflater.from(this).inflate(R.layout.activity_filmstar, null);
         setContentView(contentView);
 
-        Window window = getWindow();
-        WindowManager.LayoutParams params = window.getAttributes();
-        params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-        window.setAttributes(params);
+//        Window window = getWindow();
+//        WindowManager.LayoutParams params = window.getAttributes();
+//        params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+//        window.setAttributes(params);
 
         initViews();
         Intent intent = getIntent();
-        pk = intent.getLongExtra("pk", 0);
-//        pk = 2857;
-        String title = intent.getStringExtra("title");
-//        String title = "刘德华";
+//        pk = intent.getLongExtra("pk", 0);
+        pk = 2857;
+//        String title = intent.getStringExtra("title");
+        String title = "刘德华";
         filmStartitle.setText(title);
         fetchActorRelate(pk);
 
@@ -127,13 +126,38 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
         horizontalScrollView = (HorizontalScrollView) findViewById(R.id.scrollview);
         vodListView = (LinearLayout) findViewById(R.id.vod_list_view);
         vodHorizontalScrollView = (HorizontalScrollView) findViewById(R.id.vod_scrollview);
-
         contentArrowRight.setOnFocusChangeListener(this);
         contentArrowLeft.setOnFocusChangeListener(this);
         indicatorArrowLeft.setOnFocusChangeListener(this);
         indicatorArrowRight.setOnFocusChangeListener(this);
-
-
+        indicatorArrowLeft.setOnHoverListener(mOnHoverListener);
+        indicatorArrowRight.setOnHoverListener(mOnHoverListener);
+        contentArrowRight.setOnHoverListener(mOnHoverListener);
+        contentArrowLeft.setOnHoverListener(mOnHoverListener);
+        indicatorArrowLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                horizontalScrollView.pageScroll(View.FOCUS_LEFT);
+            }
+        });
+        indicatorArrowRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                horizontalScrollView.pageScroll(View.FOCUS_RIGHT);
+            }
+        });
+        contentArrowLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                vodHorizontalScrollView.pageScroll(View.FOCUS_LEFT);
+            }
+        });
+        contentArrowRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                vodHorizontalScrollView.pageScroll(View.FOCUS_RIGHT);
+            }
+        });
     }
 
 
@@ -353,6 +377,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
             case R.id.content_arrow_right:
             case R.id.indicator_left:
             case R.id.indicator_right:
+                v.requestFocusFromTouch();
                 if (hasFocus) {
                     ViewScaleUtil.zoomin_1_3(v);
                 } else {
@@ -491,6 +516,22 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
     public void answerAvailable(AnswerAvailableEvent event) {
         showNetworkErrorPop();
     }
+    private View.OnHoverListener mOnHoverListener = new View.OnHoverListener() {
 
+        @Override
+        public boolean onHover(View v, MotionEvent keycode) {
+            switch (keycode.getAction()) {
+                case MotionEvent.ACTION_HOVER_ENTER:
+                case MotionEvent.ACTION_HOVER_MOVE:
+                    v.requestFocus();
+                    break;
+                case MotionEvent.ACTION_HOVER_EXIT:
+                    break;
+                default:
+                    break;
+            }
+            return false;
+        }
+    };
 
 }

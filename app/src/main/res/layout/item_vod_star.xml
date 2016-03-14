@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:id="@+id/star_vod_list_item"
-              android:clickable="true"
-              android:focusable="true"
-              android:focusableInTouchMode="true"
-              android:gravity="center"
-              android:orientation="vertical"
-    >
+<cn.ismartv.voice.ui.widget.LinerLayoutContainer
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/star_vod_list_item"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:gravity="center"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
         android:id="@+id/item_vod_image_layout"
@@ -76,4 +76,4 @@
         android:singleLine="true"
         android:textSize="@dimen/textSize_36sp"/>
 
-</LinearLayout>
+</cn.ismartv.voice.ui.widget.LinerLayoutContainer>
