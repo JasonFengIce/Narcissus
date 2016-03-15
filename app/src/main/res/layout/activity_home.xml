@@ -11,6 +11,11 @@
         android:layout_weight="1"
         android:background="#455996"></FrameLayout>
 
+    <ImageView
+        android:layout_width="@dimen/divider_home"
+        android:layout_height="match_parent"
+        android:src="#202e5d"/>
+
     <FrameLayout
         android:id="@+id/right_fragment"
         android:layout_width="0dp"
