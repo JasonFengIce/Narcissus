@@ -65,77 +65,84 @@ public class RecognizeErrorFragment extends BaseFragment implements View.OnFocus
         Retrofit retrofit = HttpManager.getInstance().resetAdapter_WUGUOJUN;
         wordsCall = retrofit.create(HttpAPI.SharpHotWords.class).doRequest(7);
         wordsCall.enqueue(new Callback<SharpHotWordsEntity>() {
-            @Override
-            public void onResponse(Response<SharpHotWordsEntity> response) {
-                if (response.errorBody() == null) {
-                    SharpHotWordsEntity tipList = response.body();
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
-                    int marginTop = (int) (getResources().getDimension(R.dimen.recognize_error_tip_item_margin_top) / getDensityRate());
-                    layoutParams.topMargin = marginTop;
+                              @Override
+                              public void onResponse(Response<SharpHotWordsEntity> response) {
+                                  if (response.errorBody() == null) {
+                                      SharpHotWordsEntity tipList = response.body();
+                                      LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                      layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
+                                      int marginTop = (int) (getResources().getDimension(R.dimen.recognize_error_tip_item_margin_top) / getDensityRate());
+                                      layoutParams.topMargin = marginTop / 2;
+                                      layoutParams.bottomMargin = marginTop / 2;
 //                    ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(getResources().getColor(R.color._ff9c3c));
 //                    ScaleXSpan scaleXSpan = new ScaleXSpan(1.2f);
 
-                    for (int i = 0; i < tipList.getObjects().size() && i < 7; i++) {
-                        TextView textView = new TextView(getContext());
-                        textView.setClickable(true);
-                        textView.setFocusable(true);
-                        textView.setFocusableInTouchMode(true);
-                        textView.setTextSize(getResources().getDimension(R.dimen.textSize_36sp) / getDensityRate());
-                        SemantichObjectEntity entity = tipList.getObjects().get(i);
-                        String text = entity.getTitle();
+                                      for (int i = 0; i < tipList.getObjects().size() && i < 7; i++) {
+                                          TextView textView = new TextView(getContext());
+                                          textView.setClickable(true);
+                                          textView.setFocusable(true);
+                                          textView.setFocusableInTouchMode(true);
+                                          textView.setTextSize(getResources().getDimension(R.dimen.textSize_36sp) / getDensityRate());
+                                          SemantichObjectEntity entity = tipList.getObjects().get(i);
+                                          String text = entity.getTitle();
 
-                        textView.setText(text);
+                                          textView.setText(text);
 
-                        List<SemantichObjectEntity> datas = tipList.getObjects();
-                        int postion = i;
+                                          List<SemantichObjectEntity> datas = tipList.getObjects();
+                                          int postion = i;
 
-                        String postUrl = datas.get(postion).getPoster_url();
-                        String verticalUrl = datas.get(postion).getVertical_url();
-                        HashMap<String, String> hashMap = new HashMap<>();
-                        hashMap.put("url", datas.get(postion).getUrl());
-                        hashMap.put("content_model", datas.get(postion).getContent_model());
-                        hashMap.put("pk", datas.get(postion).getPk());
-                        hashMap.put("title", datas.get(postion).getTitle());
+                                          String postUrl = datas.get(postion).getPoster_url();
+                                          String verticalUrl = datas.get(postion).getVertical_url();
+                                          HashMap<String, String> hashMap = new HashMap<>();
+                                          hashMap.put("url", datas.get(postion).getUrl());
+                                          hashMap.put("content_model", datas.get(postion).getContent_model());
+                                          hashMap.put("pk", datas.get(postion).getPk());
+                                          hashMap.put("title", datas.get(postion).getTitle());
 
-                        if (!TextUtils.isEmpty(verticalUrl)) {
-                            hashMap.put("orientation", "vertical");
+                                          if (!TextUtils.isEmpty(verticalUrl)) {
+                                              hashMap.put("orientation", "vertical");
 
-                        } else if (!TextUtils.isEmpty(postUrl)) {
-                            hashMap.put("orientation", "horizontal");
+                                          } else if (!TextUtils.isEmpty(postUrl)) {
+                                              hashMap.put("orientation", "horizontal");
 
-                        } else {
-                            hashMap.put("orientation", "vertical");
-                        }
+                                          } else {
+                                              hashMap.put("orientation", "vertical");
+                                          }
 
-                        textView.setTag(hashMap);
-                        textView.setOnFocusChangeListener(RecognizeErrorFragment.this);
-                        textView.setOnClickListener(RecognizeErrorFragment.this);
-                        textView.setOnHoverListener(new View.OnHoverListener() {
-                            @Override
-                            public boolean onHover(View view, MotionEvent motionEvent) {
-                                if(motionEvent.getAction() == MotionEvent.ACTION_HOVER_ENTER || motionEvent.getAction() == MotionEvent.ACTION_HOVER_MOVE){
-                                    view.requestFocus();
-                                }
-                                return false;
-                            }
-                        });
-                        errorTipListLayout.addView(textView, layoutParams);
-                        if (postion == 0) {
-                            textView.requestFocus();
-                            textView.requestFocusFromTouch();
-                        }
-                    }
-                } else {
-                    EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
-                }
-            }
+                                          textView.setTag(hashMap);
+                                          textView.setOnFocusChangeListener(RecognizeErrorFragment.this);
+                                          textView.setOnClickListener(RecognizeErrorFragment.this);
+                                          textView.setOnHoverListener(new View.OnHoverListener() {
+                                              @Override
+                                              public boolean onHover(View view, MotionEvent motionEvent) {
+                                                  if (motionEvent.getAction() == MotionEvent.ACTION_HOVER_ENTER || motionEvent.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
+                                                      view.requestFocus();
+                                                  }
+                                                  return false;
+                                              }
+                                          });
 
-            @Override
-            public void onFailure(Throwable t) {
-                EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
-            }
-        });
+
+                                          errorTipListLayout.addView(textView, layoutParams);
+                                          if (postion == 0) {
+                                              textView.requestFocus();
+                                              textView.requestFocusFromTouch();
+                                          }
+                                      }
+                                  } else
+
+                                  {
+                                      EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
+                                  }
+                              }
+
+                              @Override
+                              public void onFailure(Throwable t) {
+                                  EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
+                              }
+                          }
+
+        );
     }
 
 

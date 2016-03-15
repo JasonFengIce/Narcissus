@@ -23,14 +23,15 @@
         android:src="@drawable/voice_fragment_divider_line"
         />
 
+
     <LinearLayout
-        android:gravity="center"
         android:id="@+id/tip_list_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:clipChildren="false"
         android:clipToPadding="false"
+        android:gravity="center"
         android:orientation="vertical"
         />
 </LinearLayout>
