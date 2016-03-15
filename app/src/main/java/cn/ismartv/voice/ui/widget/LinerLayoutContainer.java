@@ -27,10 +27,12 @@ public class LinerLayoutContainer extends LinearLayout {
         switch (event.getAction()) {
             case MotionEvent.ACTION_HOVER_ENTER:
             case MotionEvent.ACTION_HOVER_MOVE:
+                setHovered(true);
                 requestFocus();
 //                invalidate();
                 break;
             case MotionEvent.ACTION_HOVER_EXIT:
+                setHovered(false);
                 invalidate();
                 break;
         }
