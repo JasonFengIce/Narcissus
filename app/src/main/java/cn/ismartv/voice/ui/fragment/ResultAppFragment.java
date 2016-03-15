@@ -1,6 +1,9 @@
 package cn.ismartv.voice.ui.fragment;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -144,17 +147,25 @@ public class ResultAppFragment extends BaseFragment implements View.OnFocusChang
             }
 
             if (datas.get(position).isLocal()) {
+                try {
+                    PackageInfo packageInfo = getContext().getPackageManager().getPackageInfo(datas.get(position).getCaption(), 0);
+                    Drawable drawable = packageInfo.applicationInfo.loadIcon(getContext().getPackageManager());
+                    myViewHolder.imageView.setImageDrawable(drawable);
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
                 myViewHolder.localLabel.setVisibility(View.VISIBLE);
+
+            } else {
+                String iconUrl = datas.get(position).getAdlet_url();
+                Picasso.with(getContext())
+                        .load(iconUrl)
+                        .memoryPolicy(MemoryPolicy.NO_STORE)
+                        .error(R.drawable.vertical_preview_bg)
+                        .placeholder(R.drawable.vertical_preview_bg)
+                        .into(myViewHolder.imageView);
             }
             myViewHolder.textView.setText(datas.get(position).getTitle());
-            String iconUrl = datas.get(position).getAdlet_url();
-
-            Picasso.with(getContext())
-                    .load(iconUrl)
-                    .memoryPolicy(MemoryPolicy.NO_STORE)
-                    .error(R.drawable.vertical_preview_bg)
-                    .placeholder(R.drawable.vertical_preview_bg)
-                    .into(myViewHolder.imageView);
             return convertView;
         }
     }
