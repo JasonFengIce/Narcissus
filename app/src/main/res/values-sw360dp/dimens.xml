@@ -74,7 +74,7 @@
 <dimen name="loading_layout_height">53.33dp</dimen>
 <dimen name="search_no_result_title_width">114.00dp</dimen>
 <dimen name="search_no_result_title_height">15.33dp</dimen>
-<dimen name="search_no_result_title_marginTop">14.33dp</dimen>
+<dimen name="search_no_result_title_marginTop">10.00dp</dimen>
 
 <dimen name="search_loading_text_img_marginTop">20.00dp</dimen>
 
