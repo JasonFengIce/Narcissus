@@ -1,6 +1,9 @@
 package cn.ismartv.voice.ui.fragment;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -18,11 +21,13 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
+import cn.ismartv.injectdb.library.query.Select;
 import cn.ismartv.voice.R;
 import cn.ismartv.voice.core.event.AnswerAvailableEvent;
 import cn.ismartv.voice.core.http.HttpAPI;
 import cn.ismartv.voice.core.http.HttpManager;
 import cn.ismartv.voice.data.http.AppSearchObjectEntity;
+import cn.ismartv.voice.data.table.AppTable;
 import cn.ismartv.voice.util.ViewScaleUtil;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -75,6 +80,13 @@ public class RecommendAppFragment extends BaseFragment implements View.OnFocusCh
                     EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
                 } else {
                     List<AppSearchObjectEntity> entities = response.body();
+                    for (AppSearchObjectEntity entity : entities) {
+                        AppTable table = new Select().from(AppTable.class).where("app_package = ?", entity.getCaption()).executeSingle();
+                        if (table != null) {
+                            entity.setIsLocal(true);
+                        }
+                    }
+
                     fillGridLayout(entities);
                 }
             }
@@ -94,13 +106,28 @@ public class RecommendAppFragment extends BaseFragment implements View.OnFocusCh
             ImageView itemVodImage = (ImageView) itemView.findViewById(R.id.item_app_image);
             itemVodTitle.setText(list.get(i).getTitle());
             String iconUrl = list.get(i).getAdlet_url();
-            Picasso.with(getContext())
-                    .load(iconUrl)
-                    .memoryPolicy(MemoryPolicy.NO_STORE)
-                    .memoryPolicy(MemoryPolicy.NO_CACHE)
-                    .error(R.drawable.vertical_preview_bg)
-                    .placeholder(R.drawable.vertical_preview_bg)
-                    .into(itemVodImage);
+            TextView localLabel = (TextView) itemView.findViewById(R.id.item_app_local_label);
+
+            if (list.get(i).isLocal()) {
+                try {
+                    PackageInfo packageInfo = getContext().getPackageManager().getPackageInfo(list.get(i).getCaption(), 0);
+                    Drawable drawable = packageInfo.applicationInfo.loadIcon(getContext().getPackageManager());
+                    itemVodImage.setImageDrawable(drawable);
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+                localLabel.setVisibility(View.VISIBLE);
+
+            } else {
+                Picasso.with(getContext())
+                        .load(iconUrl)
+                        .memoryPolicy(MemoryPolicy.NO_STORE)
+                        .memoryPolicy(MemoryPolicy.NO_CACHE)
+                        .error(R.drawable.vertical_preview_bg)
+                        .placeholder(R.drawable.vertical_preview_bg)
+                        .into(itemVodImage);
+            }
+
 
             itemView.setTag(list.get(i));
             itemView.setOnFocusChangeListener(this);
@@ -131,7 +158,7 @@ public class RecommendAppFragment extends BaseFragment implements View.OnFocusCh
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-        View imageView = v.findViewById(R.id.item_app_image);
+        View imageView = v.findViewById(R.id.image_layout);
         TextView textView = (TextView) v.findViewById(R.id.item_app_title);
         if (hasFocus) {
             textView.setSelected(true);

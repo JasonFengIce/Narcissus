@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import cn.ismartv.voice.ui.widget.ZGridView;
  * Created by huaijie on 1/28/16.
  */
 public class ResultAppFragment extends BaseFragment implements View.OnFocusChangeListener, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
+    private static final String TAG = "ResultAppFragment";
     private View contentView;
 
     private ZGridView recyclerView;
@@ -89,6 +91,7 @@ public class ResultAppFragment extends BaseFragment implements View.OnFocusChang
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.i(TAG, "click position: " + position);
         onAppItemClick((AppSearchObjectEntity) recyclerView.getAdapter().getItem(position));
     }
 
