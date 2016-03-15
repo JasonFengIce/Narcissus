@@ -34,4 +34,5 @@
     <string name="ismartv_store_app_not_install">视云商店未安装</string>
     <string name="today_hot_vod">今日热搜</string>
     <string name="app_update_title">升级通知</string>
+    <string name="local_app">已安装</string>
 </resources>

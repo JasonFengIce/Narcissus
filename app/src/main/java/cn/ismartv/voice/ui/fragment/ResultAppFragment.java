@@ -137,11 +137,15 @@ public class ResultAppFragment extends BaseFragment implements View.OnFocusChang
                 myViewHolder = new ViewHolder();
                 myViewHolder.imageView = (ImageView) convertView.findViewById(R.id.item_app_image);
                 myViewHolder.textView = (TextView) convertView.findViewById(R.id.item_app_title);
+                myViewHolder.localLabel = (TextView) convertView.findViewById(R.id.item_app_local_label);
                 convertView.setTag(myViewHolder);
             } else {
                 myViewHolder = (ViewHolder) convertView.getTag();
             }
 
+            if (datas.get(position).isLocal()) {
+                myViewHolder.localLabel.setVisibility(View.VISIBLE);
+            }
             myViewHolder.textView.setText(datas.get(position).getTitle());
             String iconUrl = datas.get(position).getAdlet_url();
 
@@ -159,6 +163,7 @@ public class ResultAppFragment extends BaseFragment implements View.OnFocusChang
     private class ViewHolder {
         private TextView textView;
         private ImageView imageView;
+        private TextView localLabel;
     }
 
 }

@@ -390,7 +390,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
                         List<AppSearchObjectEntity> serverAppList = facet[0].getObjects();
                         for (AppSearchObjectEntity entity : serverAppList) {
                             List<AppTable> tables = new Select().from(AppTable.class).where("app_package = ?", entity.getCaption()).execute();
-                            if (appTables.size() == 0) {
+                            if (tables.size() == 0) {
                                 appList.add(entity);
                             } else {
                                 for (AppTable table : tables) {

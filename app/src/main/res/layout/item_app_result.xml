@@ -1,20 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:gravity="center"
-    android:orientation="vertical"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:orientation="vertical"
 
     >
 
-
-    <ImageView
-        android:id="@+id/item_app_image"
+    <RelativeLayout
         android:layout_width="@dimen/item_app_search_width"
         android:layout_height="@dimen/item_app_search_width"
         android:layout_centerHorizontal="true"
         android:background="@drawable/selector_list_item"
-        android:scaleType="fitXY" />
+        >
+
+        <ImageView
+            android:id="@+id/item_app_image"
+            android:layout_width="@dimen/item_app_search_width"
+            android:layout_height="@dimen/item_app_search_width"
+            android:scaleType="fitXY"/>
+
+        <TextView
+            android:id="@+id/item_app_local_label"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/item_app_local_label_height"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/app_local_label_bg"
+            android:gravity="center"
+            android:text="@string/local_app"
+            android:textSize="@dimen/textSize_40sp"
+            android:visibility="invisible"/>
+    </RelativeLayout>
 
 
     <TextView
@@ -25,6 +41,6 @@
         android:gravity="center"
         android:marqueeRepeatLimit="marquee_forever"
         android:singleLine="true"
-        android:textSize="@dimen/textSize_36sp" />
+        android:textSize="@dimen/textSize_36sp"/>
 
 </LinearLayout>

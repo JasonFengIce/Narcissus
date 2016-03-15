@@ -169,7 +169,7 @@
 <dimen name="app_update_title_marginBottom">3.70dp</dimen>
 <dimen name="app_update_item_margin">5.93dp</dimen>
 <dimen name="app_update_pop_text_layout_height">203.70dp</dimen>
-
+<dimen name="item_app_local_label_height">20.37dp</dimen>
 
 
 </resources>
