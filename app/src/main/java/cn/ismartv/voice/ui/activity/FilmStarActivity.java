@@ -1,6 +1,7 @@
 package cn.ismartv.voice.ui.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -9,12 +10,15 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
+import android.view.View.OnScrollChangeListener;
 import android.view.ViewGroup;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
@@ -33,7 +37,9 @@ import cn.ismartv.voice.data.http.ActorRelateRequestParams;
 import cn.ismartv.voice.data.http.AttributesEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.data.http.SemantichObjectEntity;
+import cn.ismartv.voice.ui.ReflectionTransformationBuilder;
 import cn.ismartv.voice.ui.widget.MessagePopWindow;
+import cn.ismartv.voice.ui.widget.MyHorizontalScrollView;
 import cn.ismartv.voice.util.ViewScaleUtil;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -48,7 +54,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
     private TextView filmStartitle;
     private LinearLayout indicatorListLayout;
     private LinearLayout vodListView;
-    private HorizontalScrollView vodHorizontalScrollView;
+    private MyHorizontalScrollView vodHorizontalScrollView;
 
     private ImageView contentArrowLeft;
     private ImageView contentArrowRight;
@@ -65,7 +71,12 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
     private MessagePopWindow networkEorrorPopupWindow;
     private View contentView;
     private View indicatorSelectedView;
-    private HorizontalScrollView horizontalScrollView;
+    private MyHorizontalScrollView horizontalScrollView;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
 
     @Override
@@ -83,13 +94,16 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
 
         initViews();
         Intent intent = getIntent();
-//        pk = intent.getLongExtra("pk", 0);
-        pk = 2857;
-//        String title = intent.getStringExtra("title");
-        String title = "刘德华";
+        pk = intent.getLongExtra("pk", 0);
+//        pk = 2857;
+        String title = intent.getStringExtra("title");
+//        String title = "刘德华";
         filmStartitle.setText(title);
         fetchActorRelate(pk);
 
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @Override
@@ -123,9 +137,9 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
         contentArrowRight = (ImageView) findViewById(R.id.content_arrow_right);
         indicatorArrowLeft = (ImageView) findViewById(R.id.indicator_left);
         indicatorArrowRight = (ImageView) findViewById(R.id.indicator_right);
-        horizontalScrollView = (HorizontalScrollView) findViewById(R.id.scrollview);
+        horizontalScrollView = (MyHorizontalScrollView) findViewById(R.id.scrollview);
         vodListView = (LinearLayout) findViewById(R.id.vod_list_view);
-        vodHorizontalScrollView = (HorizontalScrollView) findViewById(R.id.vod_scrollview);
+        vodHorizontalScrollView = (MyHorizontalScrollView) findViewById(R.id.vod_scrollview);
         contentArrowRight.setOnFocusChangeListener(this);
         contentArrowLeft.setOnFocusChangeListener(this);
         indicatorArrowLeft.setOnFocusChangeListener(this);
@@ -158,6 +172,8 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                 vodHorizontalScrollView.pageScroll(View.FOCUS_RIGHT);
             }
         });
+
+
     }
 
 
@@ -260,7 +276,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
             TextView itemFocus = (TextView) itemView.findViewById(R.id.item_vod_focus);
 
             itemVodTitle.setText(list.get(i).getTitle());
-            Transformation mTransformation = new cn.ismartv.voice.ui.ReflectionTransformationBuilder()
+            Transformation mTransformation = new ReflectionTransformationBuilder()
                     .setIsHorizontal(true)
                     .build();
             String verticalUrl = list.get(i).getVertical_url();
@@ -394,9 +410,11 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                 View vodTitle = v.findViewById(R.id.item_vod_title);
                 if (hasFocus) {
                     SemantichObjectEntity entity = (SemantichObjectEntity) v.getTag();
-                    AttributesEntity attributesEntity = entity.getAttributes();
-                    String description = entity.getDescription();
-                    setFilmAttr(attributesEntity, description);
+                    if (!v.isHovered()) {
+                        AttributesEntity attributesEntity = entity.getAttributes();
+                        String description = entity.getDescription();
+                        setFilmAttr(attributesEntity, description);
+                    }
                     vodTitle.setSelected(true);
                     ViewScaleUtil.zoomin_1_15(v);
                 } else {
@@ -516,6 +534,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
     public void answerAvailable(AnswerAvailableEvent event) {
         showNetworkErrorPop();
     }
+
     private View.OnHoverListener mOnHoverListener = new View.OnHoverListener() {
 
         @Override
@@ -533,5 +552,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
             return false;
         }
     };
+
+
 
 }

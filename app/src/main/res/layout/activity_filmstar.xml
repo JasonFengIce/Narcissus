@@ -31,10 +31,9 @@
             android:background="@drawable/selector_star_arrow_left"
             android:clickable="true"
             android:focusableInTouchMode="true"
-            android:focusable="true"
             android:visibility="invisible"/>
 
-        <HorizontalScrollView
+        <cn.ismartv.voice.ui.widget.MyHorizontalScrollView
             android:id="@+id/scrollview"
             android:layout_width="@dimen/filmStar_indicatorLayout_width"
             android:layout_height="wrap_content"
@@ -50,7 +49,7 @@
 
             </LinearLayout>
 
-        </HorizontalScrollView>
+        </cn.ismartv.voice.ui.widget.MyHorizontalScrollView>
 
         <ImageView
             android:id="@+id/indicator_right"
@@ -59,7 +58,6 @@
             android:layout_marginRight="@dimen/arrow_margin"
             android:background="@drawable/selector_star_arrow_right"
             android:clickable="true"
-            android:focusable="true"
             android:focusableInTouchMode="true"
             android:padding="10dp"
             android:visibility="invisible"/>
@@ -80,12 +78,11 @@
             android:layout_marginLeft="@dimen/content_arrow_left_margin_left"
             android:background="@drawable/select_arrow_left"
             android:clickable="true"
-            android:focusable="true"
             android:focusableInTouchMode="true"
             android:visibility="invisible"/>
 
 
-        <HorizontalScrollView
+        <cn.ismartv.voice.ui.widget.MyHorizontalScrollView
             android:id="@+id/vod_scrollview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -105,7 +102,7 @@
 
             </LinearLayout>
 
-        </HorizontalScrollView>
+        </cn.ismartv.voice.ui.widget.MyHorizontalScrollView>
 
         <ImageView
             android:id="@+id/content_arrow_right"
@@ -116,7 +113,6 @@
             android:layout_marginRight="@dimen/content_arrow_left_margin_left"
             android:background="@drawable/select_arrow_right"
             android:clickable="true"
-            android:focusable="true"
             android:focusableInTouchMode="true"
             android:visibility="invisible"/>
 
