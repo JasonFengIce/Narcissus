@@ -108,8 +108,8 @@ public class HomeActivity extends BaseActivity {
         getSupportFragmentManager().beginTransaction().show(voiceFragment).commitAllowingStateLoss();
 
         recommendVodFragment.reset();
-        showRightFragment(recommendVodFragment);
-//        showRightFragment(recommendAppFragment);
+//        showRightFragment(recommendVodFragment);
+        showRightFragment(recommendAppFragment);
 
 
 //        contentView.postDelayed(new Runnable() {
