@@ -35,6 +35,7 @@ import cn.ismartv.voice.data.http.SemanticSearchRequestEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.data.table.AppTable;
 import cn.ismartv.voice.ui.activity.SearchResultActivity;
+import cn.ismartv.voice.util.ViewScaleUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -294,10 +295,13 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
                 break;
             default:
                 TextView textView = (TextView) v.findViewById(R.id.title);
+                ImageView dividerLine = (ImageView) v.findViewById(R.id.divider_line);
                 if (hasFocus) {
                     transferLine.setFocusable(false);
                     transferLine.setFocusableInTouchMode(false);
-                    textView.setTextSize(getResources().getDimension(R.dimen.textSize_36sp) / getDensityRate());
+                    textView.setSelected(true);
+                    ViewScaleUtil.zoomin_1_3(textView);
+                    dividerLine.setVisibility(View.INVISIBLE);
                     if (selectedView == v) {
                         textView.setTextColor(getResources().getColor(R.color._ffffff));
 
@@ -309,7 +313,9 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
 
                     transferLine.setFocusable(true);
                     transferLine.setFocusableInTouchMode(true);
-                    textView.setTextSize(getResources().getDimension(R.dimen.textSize_30sp) / getDensityRate());
+                    textView.setSelected(false);
+                    ViewScaleUtil.zoomout_1_3(textView);
+                    dividerLine.setVisibility(View.VISIBLE);
                     if (selectedView == v) {
                         textView.setTextColor(getResources().getColor(R.color._ffffff));
                     } else {
