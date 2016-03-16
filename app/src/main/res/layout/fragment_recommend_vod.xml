@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
               android:background="#455996"
-    android:orientation="vertical">
+              android:orientation="vertical">
 
     <TextView
         android:id="@+id/search_title"
@@ -11,7 +11,7 @@
         android:layout_height="@dimen/content_fragment_title_height"
         android:gravity="center"
         android:text="@string/today_hot_vod"
-        android:textSize="@dimen/textSize_36sp" />
+        android:textSize="@dimen/textSize_36sp"/>
 
     <ImageView
         android:layout_width="match_parent"
@@ -19,17 +19,18 @@
         android:layout_marginLeft="@dimen/content_divider_line_margin_lr"
         android:layout_marginRight="@dimen/content_divider_line_margin_lr"
         android:scaleType="fitXY"
-        android:src="@drawable/voice_fragment_divider_line" />
+        android:src="@drawable/voice_fragment_divider_line"/>
 
     <LinearLayout
         android:id="@+id/recyclerview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/recommend_vod_marigin_bottom"
+        android:layout_marginTop="@dimen/recommend_vod_marigin_bottom"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:orientation="vertical"
-        android:layout_marginBottom="@dimen/recommend_vod_marigin_bottom"
         android:paddingLeft="@dimen/content_fragment_recycler_margin_lr"
         android:paddingRight="@dimen/content_fragment_recycler_margin_lr"
         >
@@ -40,7 +41,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:orientation="horizontal" />
+            android:orientation="horizontal"/>
 
         <LinearLayout
             android:id="@+id/second_row"
@@ -48,7 +49,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:orientation="horizontal" />
+            android:orientation="horizontal"/>
 
     </LinearLayout>
 

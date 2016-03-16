@@ -16,11 +16,11 @@
 <dimen name="pop_btn_margin_lr">22.22dp</dimen>
 
 <dimen name="content_fragment_item_height">144.44dp</dimen>
-<dimen name="content_fragment_item_img_height">146.30dp</dimen>
+<dimen name="content_fragment_item_img_height">148.15dp</dimen>
 <dimen name="item_vod_title_width">92.59dp</dimen>
 <dimen name="content_fragment_item_text_margin_top">5.56dp</dimen>
 
-<dimen name="content_fragment_item_width">109.63dp</dimen>
+<dimen name="content_fragment_item_width">110.37dp</dimen>
 <dimen name="content_fragment_recycler_margin_lr">42.96dp</dimen>
 <dimen name="content_fragment_recycler_margin_top">-5.56dp</dimen>
 <dimen name="content_fragment_title_height">37.78dp</dimen>
@@ -68,7 +68,7 @@
 <dimen name="content_fragment_indicator_item_width">132.96dp</dimen>
 <dimen name="indicator_fragment_slide_width">27.78dp</dimen>
 
-<dimen name="item_app_search_width">81.48dp</dimen>
+<dimen name="item_app_search_width">111.11dp</dimen>
 
 <dimen name="loading_layout_width">407.41dp</dimen>
 <dimen name="loading_layout_height">59.26dp</dimen>
@@ -158,7 +158,7 @@
 <dimen name="result_vod_vertical_space">7.41dp</dimen>
 <dimen name="result_vod_horizontal_space">29.63dp</dimen>
 <dimen name="vod_title_marigin_top">-3.70dp</dimen>
-<dimen name="recommend_vod_marigin_bottom">11.11dp</dimen>
+<dimen name="recommend_vod_marigin_bottom">5.56dp</dimen>
 
 <dimen name="app_update_message_pop_height">251.85dp</dimen>
 <dimen name="app_pop_text_layout_height">77.78dp</dimen>

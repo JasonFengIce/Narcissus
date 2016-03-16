@@ -109,6 +109,8 @@ public class HomeActivity extends BaseActivity {
 
         recommendVodFragment.reset();
         showRightFragment(recommendVodFragment);
+//        showRightFragment(recommendAppFragment);
+
 
 //        contentView.postDelayed(new Runnable() {
 //            @Override
