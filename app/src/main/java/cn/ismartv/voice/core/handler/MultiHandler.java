@@ -18,6 +18,7 @@ import java.util.List;
 
 import cn.ismartv.injectdb.library.query.Select;
 import cn.ismartv.voice.AppConstant;
+import cn.ismartv.voice.core.AppArrayList;
 import cn.ismartv.voice.core.event.AnswerAvailableEvent;
 import cn.ismartv.voice.core.http.HttpAPI;
 import cn.ismartv.voice.core.http.HttpManager;
@@ -69,7 +70,7 @@ public class MultiHandler extends Thread {
                                 .execute();
                         AppSearchResponseEntity responseEntity = response.body();
 
-                        List<AppSearchObjectEntity> appList = new ArrayList<>();
+                        AppArrayList appList = new AppArrayList();
                         for (AppTable appTable : appTables) {
 
                             AppSearchObjectEntity appSearchObjectEntity = new AppSearchObjectEntity();
@@ -86,17 +87,10 @@ public class MultiHandler extends Thread {
                             List<AppSearchObjectEntity> serverAppList = facet[0].getObjects();
                             for (AppSearchObjectEntity entity : serverAppList) {
                                 AppTable table = new Select().from(AppTable.class).where("app_package = ?", entity.getCaption()).executeSingle();
-                                if (table == null) {
-                                    appList.add(entity);
-                                } else {
-                                    if (!table.app_package.equals(entity.getCaption())) {
-                                        AppSearchObjectEntity appSearchObjectEntity = new AppSearchObjectEntity();
-                                        appSearchObjectEntity.setTitle(table.app_name);
-                                        appSearchObjectEntity.setCaption(table.app_package);
-                                        appSearchObjectEntity.setIsLocal(true);
-                                        appList.add(appSearchObjectEntity);
-                                    }
+                                if (table != null) {
+                                    entity.setIsLocal(true);
                                 }
+                                appList.add(entity);
                             }
                         }
 
