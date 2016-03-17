@@ -3,10 +3,13 @@ package cn.ismartv.voice.ui.widget;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnHoverListener;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -17,7 +20,7 @@ import cn.ismartv.voice.R;
 /**
  * Created by huaijie on 10/15/15.
  */
-public class MessagePopWindow extends PopupWindow implements View.OnClickListener, View.OnFocusChangeListener {
+public class MessagePopWindow extends PopupWindow implements View.OnClickListener, View.OnFocusChangeListener, OnHoverListener {
     private Button confirmBtn;
     private Button cancelBtn;
     private TextView firstMessage;
@@ -34,6 +37,8 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
     private int popCursorLeft;
     private int popCursorRight;
     private int popCursorMiddle;
+
+    private LinearLayout messageLayout;
 
 //    private int tmpX = 0;
 
@@ -79,6 +84,26 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
 
     }
 
+    @Override
+    public boolean onHover(View v, MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_HOVER_ENTER:
+            case MotionEvent.ACTION_HOVER_MOVE:
+                if (!v.isFocused()) {
+                    v.requestFocusFromTouch();
+                    v.requestFocus();
+                }
+
+                break;
+            case MotionEvent.ACTION_HOVER_EXIT:
+                messageLayout.requestFocus();
+                break;
+
+
+        }
+        return true;
+    }
+
     public interface CancelListener {
         void cancelClick(View view);
     }
@@ -115,8 +140,11 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
         cancelBtn.setOnClickListener(this);
         confirmBtn.setOnFocusChangeListener(this);
         cancelBtn.setOnFocusChangeListener(this);
+        confirmBtn.setOnHoverListener(this);
+        cancelBtn.setOnHoverListener(this);
         firstMessage = (TextView) contentView.findViewById(R.id.first_text_info);
         secondMessage = (TextView) contentView.findViewById(R.id.pop_second_text);
+        messageLayout = (LinearLayout) contentView.findViewById(R.id.message);
         firstMessage.setText(mFirstLineMessage);
 
         RelativeLayout frameLayout = new RelativeLayout(mContext);
@@ -147,6 +175,9 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
 
         setContentView(frameLayout);
         setFocusable(true);
+
+        confirmBtn.requestFocusFromTouch();
+        confirmBtn.requestFocus();
 
     }
 

@@ -3,6 +3,7 @@ package cn.ismartv.voice.ui.widget;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -21,7 +22,7 @@ import cn.ismartv.voice.R;
 /**
  * Created by huaijie on 10/15/15.
  */
-public class AppUpdateMessagePopWindow extends PopupWindow implements View.OnClickListener, View.OnFocusChangeListener {
+public class AppUpdateMessagePopWindow extends PopupWindow implements View.OnClickListener, View.OnFocusChangeListener ,View.OnHoverListener{
     private Button confirmBtn;
     private Button cancelBtn;
     private ConfirmListener confirmListener;
@@ -34,6 +35,7 @@ public class AppUpdateMessagePopWindow extends PopupWindow implements View.OnCli
     private int popCursorRight;
     private int popCursorMiddle;
     private LinearLayout appUpdateContentList;
+    private View messageLayout;
 
 //    private int tmpX = 0;
 
@@ -80,11 +82,14 @@ public class AppUpdateMessagePopWindow extends PopupWindow implements View.OnCli
 
         confirmBtn = (Button) contentView.findViewById(R.id.confirm_btn);
         cancelBtn = (Button) contentView.findViewById(R.id.cancel_btn);
+        messageLayout=contentView.findViewById(R.id.message);
         cursorImageView = (ImageView) contentView.findViewById(R.id.pop_cursor);
         confirmBtn.setOnClickListener(this);
         cancelBtn.setOnClickListener(this);
         confirmBtn.setOnFocusChangeListener(this);
         cancelBtn.setOnFocusChangeListener(this);
+        cancelBtn.setOnHoverListener(this);
+        confirmBtn.setOnHoverListener(this);
 
         RelativeLayout frameLayout = new RelativeLayout(mContext);
         frameLayout.setBackgroundColor(context.getResources().getColor(R.color.pop_bg));
@@ -107,6 +112,29 @@ public class AppUpdateMessagePopWindow extends PopupWindow implements View.OnCli
         setContentView(frameLayout);
         setFocusable(true);
 
+        confirmBtn.requestFocusFromTouch();
+        confirmBtn.requestFocus();
+
+    }
+
+    @Override
+    public boolean onHover(View v, MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_HOVER_ENTER:
+            case MotionEvent.ACTION_HOVER_MOVE:
+                if (!v.isFocused()) {
+                    v.requestFocusFromTouch();
+                    v.requestFocus();
+                }
+
+                break;
+            case MotionEvent.ACTION_HOVER_EXIT:
+                messageLayout.requestFocus();
+                break;
+
+
+        }
+        return true;
     }
 
     @Override

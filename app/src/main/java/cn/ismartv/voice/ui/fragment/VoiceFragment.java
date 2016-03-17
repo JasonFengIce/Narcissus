@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -320,6 +321,7 @@ public class VoiceFragment extends BaseFragment implements View.OnTouchListener,
                 showRecognizeErrorFragment();
                 break;
             case VoiceRecognitionClient.ERROR_NETWORK:
+                Log.e(TAG, "baidu voice network error!!!");
                 EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
                 break;
         }
