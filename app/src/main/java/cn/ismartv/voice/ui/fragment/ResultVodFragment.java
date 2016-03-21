@@ -6,8 +6,10 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnHoverListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -25,11 +27,13 @@ import cn.ismartv.voice.R;
 import cn.ismartv.voice.data.http.SemantichObjectEntity;
 import cn.ismartv.voice.ui.ReflectionTransformationBuilder;
 import cn.ismartv.voice.ui.widget.ZGridView;
+import cn.ismartv.voice.util.ViewScaleUtil;
 
 /**
  * Created by huaijie on 1/18/16.
  */
-public class ResultVodFragment extends BaseFragment implements View.OnFocusChangeListener, OnClickListener, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
+public class ResultVodFragment extends BaseFragment implements View.OnFocusChangeListener, OnClickListener, AdapterView.OnItemClickListener,
+        AdapterView.OnItemSelectedListener, OnHoverListener {
     private static final String TAG = "ResultVodFragment";
     private ZGridView recyclerView;
     private TextView searchTitle;
@@ -66,6 +70,11 @@ public class ResultVodFragment extends BaseFragment implements View.OnFocusChang
         arrowDown.setOnClickListener(this);
         arrowUp.bringToFront();
 
+        arrowUp.setOnHoverListener(this);
+        arrowDown.setOnHoverListener(this);
+        arrowUp.setOnFocusChangeListener(this);
+        arrowDown.setOnFocusChangeListener(this);
+
         recyclerView.setOnItemSelectedListener(this);
         recyclerView.setOnItemClickListener(this);
 
@@ -87,19 +96,39 @@ public class ResultVodFragment extends BaseFragment implements View.OnFocusChang
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-
+        if (hasFocus) {
+            ViewScaleUtil.zoomin_1_15(v);
+        } else {
+            ViewScaleUtil.zoomout_1_15(v);
+        }
     }
 
     @Override
     public void onClick(View v) {
-//        switch (v.getId()) {
-//            case R.id.arrow_up:
-//                recyclerView.smoothScrollBy(0, -recyclerView.getHeight());
-//                break;
-//            case R.id.arrow_down:
-//                recyclerView.smoothScrollBy(0, recyclerView.getHeight());
-//                break;
-//        }
+        switch (v.getId()) {
+            case R.id.arrow_up:
+                recyclerView.pageScroll(View.FOCUS_UP);
+                break;
+            case R.id.arrow_down:
+                recyclerView.pageScroll(View.FOCUS_DOWN);
+                break;
+        }
+    }
+
+    @Override
+    public boolean onHover(View v, MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_HOVER_ENTER:
+            case MotionEvent.ACTION_HOVER_MOVE:
+                if (!v.isFocused()) {
+                    v.requestFocusFromTouch();
+                    v.requestFocus();
+                }
+                break;
+            case MotionEvent.ACTION_HOVER_EXIT:
+                break;
+        }
+        return true;
     }
 
     private class GridAdapter extends BaseAdapter {

@@ -36,8 +36,9 @@
             android:layout_centerHorizontal="true"
             android:clickable="true"
             android:focusable="true"
+            android:focusableInTouchMode="true"
             android:src="@drawable/selector_arrow_up"
-            android:visibility="gone"/>
+            android:visibility="invisible"/>
 
         <cn.ismartv.voice.ui.widget.ZGridView
 
@@ -76,8 +77,9 @@
             android:layout_centerHorizontal="true"
             android:clickable="true"
             android:focusable="true"
+            android:focusableInTouchMode="true"
             android:src="@drawable/selector_arrow_down"
-            android:visibility="gone"/>
+            android:visibility="invisible"/>
 
     </RelativeLayout>
 
