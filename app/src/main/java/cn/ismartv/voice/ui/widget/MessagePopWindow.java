@@ -148,7 +148,6 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
         firstMessage.setText(mFirstLineMessage);
 
         RelativeLayout frameLayout = new RelativeLayout(mContext);
-        frameLayout.setBackgroundColor(context.getResources().getColor(R.color.pop_bg));
         RelativeLayout.LayoutParams layoutParams;
         layoutParams = new RelativeLayout.LayoutParams(width, height);
         layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
@@ -174,6 +173,7 @@ public class MessagePopWindow extends PopupWindow implements View.OnClickListene
 
 
         setContentView(frameLayout);
+        setBackgroundDrawable(context.getResources().getDrawable(R.drawable.pop_bg));
         setFocusable(true);
 
         confirmBtn.requestFocusFromTouch();
