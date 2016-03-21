@@ -48,6 +48,12 @@ import cn.ismartv.voice.R;
 
 public class ZGridView extends AdapterView<ListAdapter> {
 
+    public OnItemHoverExitListener onItemHoverExitListener;
+
+    public void setOnItemHoverExitListener(OnItemHoverExitListener onItemHoverExitListener) {
+        this.onItemHoverExitListener = onItemHoverExitListener;
+    }
+
     public static final int AUTO_FIT = -1;
     private static final int TOUCH_MODE_ON = 0;
     private static final int TOUCH_MODE_OFF = 1;
@@ -1509,7 +1515,7 @@ public class ZGridView extends AdapterView<ListAdapter> {
                     bottomSelectionPixel);
         } else if (rowDelta < 0) {
             /*
-			 * Case 2: Scrolling up.
+             * Case 2: Scrolling up.
 			 */
             final int oldTop = mReferenceViewInSelectedRow == null ? 0
                     : mReferenceViewInSelectedRow.getTop();
@@ -1521,8 +1527,8 @@ public class ZGridView extends AdapterView<ListAdapter> {
             adjustForTopFadingEdge(referenceView, topSelectionPixel,
                     bottomSelectionPixel);
         } else {
-			/*
-			 * Keep selection where it was
+            /*
+             * Keep selection where it was
 			 */
             final int oldTop = mReferenceViewInSelectedRow == null ? 0
                     : mReferenceViewInSelectedRow.getTop();
@@ -3843,10 +3849,16 @@ public class ZGridView extends AdapterView<ListAdapter> {
                     hover = false;
                     mSelectorRect.setEmpty();
                     invalidate();
+                    if (onItemHoverExitListener != null) {
+                        onItemHoverExitListener.onItemHoverExit();
+                    }
                 }
                 break;
             case MotionEvent.ACTION_HOVER_EXIT:
 //			clearFocus();
+                if (onItemHoverExitListener != null) {
+                    onItemHoverExitListener.onItemHoverExit();
+                }
                 hover = false;
                 break;
         }
@@ -6051,6 +6063,10 @@ public class ZGridView extends AdapterView<ListAdapter> {
 
     public interface OnHoverListener {
         public boolean onHover(View v, MotionEvent event);
+    }
+
+    public interface OnItemHoverExitListener {
+        boolean onItemHoverExit();
     }
 
     public static void setScale(float scale) {

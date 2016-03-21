@@ -38,6 +38,8 @@ public class RecognizeErrorFragment extends BaseFragment implements View.OnFocus
     private LinearLayout errorTipListLayout;
     private Call wordsCall;
 
+    private TextView searchTitle;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,7 +51,7 @@ public class RecognizeErrorFragment extends BaseFragment implements View.OnFocus
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         errorTipListLayout = (LinearLayout) view.findViewById(R.id.tip_list_layout);
-
+        searchTitle = (TextView) view.findViewById(R.id.search_title);
         fetchWords();
     }
 
@@ -115,16 +117,23 @@ public class RecognizeErrorFragment extends BaseFragment implements View.OnFocus
                                           textView.setOnHoverListener(new View.OnHoverListener() {
                                               @Override
                                               public boolean onHover(View view, MotionEvent motionEvent) {
-                                                  if (motionEvent.getAction() == MotionEvent.ACTION_HOVER_ENTER || motionEvent.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
-                                                      view.requestFocus();
+                                                  switch (motionEvent.getAction()) {
+                                                      case MotionEvent.ACTION_HOVER_ENTER:
+                                                      case MotionEvent.ACTION_HOVER_MOVE:
+                                                          view.requestFocus();
+                                                          break;
+                                                      case MotionEvent.ACTION_HOVER_EXIT:
+                                                          searchTitle.requestFocus();
+                                                          break;
                                                   }
-                                                  return false;
+                                                  return true;
                                               }
                                           });
 
 
                                           errorTipListLayout.addView(textView, layoutParams);
                                           if (postion == 0) {
+                                              textView.setNextFocusUpId(textView.getId());
                                               textView.requestFocus();
                                               textView.requestFocusFromTouch();
                                           }

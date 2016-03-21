@@ -9,10 +9,11 @@
     <ImageView
         android:id="@+id/indicator_slide_menu"
         android:layout_width="@dimen/indicator_fragment_slide_width"
-        android:layout_height="match_parent"
+        android:layout_height="10dp"
+        android:layout_centerVertical="true"
         android:focusable="true"
         android:src="@android:color/transparent"
-        android:visibility="invisible"/>
+        />
 
 
     <LinearLayout

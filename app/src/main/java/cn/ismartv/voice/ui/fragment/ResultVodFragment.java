@@ -33,7 +33,7 @@ import cn.ismartv.voice.util.ViewScaleUtil;
  * Created by huaijie on 1/18/16.
  */
 public class ResultVodFragment extends BaseFragment implements View.OnFocusChangeListener, OnClickListener, AdapterView.OnItemClickListener,
-        AdapterView.OnItemSelectedListener, OnHoverListener {
+        AdapterView.OnItemSelectedListener, OnHoverListener, ZGridView.OnItemHoverExitListener {
     private static final String TAG = "ResultVodFragment";
     private ZGridView recyclerView;
     private TextView searchTitle;
@@ -77,6 +77,7 @@ public class ResultVodFragment extends BaseFragment implements View.OnFocusChang
 
         recyclerView.setOnItemSelectedListener(this);
         recyclerView.setOnItemClickListener(this);
+        recyclerView.setOnItemHoverExitListener(this);
 
         notifyDataChanged(objectEntities, raw);
 
@@ -121,7 +122,6 @@ public class ResultVodFragment extends BaseFragment implements View.OnFocusChang
             case MotionEvent.ACTION_HOVER_ENTER:
             case MotionEvent.ACTION_HOVER_MOVE:
                 if (!v.isFocused()) {
-                    v.requestFocusFromTouch();
                     v.requestFocus();
                 }
                 break;
@@ -129,6 +129,12 @@ public class ResultVodFragment extends BaseFragment implements View.OnFocusChang
                 searchTitle.requestFocus();
                 break;
         }
+        return true;
+    }
+
+    @Override
+    public boolean onItemHoverExit() {
+        searchTitle.requestFocus();
         return true;
     }
 

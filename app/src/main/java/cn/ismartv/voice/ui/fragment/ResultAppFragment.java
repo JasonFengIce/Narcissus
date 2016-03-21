@@ -24,12 +24,13 @@ import java.util.List;
 import cn.ismartv.voice.R;
 import cn.ismartv.voice.data.http.AppSearchObjectEntity;
 import cn.ismartv.voice.ui.widget.ZGridView;
+import cn.ismartv.voice.ui.widget.ZGridView.OnItemHoverExitListener;
 
 /**
  * Created by huaijie on 1/28/16.
  */
 public class ResultAppFragment extends BaseFragment implements View.OnFocusChangeListener, AdapterView.OnItemClickListener
-        , AdapterView.OnItemSelectedListener, View.OnHoverListener {
+        , AdapterView.OnItemSelectedListener, View.OnHoverListener, OnItemHoverExitListener {
     private static final String TAG = "ResultAppFragment";
     private View contentView;
 
@@ -74,6 +75,7 @@ public class ResultAppFragment extends BaseFragment implements View.OnFocusChang
 
         recyclerView.setOnItemSelectedListener(this);
         recyclerView.setOnItemClickListener(this);
+        recyclerView.setOnItemHoverExitListener(this);
 
         notifyDataChanged(appSearchObjectEntities, raw);
     }
@@ -116,7 +118,6 @@ public class ResultAppFragment extends BaseFragment implements View.OnFocusChang
             case MotionEvent.ACTION_HOVER_ENTER:
             case MotionEvent.ACTION_HOVER_MOVE:
                 if (!v.isFocused()) {
-                    v.requestFocusFromTouch();
                     v.requestFocus();
                 }
                 break;
@@ -126,6 +127,12 @@ public class ResultAppFragment extends BaseFragment implements View.OnFocusChang
         }
 
 
+        return true;
+    }
+
+    @Override
+    public boolean onItemHoverExit() {
+        searchTitle.requestFocus();
         return true;
     }
 

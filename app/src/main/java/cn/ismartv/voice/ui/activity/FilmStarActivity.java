@@ -36,6 +36,8 @@ import cn.ismartv.voice.data.http.AttributesEntity;
 import cn.ismartv.voice.data.http.SemanticSearchResponseEntity;
 import cn.ismartv.voice.data.http.SemantichObjectEntity;
 import cn.ismartv.voice.ui.ReflectionTransformationBuilder;
+import cn.ismartv.voice.ui.widget.LinerLayoutContainer;
+import cn.ismartv.voice.ui.widget.LinerLayoutContainer.OnItemHoverExitListener;
 import cn.ismartv.voice.ui.widget.MessagePopWindow;
 import cn.ismartv.voice.ui.widget.MyHorizontalScrollView;
 import cn.ismartv.voice.util.ViewScaleUtil;
@@ -45,7 +47,7 @@ import retrofit2.Response;
 /**
  * Created by huaijie on 2/22/16.
  */
-public class FilmStarActivity extends BaseActivity implements OnFocusChangeListener, View.OnClickListener, OnHoverListener {
+public class FilmStarActivity extends BaseActivity implements OnFocusChangeListener, View.OnClickListener, OnHoverListener, OnItemHoverExitListener {
     private static final String TAG = "FilmStarActivity";
 
     private long pk;
@@ -93,11 +95,11 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
 
         initViews();
         Intent intent = getIntent();
-        pk = intent.getLongExtra("pk", 0);
-//        pk = 2857;
-        String title = intent.getStringExtra("title");
-//        String title = "刘德华";
-        filmStartitle.setText(title);
+//        pk = intent.getLongExtra("pk", 0);
+        pk = 2857;
+//        String title = intent.getStringExtra("title");
+        String title = "刘德华";
+//        filmStartitle.setText(title);
         fetchActorRelate(pk);
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -191,7 +193,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                     indicatorListLayout.removeAllViews();
                     int i = 0;
                     for (SemanticSearchResponseEntity.Facet facet : entity.getFacet()) {
-                        View itemView = LayoutInflater.from(FilmStarActivity.this).inflate(R.layout.item_film_star_indicator, null);
+                        LinerLayoutContainer itemView = (LinerLayoutContainer) LayoutInflater.from(FilmStarActivity.this).inflate(R.layout.item_film_star_indicator, null);
                         TextView indicatorTitle = (TextView) itemView.findViewById(R.id.title);
                         indicatorTitle.setText(facet.getName());
                         itemView.setOnFocusChangeListener(FilmStarActivity.this);
@@ -200,6 +202,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
 //                        int marginLeft = (int) (getResources().getDimension(R.dimen.filmStar_indicatorLayout_item_marginLeft));
 //                        layoutParams.setMargins(marginLeft, 0, 0, 0);
                         itemView.setTag(facet.getContent_type());
+                        itemView.setOnItemHoverExitListener(FilmStarActivity.this);
                         itemView.setTag(R.id.filmStar_indicator_item, i);
                         if (i == 0) {
                             indicatorSelectedView = itemView;
@@ -268,7 +271,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
         }
         vodListView.removeAllViews();
         for (int i = 0; i < list.size(); i++) {
-            View itemView = LayoutInflater.from(this).inflate(R.layout.item_vod_star, null);
+            LinerLayoutContainer itemView = (LinerLayoutContainer) LayoutInflater.from(this).inflate(R.layout.item_vod_star, null);
             TextView itemVodTitle = (TextView) itemView.findViewById(R.id.item_vod_title);
             ImageView itemVodImage = (ImageView) itemView.findViewById(R.id.item_vod_image);
             TextView itemScore = (TextView) itemView.findViewById(R.id.item_vod_score);
@@ -329,6 +332,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                 }
             });
             itemView.setOnFocusChangeListener(this);
+            itemView.setOnItemHoverExitListener(this);
 
             int padding = (int) getResources().getDimension(R.dimen.filmStar_item_horizontal_space);
             int verticalPadding = (int) getResources().getDimension(R.dimen.filmStar_item_vertical_space);
@@ -551,8 +555,12 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
             default:
                 break;
         }
-        return false;
+        return true;
     }
 
 
+    @Override
+    public void OnItemHoverExit() {
+        dividerLine.requestFocus();
+    }
 }
