@@ -34,10 +34,10 @@
                 android:layout_width="@dimen/film_star_indicator_width"
                 android:layout_height="@dimen/film_star_indicator_height"
                 android:layout_centerInParent="true"
+                android:layout_margin="@dimen/film_star_indicator_padding"
                 android:background="@drawable/selector_star_arrow_left"
                 android:clickable="true"
-                android:focusableInTouchMode="true"
-                android:layout_margin="@dimen/film_star_indicator_padding"
+                android:focusable="true"
                 android:visibility="invisible"/>
         </RelativeLayout>
 
@@ -73,7 +73,7 @@
                 android:layout_margin="@dimen/film_star_indicator_padding"
                 android:background="@drawable/selector_star_arrow_right"
                 android:clickable="true"
-                android:focusableInTouchMode="true"
+                android:focusable="true"
                 android:visibility="invisible"/>
         </RelativeLayout>
     </LinearLayout>
@@ -92,7 +92,7 @@
             android:layout_marginLeft="@dimen/content_arrow_left_margin_left"
             android:background="@drawable/select_arrow_left"
             android:clickable="true"
-            android:focusableInTouchMode="true"
+            android:focusable="true"
             android:nextFocusDown="@id/content_arrow_left"
             android:visibility="invisible"/>
 
@@ -128,7 +128,7 @@
             android:layout_marginRight="@dimen/content_arrow_left_margin_left"
             android:background="@drawable/select_arrow_right"
             android:clickable="true"
-            android:focusableInTouchMode="true"
+            android:focusable="true"
             android:nextFocusDown="@id/content_arrow_right"
             android:visibility="invisible"/>
 

@@ -566,6 +566,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
 
     @Override
     public void OnItemHoverExit() {
+        dividerLine.requestFocusFromTouch();
         dividerLine.requestFocus();
     }
 }

@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import android.widget.LinearLayout;
 
 public class LinerLayoutContainer extends LinearLayout {
+    private static final String TAG = "LinerLayoutContainer";
     private OnItemHoverExitListener onItemHoverExitListener;
 
     public void setOnItemHoverExitListener(OnItemHoverExitListener onItemHoverExitListener) {
@@ -39,6 +40,7 @@ public class LinerLayoutContainer extends LinearLayout {
             case MotionEvent.ACTION_HOVER_EXIT:
                 setHovered(false);
                 invalidate();
+                Log.i(TAG, "ACTION_HOVER_EXIT");
                 if (onItemHoverExitListener != null) {
                     onItemHoverExitListener.OnItemHoverExit();
                 }
