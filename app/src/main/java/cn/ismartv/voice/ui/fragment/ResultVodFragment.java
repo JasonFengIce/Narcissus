@@ -97,9 +97,9 @@ public class ResultVodFragment extends BaseFragment implements View.OnFocusChang
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (hasFocus) {
-            ViewScaleUtil.zoomin_1_15(v);
+            ViewScaleUtil.zoomin_1_3(v);
         } else {
-            ViewScaleUtil.zoomout_1_15(v);
+            ViewScaleUtil.zoomout_1_3(v);
         }
     }
 
