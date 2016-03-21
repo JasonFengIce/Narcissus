@@ -126,6 +126,7 @@ public class ResultVodFragment extends BaseFragment implements View.OnFocusChang
                 }
                 break;
             case MotionEvent.ACTION_HOVER_EXIT:
+                searchTitle.requestFocus();
                 break;
         }
         return true;

@@ -20,8 +20,6 @@ import com.squareup.picasso.Transformation;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import cn.ismartv.voice.R;
 import cn.ismartv.voice.core.event.AnswerAvailableEvent;
@@ -164,6 +162,7 @@ public class RecommendVodFragment extends BaseFragment implements OnFocusChangeL
             layoutParams.weight = 1;
             switch (row) {
                 case 1:
+                    itemView.setNextFocusUpId(itemView.getId());
                     firstRowLayout.addView(itemView, layoutParams);
                     break;
                 case 2:
@@ -203,11 +202,12 @@ public class RecommendVodFragment extends BaseFragment implements OnFocusChangeL
                     v.requestFocus();
                     break;
                 case MotionEvent.ACTION_HOVER_EXIT:
+                    searchTitle.requestFocus();
                     break;
                 default:
                     break;
             }
-            return false;
+            return true;
         }
     };
 }

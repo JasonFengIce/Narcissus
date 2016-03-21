@@ -36,7 +36,7 @@ import retrofit2.Retrofit;
 /**
  * Created by huaijie on 1/28/16.
  */
-public class RecommendAppFragment extends BaseFragment implements View.OnFocusChangeListener, View.OnClickListener {
+public class RecommendAppFragment extends BaseFragment implements View.OnFocusChangeListener, View.OnClickListener, View.OnHoverListener {
     private View contentView;
     private TextView searchTitle;
 
@@ -132,20 +132,13 @@ public class RecommendAppFragment extends BaseFragment implements View.OnFocusCh
             itemView.setTag(list.get(i));
             itemView.setOnFocusChangeListener(this);
             itemView.setOnClickListener(this);
-            itemView.setOnHoverListener(new View.OnHoverListener() {
-                @Override
-                public boolean onHover(View view, MotionEvent motionEvent) {
-                    if (motionEvent.getAction() == MotionEvent.ACTION_HOVER_ENTER || motionEvent.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
-                        view.requestFocus();
-                    }
-                    return false;
-                }
-            });
+            itemView.setOnHoverListener(this);
             int row = i / 4 + 1;
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.weight = 1;
             switch (row) {
                 case 1:
+                    itemView.setNextFocusUpId(itemView.getId());
                     firstRowLayout.addView(itemView, layoutParams);
                     break;
                 case 2:
@@ -175,5 +168,20 @@ public class RecommendAppFragment extends BaseFragment implements View.OnFocusCh
     @Override
     public void onClick(View v) {
         onAppItemClick((AppSearchObjectEntity) v.getTag());
+    }
+
+    @Override
+    public boolean onHover(View v, MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_HOVER_ENTER:
+            case MotionEvent.ACTION_HOVER_MOVE:
+                if (!v.isFocused())
+                    v.requestFocus();
+                break;
+            case MotionEvent.ACTION_HOVER_EXIT:
+                searchTitle.requestFocus();
+                break;
+        }
+        return true;
     }
 }

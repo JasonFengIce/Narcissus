@@ -10,11 +10,8 @@
         android:id="@+id/indicator_slide_menu"
         android:layout_width="@dimen/indicator_fragment_slide_width"
         android:layout_height="match_parent"
-        android:clickable="true"
         android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:scaleType="fitXY"
-        android:src="@drawable/selector_indicator_slide"
+        android:src="@android:color/transparent"
         android:visibility="invisible"/>
 
 

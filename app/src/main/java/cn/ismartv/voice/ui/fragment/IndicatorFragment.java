@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnHoverListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -44,7 +45,7 @@ import retrofit2.Retrofit;
 /**
  * Created by huaijie on 1/18/16.
  */
-public class IndicatorFragment extends BaseFragment implements View.OnClickListener, View.OnFocusChangeListener {
+public class IndicatorFragment extends BaseFragment implements View.OnClickListener, View.OnFocusChangeListener, OnHoverListener {
 
     private ViewGroup mainView;
     private LinearLayout videoTypeLayout;
@@ -112,8 +113,6 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
         slideMenu = (ImageView) view.findViewById(R.id.indicator_slide_menu);
         transferLine = (ImageView) view.findViewById(R.id.transfer_line);
         transferLine.setOnFocusChangeListener(this);
-        slideMenu.bringToFront();
-        slideMenu.setOnClickListener(this);
 
         switch (type) {
             case "video":
@@ -182,15 +181,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
                     searchVod(type, data, false);
                 }
             });
-            linearLayout.setOnHoverListener(new View.OnHoverListener() {
-                @Override
-                public boolean onHover(View view, MotionEvent motionEvent) {
-                    if (motionEvent.getAction() == MotionEvent.ACTION_HOVER_ENTER || motionEvent.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
-                        view.requestFocus();
-                    }
-                    return false;
-                }
-            });
+            linearLayout.setOnHoverListener(this);
             linearLayout.setId(R.id.indicator_list_item + i);
             linearLayout.setOnFocusChangeListener(this);
             linearLayout.setNextFocusLeftId(R.id.indicator_slide_menu);
@@ -238,15 +229,7 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
                 searchApp(rawText, false);
             }
         });
-        linearLayout.setOnHoverListener(new View.OnHoverListener() {
-            @Override
-            public boolean onHover(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_HOVER_ENTER || motionEvent.getAction() == MotionEvent.ACTION_HOVER_MOVE) {
-                    view.requestFocus();
-                }
-                return false;
-            }
-        });
+        linearLayout.setOnHoverListener(this);
         linearLayout.setNextFocusLeftId(R.id.indicator_slide_menu);
         linearLayout.setOnFocusChangeListener(this);
 
@@ -321,7 +304,6 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
                     } else {
                         textView.setTextColor(getResources().getColor(R.color._a6a6a6));
                     }
-                    slideMenu.setNextFocusRightId(v.getId());
                     lostFocusView = v;
 
                 }
@@ -424,5 +406,22 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
                 EventBus.getDefault().post(new AnswerAvailableEvent(AnswerAvailableEvent.EventType.NETWORK_ERROR, AnswerAvailableEvent.NETWORK_ERROR));
             }
         });
+    }
+
+    @Override
+    public boolean onHover(View v, MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_HOVER_ENTER:
+            case MotionEvent.ACTION_HOVER_MOVE:
+                if (!v.isFocused()) {
+                    v.requestFocusFromTouch();
+                    v.requestFocus();
+                }
+                break;
+            case MotionEvent.ACTION_HOVER_EXIT:
+                slideMenu.requestFocus();
+                break;
+        }
+        return true;
     }
 }

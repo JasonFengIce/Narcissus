@@ -10,6 +10,7 @@
         android:id="@+id/search_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/content_fragment_title_height"
+        android:focusable="true"
         android:gravity="center"
         android:textSize="@dimen/textSize_36sp"/>
 

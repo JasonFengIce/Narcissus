@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -27,7 +28,8 @@ import cn.ismartv.voice.ui.widget.ZGridView;
 /**
  * Created by huaijie on 1/28/16.
  */
-public class ResultAppFragment extends BaseFragment implements View.OnFocusChangeListener, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
+public class ResultAppFragment extends BaseFragment implements View.OnFocusChangeListener, AdapterView.OnItemClickListener
+        , AdapterView.OnItemSelectedListener, View.OnHoverListener {
     private static final String TAG = "ResultAppFragment";
     private View contentView;
 
@@ -67,6 +69,9 @@ public class ResultAppFragment extends BaseFragment implements View.OnFocusChang
         arrowDown = (ImageView) view.findViewById(R.id.arrow_down);
         arrowUp.bringToFront();
 
+        arrowUp.setOnHoverListener(this);
+        arrowDown.setOnHoverListener(this);
+
         recyclerView.setOnItemSelectedListener(this);
         recyclerView.setOnItemClickListener(this);
 
@@ -103,6 +108,25 @@ public class ResultAppFragment extends BaseFragment implements View.OnFocusChang
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    @Override
+    public boolean onHover(View v, MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_HOVER_ENTER:
+            case MotionEvent.ACTION_HOVER_MOVE:
+                if (!v.isFocused()) {
+                    v.requestFocusFromTouch();
+                    v.requestFocus();
+                }
+                break;
+            case MotionEvent.ACTION_HOVER_EXIT:
+                searchTitle.requestFocus();
+                break;
+        }
+
+
+        return true;
     }
 
     private class GridAdapter extends BaseAdapter {
