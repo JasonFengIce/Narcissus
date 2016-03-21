@@ -79,6 +79,7 @@
             android:background="@drawable/select_arrow_left"
             android:clickable="true"
             android:focusableInTouchMode="true"
+            android:nextFocusDown="@id/content_arrow_left"
             android:visibility="invisible"/>
 
 
@@ -114,15 +115,18 @@
             android:background="@drawable/select_arrow_right"
             android:clickable="true"
             android:focusableInTouchMode="true"
+            android:nextFocusDown="@id/content_arrow_right"
             android:visibility="invisible"/>
 
     </RelativeLayout>
 
     <ImageView
+        android:id="@+id/divider_line"
         android:layout_width="match_parent"
         android:layout_height="@dimen/filmStar_divider_height"
         android:layout_marginLeft="@dimen/filmStar_divider_margin"
         android:layout_marginRight="@dimen/filmStar_divider_margin"
+        android:focusable="true"
         android:scaleType="fitXY"
         android:src="#202e5d"/>
 

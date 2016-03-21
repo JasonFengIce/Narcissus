@@ -1,7 +1,6 @@
 package cn.ismartv.voice.ui.activity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -10,13 +9,12 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
-import android.view.View.OnScrollChangeListener;
+import android.view.View.OnHoverListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.squareup.picasso.MemoryPolicy;
@@ -47,7 +45,7 @@ import retrofit2.Response;
 /**
  * Created by huaijie on 2/22/16.
  */
-public class FilmStarActivity extends BaseActivity implements OnFocusChangeListener, View.OnClickListener {
+public class FilmStarActivity extends BaseActivity implements OnFocusChangeListener, View.OnClickListener, OnHoverListener {
     private static final String TAG = "FilmStarActivity";
 
     private long pk;
@@ -72,6 +70,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
     private View contentView;
     private View indicatorSelectedView;
     private MyHorizontalScrollView horizontalScrollView;
+    private ImageView dividerLine;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -94,10 +93,10 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
 
         initViews();
         Intent intent = getIntent();
-        pk = intent.getLongExtra("pk", 0);
-//        pk = 2857;
-        String title = intent.getStringExtra("title");
-//        String title = "刘德华";
+//        pk = intent.getLongExtra("pk", 0);
+        pk = 2857;
+//        String title = intent.getStringExtra("title");
+        String title = "刘德华";
         filmStartitle.setText(title);
         fetchActorRelate(pk);
 
@@ -140,14 +139,15 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
         horizontalScrollView = (MyHorizontalScrollView) findViewById(R.id.scrollview);
         vodListView = (LinearLayout) findViewById(R.id.vod_list_view);
         vodHorizontalScrollView = (MyHorizontalScrollView) findViewById(R.id.vod_scrollview);
+        dividerLine = (ImageView) findViewById(R.id.divider_line);
         contentArrowRight.setOnFocusChangeListener(this);
         contentArrowLeft.setOnFocusChangeListener(this);
         indicatorArrowLeft.setOnFocusChangeListener(this);
         indicatorArrowRight.setOnFocusChangeListener(this);
-        indicatorArrowLeft.setOnHoverListener(mOnHoverListener);
-        indicatorArrowRight.setOnHoverListener(mOnHoverListener);
-        contentArrowRight.setOnHoverListener(mOnHoverListener);
-        contentArrowLeft.setOnHoverListener(mOnHoverListener);
+        indicatorArrowLeft.setOnHoverListener(this);
+        indicatorArrowRight.setOnHoverListener(this);
+        contentArrowRight.setOnHoverListener(this);
+        contentArrowLeft.setOnHoverListener(this);
         indicatorArrowLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -338,6 +338,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.gravity = Gravity.CENTER;
 //            layoutParams.setMargins(padding, 0, padding, 0);
+            itemView.setNextFocusDownId(itemView.getId());
             vodListView.addView(itemView, layoutParams);
         }
         vodListView.getChildAt(0).requestFocus();
@@ -393,8 +394,9 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
             case R.id.content_arrow_right:
             case R.id.indicator_left:
             case R.id.indicator_right:
-                v.requestFocusFromTouch();
+
                 if (hasFocus) {
+                    v.requestFocusFromTouch();
                     ViewScaleUtil.zoomin_1_3(v);
                 } else {
                     ViewScaleUtil.zoomout_1_3(v);
@@ -535,24 +537,22 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
         showNetworkErrorPop();
     }
 
-    private View.OnHoverListener mOnHoverListener = new View.OnHoverListener() {
 
-        @Override
-        public boolean onHover(View v, MotionEvent keycode) {
-            switch (keycode.getAction()) {
-                case MotionEvent.ACTION_HOVER_ENTER:
-                case MotionEvent.ACTION_HOVER_MOVE:
-                    v.requestFocus();
-                    break;
-                case MotionEvent.ACTION_HOVER_EXIT:
-                    break;
-                default:
-                    break;
-            }
-            return false;
+    @Override
+    public boolean onHover(View v, MotionEvent keycode) {
+        switch (keycode.getAction()) {
+            case MotionEvent.ACTION_HOVER_ENTER:
+            case MotionEvent.ACTION_HOVER_MOVE:
+                v.requestFocus();
+                break;
+            case MotionEvent.ACTION_HOVER_EXIT:
+                dividerLine.requestFocus();
+                break;
+            default:
+                break;
         }
-    };
-
+        return false;
+    }
 
 
 }
