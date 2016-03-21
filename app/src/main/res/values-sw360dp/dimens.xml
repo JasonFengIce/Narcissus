@@ -104,6 +104,7 @@
 
 <dimen name="film_star_indicator_width">13.00dp</dimen>
 <dimen name="film_star_indicator_height">12.00dp</dimen>
+<dimen name="film_star_indicator_padding">2.33dp</dimen>
 <dimen name="film_star_indicator_bg_width">91.67dp</dimen>
 <dimen name="film_star_indicator_bg_height">8.67dp</dimen>
 

@@ -153,25 +153,29 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
         indicatorArrowLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                horizontalScrollView.pageScroll(View.FOCUS_LEFT);
+                Log.i(TAG, "arrow click !!!");
+                horizontalScrollView.arrowScroll(View.FOCUS_LEFT);
             }
         });
         indicatorArrowRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                horizontalScrollView.pageScroll(View.FOCUS_RIGHT);
+                Log.i(TAG, "arrow click !!!");
+                horizontalScrollView.arrowScroll(View.FOCUS_RIGHT);
             }
         });
         contentArrowLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                vodHorizontalScrollView.pageScroll(View.FOCUS_LEFT);
+                Log.i(TAG, "arrow click !!!");
+                vodHorizontalScrollView.arrowScroll(View.FOCUS_LEFT);
             }
         });
         contentArrowRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                vodHorizontalScrollView.pageScroll(View.FOCUS_RIGHT);
+                Log.i(TAG, "arrow click !!!");
+                vodHorizontalScrollView.arrowScroll(View.FOCUS_RIGHT);
             }
         });
 
@@ -547,7 +551,8 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
         switch (keycode.getAction()) {
             case MotionEvent.ACTION_HOVER_ENTER:
             case MotionEvent.ACTION_HOVER_MOVE:
-                v.requestFocus();
+                if (!v.isFocused())
+                    v.requestFocus();
                 break;
             case MotionEvent.ACTION_HOVER_EXIT:
                 dividerLine.requestFocus();

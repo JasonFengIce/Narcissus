@@ -23,15 +23,23 @@
 
         >
 
-        <ImageView
-            android:id="@+id/indicator_left"
-            android:layout_width="@dimen/film_star_indicator_width"
-            android:layout_height="@dimen/film_star_indicator_height"
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/arrow_margin"
-            android:background="@drawable/selector_star_arrow_left"
-            android:clickable="true"
-            android:focusableInTouchMode="true"
-            android:visibility="invisible"/>
+            >
+
+            <ImageView
+                android:id="@+id/indicator_left"
+                android:layout_width="@dimen/film_star_indicator_width"
+                android:layout_height="@dimen/film_star_indicator_height"
+                android:layout_centerInParent="true"
+                android:background="@drawable/selector_star_arrow_left"
+                android:clickable="true"
+                android:focusableInTouchMode="true"
+                android:layout_margin="@dimen/film_star_indicator_padding"
+                android:visibility="invisible"/>
+        </RelativeLayout>
 
         <cn.ismartv.voice.ui.widget.MyHorizontalScrollView
             android:id="@+id/scrollview"
@@ -51,17 +59,23 @@
 
         </cn.ismartv.voice.ui.widget.MyHorizontalScrollView>
 
-        <ImageView
-            android:id="@+id/indicator_right"
-            android:layout_width="@dimen/film_star_indicator_width"
-            android:layout_height="@dimen/film_star_indicator_height"
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/arrow_margin"
-            android:background="@drawable/selector_star_arrow_right"
-            android:clickable="true"
-            android:focusableInTouchMode="true"
-            android:padding="10dp"
-            android:visibility="invisible"/>
+            >
 
+            <ImageView
+                android:id="@+id/indicator_right"
+                android:layout_width="@dimen/film_star_indicator_width"
+                android:layout_height="@dimen/film_star_indicator_height"
+                android:layout_centerInParent="true"
+                android:layout_margin="@dimen/film_star_indicator_padding"
+                android:background="@drawable/selector_star_arrow_right"
+                android:clickable="true"
+                android:focusableInTouchMode="true"
+                android:visibility="invisible"/>
+        </RelativeLayout>
     </LinearLayout>
 
     <RelativeLayout
