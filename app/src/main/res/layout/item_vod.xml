@@ -4,7 +4,6 @@
               android:layout_height="wrap_content"
               android:clickable="true"
               android:focusable="true"
-              android:focusableInTouchMode="true"
               android:gravity="center"
               android:orientation="vertical">
 
@@ -62,13 +61,13 @@
 
 
     <TextView
-        android:layout_marginTop="@dimen/vod_title_marigin_top"
         android:id="@+id/item_vod_title"
         android:layout_width="@dimen/item_vod_title_width"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/item_vod_image_layout"
         android:layout_below="@id/item_vod_image_layout"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/vod_title_marigin_top"
         android:ellipsize="marquee"
         android:gravity="center"
         android:marqueeRepeatLimit="marquee_forever"

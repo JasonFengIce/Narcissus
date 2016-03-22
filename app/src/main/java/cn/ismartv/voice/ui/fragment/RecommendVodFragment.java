@@ -199,6 +199,7 @@ public class RecommendVodFragment extends BaseFragment implements OnFocusChangeL
             switch (keycode.getAction()) {
                 case MotionEvent.ACTION_HOVER_ENTER:
                 case MotionEvent.ACTION_HOVER_MOVE:
+                    v.requestFocusFromTouch();
                     v.requestFocus();
                     break;
                 case MotionEvent.ACTION_HOVER_EXIT:
