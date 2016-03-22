@@ -36,10 +36,10 @@
                 android:layout_width="@dimen/film_star_indicator_width"
                 android:layout_height="@dimen/film_star_indicator_height"
                 android:layout_centerInParent="true"
-                android:layout_margin="@dimen/film_star_indicator_padding"
                 android:background="@drawable/selector_star_arrow_left"
                 android:clickable="true"
                 android:focusable="true"
+                android:padding="@dimen/film_star_indicator_padding"
                 android:visibility="invisible"/>
         </RelativeLayout>
 
@@ -73,10 +73,10 @@
                 android:layout_width="@dimen/film_star_indicator_width"
                 android:layout_height="@dimen/film_star_indicator_height"
                 android:layout_centerInParent="true"
-                android:layout_margin="@dimen/film_star_indicator_padding"
-                android:background="@drawable/selector_star_arrow_right"
                 android:clickable="true"
                 android:focusable="true"
+                android:padding="@dimen/film_star_indicator_padding"
+                android:src="@drawable/selector_star_arrow_right"
                 android:visibility="invisible"/>
         </RelativeLayout>
     </LinearLayout>
