@@ -37,6 +37,8 @@ import android.widget.OverScroller;
 
 import java.util.List;
 
+import cn.ismartv.voice.R;
+
 
 public class MyHorizontalScrollView extends FrameLayout {
     private static final int ANIMATED_SCROLL_GAP = 250;
@@ -1076,8 +1078,8 @@ public class MyHorizontalScrollView extends FrameLayout {
 
             doScrollX(scrollDelta);
             if(scrollDelta<0){
-                if(nextFocused!=null&&nextFocused.getTag()!=null){
-                    int index = (Integer) nextFocused.getTag();
+                if(nextFocused!=null&&nextFocused.getTag(R.layout.item_vod_star)!=null){
+                    int index = (Integer) nextFocused.getTag(R.layout.item_vod_star);
                     if(index==0){
                         setPadding(mLeftDistance,getPaddingTop(),getPaddingRight(),getPaddingBottom());
                         scrollDelta = maxJump;

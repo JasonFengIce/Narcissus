@@ -325,6 +325,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
             }
 
             itemView.setTag(list.get(i));
+            itemView.setTag(R.layout.item_vod_star,i);
             if (i == list.size() - 1) {
                 itemView.setNextFocusRightId(itemView.getId());
             }
