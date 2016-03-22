@@ -83,7 +83,6 @@ public class RecognizeErrorFragment extends BaseFragment implements View.OnFocus
                                           TextView textView = new TextView(getContext());
                                           textView.setClickable(true);
                                           textView.setFocusable(true);
-                                          textView.setFocusableInTouchMode(true);
                                           textView.setTextSize(getResources().getDimension(R.dimen.textSize_36sp) / getDensityRate());
                                           SemantichObjectEntity entity = tipList.getObjects().get(i);
                                           String text = entity.getTitle();
@@ -120,6 +119,7 @@ public class RecognizeErrorFragment extends BaseFragment implements View.OnFocus
                                                   switch (motionEvent.getAction()) {
                                                       case MotionEvent.ACTION_HOVER_ENTER:
                                                       case MotionEvent.ACTION_HOVER_MOVE:
+                                                          view.requestFocusFromTouch();
                                                           view.requestFocus();
                                                           break;
                                                       case MotionEvent.ACTION_HOVER_EXIT:

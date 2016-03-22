@@ -175,8 +175,10 @@ public class RecommendAppFragment extends BaseFragment implements View.OnFocusCh
         switch (event.getAction()) {
             case MotionEvent.ACTION_HOVER_ENTER:
             case MotionEvent.ACTION_HOVER_MOVE:
-                if (!v.isFocused())
+                if (!v.isFocused()) {
+                    v.requestFocusFromTouch();
                     v.requestFocus();
+                }
                 break;
             case MotionEvent.ACTION_HOVER_EXIT:
                 searchTitle.requestFocus();
