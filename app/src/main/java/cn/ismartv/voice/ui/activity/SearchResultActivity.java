@@ -107,6 +107,7 @@ public class SearchResultActivity extends BaseActivity {
     }
 
     public void refreshContent(SemanticSearchResponseEntity entity, String raw) {
+        contentFragment = new ResultVodFragment();
         contentFragment.setRaw(raw);
         contentFragment.setObjectEntities(entity.getFacet().get(0).getObjects());
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
