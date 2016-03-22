@@ -36,7 +36,7 @@
                 android:layout_width="@dimen/film_star_indicator_width"
                 android:layout_height="@dimen/film_star_indicator_height"
                 android:layout_centerInParent="true"
-                android:background="@drawable/selector_star_arrow_left"
+                android:src="@drawable/selector_star_arrow_left"
                 android:clickable="true"
                 android:focusable="true"
                 android:padding="@dimen/film_star_indicator_padding"
