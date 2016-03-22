@@ -122,6 +122,7 @@ public class ResultVodFragment extends BaseFragment implements View.OnFocusChang
             case MotionEvent.ACTION_HOVER_ENTER:
             case MotionEvent.ACTION_HOVER_MOVE:
                 if (!v.isFocused()) {
+                    v.requestFocusFromTouch();
                     v.requestFocus();
                 }
                 break;
