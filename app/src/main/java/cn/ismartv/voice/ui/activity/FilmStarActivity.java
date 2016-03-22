@@ -199,6 +199,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                     for (SemanticSearchResponseEntity.Facet facet : entity.getFacet()) {
                         LinerLayoutContainer itemView = (LinerLayoutContainer) LayoutInflater.from(FilmStarActivity.this).inflate(R.layout.item_film_star_indicator, null);
                         TextView indicatorTitle = (TextView) itemView.findViewById(R.id.title);
+
                         indicatorTitle.setText(facet.getName());
                         itemView.setOnFocusChangeListener(FilmStarActivity.this);
                         itemView.setOnClickListener(FilmStarActivity.this);
@@ -551,8 +552,10 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
         switch (keycode.getAction()) {
             case MotionEvent.ACTION_HOVER_ENTER:
             case MotionEvent.ACTION_HOVER_MOVE:
-                if (!v.isFocused())
+                if (!v.isFocused()) {
+                    v.requestFocusFromTouch();
                     v.requestFocus();
+                }
                 break;
             case MotionEvent.ACTION_HOVER_EXIT:
                 dividerLine.requestFocus();
