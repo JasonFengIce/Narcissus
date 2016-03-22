@@ -154,28 +154,28 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
             @Override
             public void onClick(View view) {
                 Log.i(TAG, "arrow click !!!");
-                horizontalScrollView.arrowScroll(View.FOCUS_LEFT);
+                horizontalScrollView.pageScroll(View.FOCUS_LEFT);
             }
         });
         indicatorArrowRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.i(TAG, "arrow click !!!");
-                horizontalScrollView.arrowScroll(View.FOCUS_RIGHT);
+                horizontalScrollView.pageScroll(View.FOCUS_RIGHT);
             }
         });
         contentArrowLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.i(TAG, "arrow click !!!");
-                vodHorizontalScrollView.arrowScroll(View.FOCUS_LEFT);
+                vodHorizontalScrollView.pageScroll(View.FOCUS_LEFT);
             }
         });
         contentArrowRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.i(TAG, "arrow click !!!");
-                vodHorizontalScrollView.arrowScroll(View.FOCUS_RIGHT);
+                vodHorizontalScrollView.pageScroll(View.FOCUS_RIGHT);
             }
         });
 
@@ -326,7 +326,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
             }
 
             itemView.setTag(list.get(i));
-            itemView.setTag(R.layout.item_vod_star,i);
+            itemView.setTag(R.layout.item_vod_star, i);
             if (i == list.size() - 1) {
                 itemView.setNextFocusRightId(itemView.getId());
             }
