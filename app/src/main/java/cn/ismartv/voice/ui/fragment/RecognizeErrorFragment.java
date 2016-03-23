@@ -83,6 +83,7 @@ public class RecognizeErrorFragment extends BaseFragment implements View.OnFocus
                                           TextView textView = new TextView(getContext());
                                           textView.setClickable(true);
                                           textView.setFocusable(true);
+                                          textView.setId(R.id.recognize_error_item);
                                           textView.setTextSize(getResources().getDimension(R.dimen.textSize_36sp) / getDensityRate());
                                           SemantichObjectEntity entity = tipList.getObjects().get(i);
                                           String text = entity.getTitle();

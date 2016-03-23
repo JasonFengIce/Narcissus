@@ -184,13 +184,17 @@ public class IndicatorFragment extends BaseFragment implements View.OnClickListe
             linearLayout.setOnHoverListener(this);
             linearLayout.setId(R.id.indicator_list_item + i);
             linearLayout.setOnFocusChangeListener(this);
-            linearLayout.setNextFocusLeftId(R.id.indicator_slide_menu);
-
+            linearLayout.setNextFocusLeftId(linearLayout.getId());
             if (i == 0) {
+                linearLayout.setNextFocusUpId(linearLayout.getId());
                 selectedView = linearLayout;
                 lostFocusView = linearLayout;
                 TextView textView = (TextView) linearLayout.findViewById(R.id.title);
                 textView.setTextColor(getResources().getColor(R.color._ffffff));
+            }
+
+            if (i == entity.getFacet().size() - 1) {
+                linearLayout.setNextFocusDownId(linearLayout.getId());
             }
             int height = (int) getResources().getDimension(R.dimen.content_fragment_indicator_item_height) + (int) getResources().getDimension(R.dimen.divider_line_height);
 
