@@ -34,6 +34,7 @@ public class LinerLayoutContainer extends LinearLayout {
             case MotionEvent.ACTION_HOVER_ENTER:
             case MotionEvent.ACTION_HOVER_MOVE:
                 setHovered(true);
+                requestFocusFromTouch();
                 requestFocus();
 //                invalidate();
                 break;
