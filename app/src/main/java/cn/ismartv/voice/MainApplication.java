@@ -22,8 +22,8 @@ public class MainApplication extends Application {
 
     private static String locationPY;
     private static String snToken;
-    private static String appUpdateDomain;
-    private static String apiDomain;
+    private static String appUpdateDomain = "http://skytest.tvxio.com";
+    private static String apiDomain = "http://skytest.tvxio.com";
     private static long geoId;
     private static String city;
 
@@ -61,7 +61,6 @@ public class MainApplication extends Application {
         }
     }
 
-    
 
     public static String getLocationPY() {
         return locationPY;

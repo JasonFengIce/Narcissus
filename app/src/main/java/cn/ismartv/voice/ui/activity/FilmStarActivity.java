@@ -81,6 +81,8 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
      */
     private GoogleApiClient client;
 
+    private View vodItemClickedView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +115,10 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
     protected void onResume() {
         super.onResume();
         EventBus.getDefault().register(this);
+        if (vodItemClickedView != null) {
+            vodItemClickedView.requestFocusFromTouch();
+            vodItemClickedView.requestFocus();
+        }
     }
 
     @Override
@@ -355,6 +361,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    vodItemClickedView = v;
                     FilmStarActivity.this.onVodItemClick((SemantichObjectEntity) v.getTag());
                 }
             });

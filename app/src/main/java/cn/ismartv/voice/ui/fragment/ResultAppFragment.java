@@ -45,6 +45,8 @@ public class ResultAppFragment extends BaseFragment implements View.OnFocusChang
 
     private String raw;
 
+    private View itemClickedView;
+
     public void setRaw(String raw) {
         this.raw = raw;
     }
@@ -80,6 +82,14 @@ public class ResultAppFragment extends BaseFragment implements View.OnFocusChang
         notifyDataChanged(appSearchObjectEntities, raw);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (itemClickedView != null) {
+            itemClickedView.requestFocusFromTouch();
+            itemClickedView.requestFocus();
+        }
+    }
 
     public void notifyDataChanged(List<AppSearchObjectEntity> objectEntities, String rawText) {
         String rawTextValue = getString(R.string.search_title);
@@ -98,6 +108,7 @@ public class ResultAppFragment extends BaseFragment implements View.OnFocusChang
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        itemClickedView = view;
         Log.i(TAG, "click position: " + position);
         onAppItemClick((AppSearchObjectEntity) recyclerView.getAdapter().getItem(position));
     }

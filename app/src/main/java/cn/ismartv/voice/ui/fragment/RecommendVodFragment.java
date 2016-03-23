@@ -51,6 +51,8 @@ public class RecommendVodFragment extends BaseFragment implements OnFocusChangeL
     private LinearLayout firstRowLayout;
     private LinearLayout secondRowLayout;
 
+    private View itemClickedView;
+
 
     @Override
     public void onAttach(Context context) {
@@ -74,6 +76,15 @@ public class RecommendVodFragment extends BaseFragment implements OnFocusChangeL
 
         fetchSharpHotWords();
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (itemClickedView != null) {
+            itemClickedView.requestFocusFromTouch();
+            itemClickedView.requestFocus();
+        }
     }
 
     public void reset() {
@@ -189,6 +200,7 @@ public class RecommendVodFragment extends BaseFragment implements OnFocusChangeL
 
     @Override
     public void onClick(View v) {
+        itemClickedView = v;
         onVodItemClick((SemantichObjectEntity) v.getTag());
     }
 

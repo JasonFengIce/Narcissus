@@ -45,6 +45,8 @@ public class RecommendAppFragment extends BaseFragment implements View.OnFocusCh
     private LinearLayout firstRowLayout;
     private LinearLayout secondRowLayout;
 
+    private View itemClickedView;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -70,6 +72,14 @@ public class RecommendAppFragment extends BaseFragment implements View.OnFocusCh
         fetchRecommendApp();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (itemClickedView != null) {
+            itemClickedView.requestFocusFromTouch();
+            itemClickedView.requestFocus();
+        }
+    }
 
     public void fetchRecommendApp() {
         Retrofit retrofit = HttpManager.getInstance().resetAdapter_WUGUOJUN;
@@ -167,6 +177,7 @@ public class RecommendAppFragment extends BaseFragment implements View.OnFocusCh
 
     @Override
     public void onClick(View v) {
+        itemClickedView = v;
         onAppItemClick((AppSearchObjectEntity) v.getTag());
     }
 
