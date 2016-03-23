@@ -44,7 +44,7 @@ public class ResultVodFragment extends BaseFragment implements View.OnFocusChang
 
     private List<SemantichObjectEntity> objectEntities;
     private String raw;
-    private View itemClickedView;
+    private int itemClickedViewPosition;
 
     public void setObjectEntities(List<SemantichObjectEntity> objectEntities) {
         this.objectEntities = objectEntities;
@@ -87,9 +87,10 @@ public class ResultVodFragment extends BaseFragment implements View.OnFocusChang
     @Override
     public void onResume() {
         super.onResume();
-        if (itemClickedView != null) {
-            itemClickedView.requestFocusFromTouch();
-            itemClickedView.requestFocus();
+        if (itemClickedViewPosition != -1) {
+            if (recyclerView.getChildAt(itemClickedViewPosition) != null) {
+                recyclerView.setSelection(itemClickedViewPosition);
+            }
         }
     }
 
@@ -254,7 +255,7 @@ public class ResultVodFragment extends BaseFragment implements View.OnFocusChang
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        itemClickedView = view;
+        itemClickedViewPosition = position;
         Log.i(TAG, "item click");
         SemantichObjectEntity objectEntity = (SemantichObjectEntity) recyclerView.getAdapter().getItem(position);
         onVodItemClick(objectEntity);
