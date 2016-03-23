@@ -66,13 +66,15 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
     private ImageView indicatorArrowLeft;
     private ImageView indicatorArrowRight;
 
-    private View lostFocusItemView;
 
     private MessagePopWindow networkEorrorPopupWindow;
     private View contentView;
     private View indicatorSelectedView;
+//    private View indicatorFocusedView;
+
     private MyHorizontalScrollView horizontalScrollView;
     private ImageView dividerLine;
+    private ImageView focusTranslate;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -130,6 +132,23 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
     private void initViews() {
         filmStartitle = (TextView) findViewById(R.id.film_star_title);
         indicatorListLayout = (LinearLayout) findViewById(R.id.film_list_indicator);
+        focusTranslate = (ImageView) findViewById(R.id.focus_translate);
+
+        focusTranslate.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    Log.i(TAG, "focusTranslate  focused");
+                    if (indicatorSelectedView != null) {
+                        indicatorSelectedView.requestFocusFromTouch();
+                        indicatorSelectedView.requestFocus();
+                    } else {
+                        indicatorListLayout.getChildAt(0).requestFocusFromTouch();
+                        indicatorListLayout.getChildAt(0).requestFocus();
+                    }
+                }
+            }
+        });
         actorView = (TextView) findViewById(R.id.actor);
         directorView = (TextView) findViewById(R.id.director);
         areaView = (TextView) findViewById(R.id.area);
@@ -211,6 +230,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                         itemView.setTag(R.id.filmStar_indicator_item, i);
                         if (i == 0) {
                             indicatorSelectedView = itemView;
+//                            indicatorFocusedView = itemView;
                             indicatorTitle.setTextColor(getResources().getColor(R.color._ffffff));
                             itemView.setNextFocusLeftId(itemView.getId());
                             indicatorListLayout.addView(itemView);
@@ -327,6 +347,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
 
             itemView.setTag(list.get(i));
             itemView.setTag(R.layout.item_vod_star, i);
+            itemView.setNextFocusUpId(focusTranslate.getId());
             if (i == list.size() - 1) {
                 itemView.setNextFocusRightId(itemView.getId());
             }
@@ -365,6 +386,8 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                 TextView textView = (TextView) v.findViewById(R.id.title);
 
                 if (hasFocus) {
+                    focusTranslate.setFocusable(false);
+//                    indicatorFocusedView = v;
                     if (indicatorSelectedView == v) {
                         textView.setTextColor(getResources().getColor(R.color._ffffff));
                     } else {
@@ -374,6 +397,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                     bg.setVisibility(View.VISIBLE);
                     ViewScaleUtil.zoomin_1_3(v);
                 } else {
+                    focusTranslate.setFocusable(true);
                     if (indicatorSelectedView == v) {
                         textView.setTextColor(getResources().getColor(R.color._ffffff));
                     } else {
@@ -413,9 +437,6 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                 }
                 break;
             case R.id.recyclerview:
-                if (lostFocusItemView != null) {
-                    lostFocusItemView.requestFocus();
-                }
                 break;
             case R.id.star_vod_list_item:
                 View imageLayout = v.findViewById(R.id.item_vod_image_layout);
@@ -470,6 +491,7 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                     textView.setTextColor(getResources().getColor(R.color._ffffff));
                 }
                 indicatorSelectedView = v;
+//                indicatorFocusedView = v;
                 String type = (String) v.getTag();
                 fetchActorRelateByType(pk, type);
                 break;

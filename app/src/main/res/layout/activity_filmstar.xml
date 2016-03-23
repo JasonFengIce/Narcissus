@@ -36,10 +36,10 @@
                 android:layout_width="@dimen/film_star_indicator_width"
                 android:layout_height="@dimen/film_star_indicator_height"
                 android:layout_centerInParent="true"
-                android:src="@drawable/selector_star_arrow_left"
                 android:clickable="true"
                 android:focusable="true"
                 android:padding="@dimen/film_star_indicator_padding"
+                android:src="@drawable/selector_star_arrow_left"
                 android:visibility="invisible"/>
         </RelativeLayout>
 
@@ -80,6 +80,13 @@
                 android:visibility="invisible"/>
         </RelativeLayout>
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/focus_translate"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/transparent"
+        android:focusable="true"/>
 
     <RelativeLayout
         android:id="@+id/film_scroll_list"
