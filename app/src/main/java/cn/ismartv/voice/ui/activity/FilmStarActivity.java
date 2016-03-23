@@ -443,11 +443,11 @@ public class FilmStarActivity extends BaseActivity implements OnFocusChangeListe
                 View vodTitle = v.findViewById(R.id.item_vod_title);
                 if (hasFocus) {
                     SemantichObjectEntity entity = (SemantichObjectEntity) v.getTag();
-                    if (!v.isHovered()) {
-                        AttributesEntity attributesEntity = entity.getAttributes();
-                        String description = entity.getDescription();
-                        setFilmAttr(attributesEntity, description);
-                    }
+//                    if (!v.isHovered()) {
+                    AttributesEntity attributesEntity = entity.getAttributes();
+                    String description = entity.getDescription();
+                    setFilmAttr(attributesEntity, description);
+//                    }
                     vodTitle.setSelected(true);
                     ViewScaleUtil.zoomin_1_15(v);
                 } else {
